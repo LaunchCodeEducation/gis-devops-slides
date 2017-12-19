@@ -1,0 +1,235 @@
+<!DOCTYPE html><html lang=en><head><meta http-equiv=Content-Type content="text/html; charset=UTF-8"><meta name=viewport content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
+
+<title>Day 1</title>
+
+</head>
+
+<!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
+<body onload="var slideshow = remark.create({ratio: '16:9', navigation: {scroll: true, touch: true, click: false}, countIncrementalSlides: false, highlightLanguage: 'bash', highlightStyle: 'tomorrow-night-blue'});">
+
+<!-- #ToDo: Write your slides in MarkDown here -->
+<textarea id="source">
+
+background-color: #cacaca
+
+
+---
+
+class: center, middle
+
+# Gitlab
+## Day 1: Lesson 1
+
+---
+
+## Gitlab.com
+
+* Web application for managing and collaborating on git repos
+--
+
+* Very similar to github
+--
+
+* You can host your own gitlab inside your own network
+--
+
+* That is appealing security focused organizations
+
+---
+
+## Gitlab compared to Github
+
+* Pull Requests are called Merge Requests
+* You can have private projects for free accounts
+* We are using a free repo for our work in this class
+* There are a few other minor differences, but nothing that should cause you any confusion
+* For a detailed list of differences [here](https://about.gitlab.com/comparison/)
+
+---
+
+## Gitlab user roles
+
+* You can add users to projects and groups with a certain role
+* Owner, Master - Can do pretty much anything
+* Developer - Can clone, pull, push, comment, approve merge requests
+* Reporter - Can clone and comment
+
+---
+
+## Gitlab Setup
+
+1. Go to gitlab.com in your web browser
+2. Create an account (create **new one** or create **using Github account**)
+3. Create an SSH key by following [these instructions](https://gitlab.com/help/ssh/README)
+4. Have instructor add you to certain groups
+5. Browser around the gitlab.com: groups, projects, settings...
+6. Clone a repo to make sure everything is setup correctly
+
+---
+
+## Git command review
+
+* fork a repo - no a git command for this, but very useful
+* git clone https://repo-url
+* git status
+* git checkout branch-name
+* git add *
+* git commit -m "a most accurate message"
+* git push
+* git pull
+* git fetch
+
+---
+
+## Git walkthrough
+
+Follow along with instructor as we refresh our git skills
+
+---
+
+## Intellij Refresher
+ * What version do you have installed?
+ * What JDK do you have installed?
+ * more really useful stuff...
+
+---
+
+## Java Project Structure Conventions
+
+* Where to put stuff and why...
+
+---
+
+## Refactoring
+
+* Changing code without changing its external behavior
+* Whey do you want to do this?
+* Better techniques come along
+* New libraries are discovered
+* The code is “bad”
+  * Duplication
+  * Bad naming conventions
+
+---
+
+## Examples of Refactoring
+
+* Renaming classes or methods
+* Moving methods to a different class
+* Moving classes to a different package
+* Using a new sorting algorithm
+* Using a feature in the language, that the previous coder didn’t know about
+
+---
+
+## After a Refactor
+
+* How do we know everything still work?
+* We can give it the ol eye ball test... Looks good to me. Ship it!
+* Manually test the application a few times
+* Run the automated tets!
+
+---
+
+## Automated Testing
+
+Automated tests are code files that utilize all the features of your code
+* Your classes are instantiated
+* The methods are executed
+* All in specific order to insure they all do what they are supposed to
+
+---
+
+## Benefits of Automated Tests
+
+* They verify that the code functions as it should
+  * All good here
+  * Oops, I just broke something with that last change
+* The tests themselves are documentation on what the code should do
+  * Because the tests demonstrate proper usages of the code
+  * With all the required inputs and expected outputs
+* Unlike in code comments the tests can’t become stale
+  * Tests will fail if the code behavior changes
+
+---
+
+## Unit Test
+
+A specific type of automated test.
+What is a “unit”?
+* The smallest testable unit of work
+  * Most likely that is a function, but not always
+* A single, clearly stated, desired behavior
+  * Breaking it down this way makes is easier to find bugs when issues arise
+
+---
+
+## Unit of Work Examples
+
+A single, clearly stated, desired behavior
+* Method returns false if passed an empty array
+* Method throws exception if passed a negative number
+* Class constructor properly creates object when passed required parameters
+
+---
+
+## Best Practices
+
+* Test should be deterministic
+  * Given the same starting state, the test will always have the same result
+  * A test that passes “most of the time” is not a good test.
+* Grouped together properly
+  * Don’t test totally unrelated things in the same test method or even the same test file
+* Tests should pass before committing code
+* Don’t test getters and setters
+
+---
+
+## Writing a Unit Test
+
+The AAA's method helps to guide us
+* Arrange
+  * Variables that you will need
+* Act
+  * Call method(s)
+* Assert
+  * Check for specific results
+
+---
+
+## Unit Test Components
+
+* Test
+  * A single test function
+* Fixture
+  * A class file containing one or more test functions
+* Test Runner
+  * A library that executes the tests and provides a report
+  * For us this will be a library called JUnit
+
+---
+
+## JUnit
+
+A Java library that provides classes, methods, and assertions for organizaing and executing unit tests.
+
+---
+
+## JUnit Annotations
+
+* @Fixture
+* @Test
+* @Before
+* @After
+* @BeforeClass
+* @AfterClass
+
+---
+
+## Instructor Led Walkthrough
+
+1. Install JUnit it a Java project
+2. Write a Unit Test
+3. Run the Tests
+
+</textarea><script type="text/javascript" src="../js/remark-latest.min.js"></script></body></html>
