@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang=en>
+    <head>
+        <meta http-equiv=Content-Type content="text/html; charset=UTF-8">
+        <meta name=viewport content="width=device-width,initial-scale=1">
+        <link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
+
+    <!-- #ToDo: Change Title for the presentation -->
+    <title>User Stories</title>
+
+</head>
+
+<!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
+<body onload="var slideshow = remark.create({ratio: '16:9', navigation: {scroll: true, touch: true, click: false}, countIncrementalSlides: false, highlightLanguage: 'bash', highlightStyle: 'tomorrow-night-blue'});">
+
+<!-- #ToDo: Write your slides in MarkDown here -->
+<textarea id="source">
+
+class: center, middle
+
+# User Stories
+
+???
+A brief recap of what user stories are, with an in-class activity. We assume students have completed the prep work, which introduces the main concepts of user stories.
+
+---
+
+# What Is a User Story?
+
+User stories are descriptions of features written from a user’s perspective.
+
+--
+
+They often look like:
+
+_As a [user type], I can [some activity], so that [some reason]._
+
+---
+
+# User Story Components
+
+- **User type**: Otherwise known as a **personna**, this portion describes the _who_ of the feature. Who does the feature apply to?
+--
+
+- **Activity**: This is the _what_ for the feature. What will the given user be able to do when the feature is implemented?
+--
+
+- **Reason**: It's not enough to just say who and what. The _why_ of a feature illuminates the reason that the feature should be implemented. While sometimes lazily ommitted from user stories, including this portion makes it explicit to everyone the motivation behind the feature. As a deveoper, it also gives you insight that can be helpful in suggesting alternatives to the feature that may be better at achieving the given result.
+
+---
+
+# Writing User Stories
+
+We'll complete a studio focused on practicing writing user stories
+
+--
+
+Let's begin by clarify requirements. What questions do you have that you'll need to know the answers to in order to create some stories?
+
+???
+Describe the project at a high-level, and let students ask questions to clarify requirements. Answer them however you like. The main point is that they should clarify how the app would work with you as the client.
+
+After they have clarified requirements, let them work on writing some stories in their groups for 10-15 minutes.
+
+---
+
+# Attendance App Stories
+
+**Personas:** TAs, Board of directors, instructor, staff, students 
+
+**Stories:**
+- As a TA, I have a dashboard that shows frequently absent students, so I can contact that student
+- As a TA, I can quickly mark a student as here/not, b/c it’s too hard currently
+- As a TA, I can quickly mark a student of another TA as here or not here, because TAs are sometimes absent
+
+???
+As a class, document some user stories and personnas and talk about what's good about each, and which can be improved. Those included here are some examples.
+
+---
+
+# Attendance App Stories
+
+**More Stories:**
+- As an instructor, I need to be able to assign students to a TA, so every student has a TA
+- As a student, I can comment on my attendance record, so I can inform staff of a reason for being absent
+- As a student, I can view my recorded attendance so I can notify staff of any errors
+- As a staff member, I can view average attendance over a class session or over all time, so I can make meaningful statements about...
+
+---
+
+# Improving User Stories
+
+How can these be improved?
+
+- You can see who came to class and who didn't
+--
+
+- If a TA is absent, another one can take attendance for their group
+--
+
+- There is a reporting feature
+
+???
+Here we present some objectively bad user stories and ask students how they could be improved. The goal is to illustrate no only the format for good stories, but also how less-than-ideal stories can be identified and clarified.
+
+</textarea>
+
+<script type="text/javascript" src="../js/remark-latest.min.js"></script>
+</body>
+</html>
