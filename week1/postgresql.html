@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang=en><head><meta http-equiv=Content-Type content="text/html; charset=UTF-8"><meta name=viewport content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
 
-<title>Day 2</title>
+<title>Day 4</title>
 
 </head>
 
@@ -10,14 +10,10 @@
 <!-- #ToDo: Write your slides in MarkDown here -->
 <textarea id="source">
 
-background-color: #cacaca
-
-
----
-
 class: center, middle
 
-# Day 3
+# Day 4
+### Postgres and Migrations
 
 ---
 
@@ -60,11 +56,39 @@ class: center, middle
 
 ---
 
-## Postgresql Instructor Walkthrough
+## Postgresql Walkthrough
 
 * [https://education.launchcode.org/gis-devops/walkthroughs/#Install](https://education.launchcode.org/gis-devops/walkthroughs/#Install)
 
 ---
 
+## Database Migrations
+
+* When you do the below... as part of a build/deployment
+  * create a database
+  * alter table(s), column(s), constraint(s)
+  * insert data
+  * translate data
+
+* The database changes have to be rolled out with the new code files changes
+  * The code won't work without an updated data source
+  * Like deployments migrations are named/numbered
+
+---
+
+## Flyway for Migrations
+
+* A Java library that makes database migrations easier
+* You make migration sql files that create/alter the database as needed
+* You execute the migrations using Flyway gradle tasks
+* Flyway keeps track of the migrations applied in a special migrations table in your database
+
+---
+
+## Flyway Walkthrough
+
+* [https://education.launchcode.org/gis-devops/walkthroughs/#Setup](https://education.launchcode.org/gis-devops/walkthroughs/#Setup)
+
+---
 
 </textarea><script type="text/javascript" src="../js/remark-latest.min.js"></script></body></html>
