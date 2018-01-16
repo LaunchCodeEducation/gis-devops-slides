@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang=en><head><meta http-equiv=Content-Type content="text/html; charset=UTF-8"><meta name=viewport content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
+
+    <title>Day 3</title>
+    
+    </head>
+    
+    <!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
+    <body onload="var slideshow = remark.create({ratio: '16:9', navigation: {scroll: true, touch: true, click: false}, countIncrementalSlides: false, highlightLanguage: 'bash', highlightStyle: 'tomorrow-night-blue'});">
+    
+    <!-- #ToDo: Write your slides in MarkDown here -->
+    <textarea id="source">
+    
+    class: center, middle
+    
+    # Day 3
+    ### Integration Testing
+    
+    ---
+    
+    ## Testing Review
+    
+    Unit Test
+    * Test the smallest unit of code in isolation
+
+    TDD & Red, Green, Refactor
+    * Write tests first
+    * Write minimal code to get test to pass
+    * Clean up the code
+    * Get all tests to pass
+    
+    ---
+
+    ## Unit Tests Are Not Alone
+    
+    Integration Tests
+    * Testing the integrated parts of a feature
+    * All the units and layers combined to make a feature
+    * What is being integrated differs for each language, framework, and application purpose
+   
+    ---
+
+    ## Acceptance Tests
+    * You app is ran in enviroment as close as possible to live enviroment (possibly staging)
+    * App is used as end user will. Inputs are filled in, buttons are clicked
+      * Tools like selenium are configured on what to click and input
+    * Expected behavior is verified by inspecting the output of the app
+      * Verify HTML
+      * Inspect JSON
+      * File was created correctly
+      * Anything that the app returns, creates, or displays
+    
+    ---
+    
+    ## Integration Tests
+
+    * It is important to be able to test that all these work together
+      * POJOS
+      * controllers
+      * models
+      * views
+      * database connection
+      * database queries
+
+    ---
+
+    ## Spring Integration Tests
+
+    * Offer a way to test all the layers WITHOUT...
+      * booting up your webserver
+      * deploying your code
+      * opening a browser and manually testing
+
+    * The Spring framework provides many utilities
+      * Annotations
+      * Classes
+      * Depedency Injection of test versions of resources (Controllers, Models, Properties...)
+
+    ---
+
+    ## Spring Testing Instructor Walkthrough
+    * [https://education.launchcode.org/gis-devops/walkthroughs/spring-integration-tests/#Setup](https://education.launchcode.org/gis-devops/walkthroughs/spring-integration-tests/#Setup)
+
+
+    </textarea><script type="text/javascript" src="../js/remark-latest.min.js"></script></body></html>
+    
