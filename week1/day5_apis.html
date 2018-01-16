@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang=en><head><meta http-equiv=Content-Type content="text/html; charset=UTF-8"><meta name=viewport content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
 
-<title>Day 5</title>
+    <title>Day 5</title>
 
 </head>
 
@@ -13,215 +13,161 @@
 class: center, middle
 
 # Day 5
-### HTTP
+### APIs
 
 ---
 
-## HTTP
+## APIs
 
-* Message protocol that is the foundation of the internet.
---
-
-* Hypertext Transfer Protocol was designed for transferring hypertext (html).
+* How machines talk on the internet.
 
 --
 
-* (It transfer much more than hypertext ... javascript, css, video, images, etc.)
+* We're going to be looking specifically about how machines talk about geospatial data.
 
 ---
 
-## Imagine you had ask a robot for a webpage in 1997
+## Introducing GeoJSON
 
----
-
-## Meet Charlie the Robot
-![Charlie|250x250](charlie-the-robot.jpg)
-* Charlie only speaks HTTP
-
----
-
-## A few things to know about Charlie the Robot
-
-* Request Response - You request a resource.  It returns the resource.  That's it.
-* Structured Requests - Just like mailing a letter, there is specific data that you have to put in specific places.
-* Number Codes - The robot does not know any words. It just returns resources and numbers.
-
----
-
-## Request Response
-
-* When you type `http://localhost:63342/gis-devops-slides/week1/day5.html`, the browser produces this request:
+* Format standardized in 2007.
+* JSON code written to a specific format to comply with the standard.
 
 ```
-Request URL:http://localhost:63342/gis-devops-slides/week1/day5.html?_ijt=uun1m30tcspl4il93ipl443pah
-Request Method:GET
-Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
-Accept-Encoding:gzip, deflate, br
-Accept-Language:en-US,en;q=0.9
-Cache-Control:max-age=0
-Connection:keep-alive
-Cookie:optimizelyEndUserId=oeu1502034597292r0.21035548100896806; optimizelySegments=%7B%227282390156%22%3A%22false%22%2C%227252930080%22%3A%22direct%22%2C%227276750292%22%3A%22gc%22%2C%227233730390%22%3A%22none%22%7D; optimizelyBuckets=%7B%7D; Idea-2fdbf3fb=001be010-f245-4c28-9a8f-91710cd3abde
-Host:localhost:63342
-If-Modified-Since:Mon, 15 Jan 2018 22:15:13 GMT
-Upgrade-Insecure-Requests:1
-User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36
+{ "type": "FeatureCollection",
+"features": [
+  { "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [102.0, 0.5]
+      },
+      "properties": {
+        "prop0": "value0"
+      }
+    },
+   ]
+ }
 ```
 
 ---
 
-## Breaking down the request
+## Breaking GeoJSON Down
+#### FeatureCollection
+* `Type` - `FeatureCollection`
+    * `features` - List of features
+        * `geometry` - A Point, Linestring, or Polygon.
+        * `properties` - Data about the locationon the map.
 
-* `http://education.lau.....`  - get the resource using the HTTP protocol.
-* `GET` - send me data.
-* `Accept:text/html,application/xhtml+xml` - only send me html or xhtml.
-* ...
-```
-Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
-Accept-Encoding:gzip, deflate, br
-Accept-Language:en-US,en;q=0.9
-Cache-Control:max-age=0
-Connection:keep-alive
-Cookie:optimizelyEndUserId=oeu1502034597292r0.21035548100896806; optimizelySegments=%7B%227282390156%22%3A%22false%22%2C%227252930080%22%3A%22direct%22%2C%227276750292%22%3A%22gc%22%2C%227233730390%22%3A%22none%22%7D; optimizelyBuckets=%7B%7D; Idea-2fdbf3fb=001be010-f245-4c28-9a8f-91710cd3abde
-Host:localhost:63342
-If-Modified-Since:Mon, 15 Jan 2018 22:15:13 GMT
-Upgrade-Insecure-Requests:1
-User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36
-    ```
+#### MultiGeometry
+* `Type` - `MultiGeometries`
+    * `geometries` - List of geometries (like a political border)
 
 ---
 
-## HTTP Request Redux
+## FeatureCollections
 
-* URL - Resource and the Protocol (where to get it.  how to get it.)
-* HTTP Verb - GET, POST, DELETE, UPDATE, etc.
-* HTTP Headers - Options of how you would like the data handled, message sent, authenticated, etc..
-* HTTP Body - "Letter in the Envelope".  (Not present for GET since you're just requesting data)
+* Allows you to send data about multiple features on a map.
+* Each feature has a list of properties that provide additional data about the Feature
 
----
+What type of features?
 
-## HTTP Verbs
-
-* HTTP Verbs provide a standardized way to request actions from a server.
-* GET    - Retrieve a resource.
-* POST   - Save a resource.
-* PUT    - Replace a resource.
-* DELETE - Delete a resource
-* HEAD   - "Says Hello"
-* CONNECT, OPTIONS, TRACE, PATCH
+    * Points     - a set of coordinates on the map
+    * LineString - a line drawn across a map
+    * Polygon    - a series of points that enclose an area
 
 ---
 
-## HTTP Message Body
+## WMS - Web Map Service
 
-* HTTP Message Body is the content that you actually trying to transfer.  ***Nearly all HTTP responses will have a Message Body***.
+* Open protocol that provides a standard way of requesting map data.
+    * `GetCapabilities` - allows a client to ask about how the map server can be configured to serve map data
+    * `GetMap`          - returns a map image.
 
-A message body is only required on an HTTP request when attempting to update data on the server.
-* GET    - None.
-* POST   - Message body is content to save on server.
-* PUT    - Message body is content to replace on a server.
-* DELETE - None
-* HEAD   - None
+***WMS provides an enpoint from which you can get Maps***
 
 ---
 
-## HTTP Message Headers
+## OpenLayers
 
-* HTTP Message Headers allow you to provide additional context to the server about the request.
-* Accept            - The content type that the client is expecting.
-* Content-Type      - The content type that the client is specifically requesting.
-* Accept-Language   - The language the client wants content in.
-* Cookie            - Data ther server is able to persist between requests.
-* User-Agent        - What type of device the cilent is so that content is appropriate.
-* Authorization     - A shared secret key between the client and server to access secured content.
-* ... there's about 30 more ...
-
----
-## HTTP Message Response
-
-* The server sends a response after processing the HTTP Request.
-
-The following is an example response.
-```
-Status Code:304 Not Modified
-content-type:text/html
-date:Tue, 16 Jan 2018 00:21:20 GMT
-server:IntelliJ IDEA 2017.3.2
-X-Content-Type-Options:nosniff
-X-Frame-Options:SameOrigin
-x-xss-protection:1; mode=block
-
-Message Body
-...
-```
-
----
-
-## HTTP Message Response Redux
-
-The server sends a response after processing the HTTP Request.
-* Status Code  - Message about how the request was processed.
-* Message Body - Contains the content which could be an image, video, HTML, JSON, XML, etc.
-* Headers      - Information about the requested data.
-
----
-
-## HTTP Status Codes
-
-***This is how the server talks to you***
-
-To tell you about the operation, the server communicates in numbers grouped by relevancy
-* 1xx - Purely Informational
-* 2xx - Success
-* 3xx - Redirection
-* 4xx - Client Error ("you messed up")
-* 5xx - Server Error ("server messed up")
-
----
-
-## Essential Status Codes
-
-* 200 - Successful Request
-* 201 - Resource created
-* 301 - Moved Permanently
-* 400 - Bad Request
-* 401 - Unauthorized
-* 404 - Not Found
-* 500 - Internal Server Error
-* 503 - Server Unavailable (aka melting)
-
----
-
-## Message Body - json
-
-* json - javascript object notation
-* arrays and maps holding data ... with a few exceptions
-    * in json, keys in a map must be written with double quotes
-    * in json, values can be represented as a string, number, json object, an array, boolean, or null.
-    * use json.parse to convert json into workable javascript.
+OpenLayers is an open source javascript library that allows you to easily work with Maps in a browser.
 
 ```
-var json = {"key1": "value1", "key2": ["option1", "option2"]}
-var javascriptmap = json.parse(json);
-console.log(javascriptmap.key2[1]);  // "option2"
+  var map = new ol.Map({
+    layers: layers,
+    loadTilesWhileInteracting: true,
+    target: 'map',
+    view: new ol.View({
+      center: [-6655.5402445057125, 6709968.258934638],
+      zoom: 13
+    })
+  });
+```
+---
+
+## OpenLayers Layers
+
+After you have a base map, you can add as many layers to it as you like
+
+```
+    let bingLayer = new ol.layer.Tile({
+        visible: true,
+        preload: Infinity,
+        source: new ol.source.BingMaps({
+            key: 'AsJ83NnvqsJdSmURSKt3ySErannO79P9g0V-AeoA1Ojc8dc60ogLqMtb1FL2DQrG',
+            imagerySet: 'Road'
+        })
+    });
+```
+![Bing|250x250](bing-map-london.png)
+
+---
+
+## jQuery
+
+jQuery is a lightweight JavaScript library for interacting with the DOM
+
+* Helpful methods
+
+```
+$('.blue');  // all elements on page with CSS class of blue
+$('#map');   // all elements on page with ID of 'map'
+$('#text').val();   // get the value from input field with ID .text
+
+$('#map').append('</br>');   // add </br> tag to the map div
+$('#map').css('color', 'green'); // map div is green
+
+$('#map').on('click', function() {...  // listen for click on map div
 ```
 
 ---
 
-## Testing HTTP Services
+## jQuery - AJAX
 
-####cURL
+AJAX allows the client to send to the server without causing entire page to refresh
 
-Get Data about Routes
+```
+$.ajax({
+  method: "GET",
+  url: "/routes",
+}).done(function( msg ) { alert( "Data " + msg)  });
+```
 
-```curl -X GET http://localhost:8080/routes ```
+```
+$.ajax({
+  method: "POST",
+  url: "/routes",
+  data: { name: "route1", type: "road" }
+}).done(function( msg ) {  alert( "Data Saved: " + msg );  });
+```
 
-Get Data about Routes in JSON format
 
-```curl -X GET --header "Content-Type: application/json" http://localhost:8080/routes ```
+---
 
-Post route data in JSON format
+## Walkthrough
 
-```curl -X POST --header "Content-Type: application/json" --data '{"<key>":"<value>">}' http://localhost:8080/routes ```
+A project using a WMS, jQuery, and GeoJSON.
+
+(add link here)
+
 
 
 </textarea><script type="text/javascript" src="../js/remark-latest.min.js"></script></body></html>
