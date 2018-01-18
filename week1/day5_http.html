@@ -23,14 +23,13 @@ class: center, middle
 --
 
 * Hypertext Transfer Protocol was designed for transferring hypertext (html).
-
 --
 
-* (It transfer much more than hypertext ... javascript, css, video, images, etc.)
+* (It transfers much more than hypertext ... javascript, css, video, images, etc.)
 
 ---
 
-## Imagine you had ask a robot for a webpage in 1997
+## Imagine you had asked a robot for a webpage in 1997
 
 ---
 
@@ -92,9 +91,9 @@ User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (K
 
 ## HTTP Request Redux
 
-* URL - Resource and the Protocol (where to get it.  how to get it.)
+* URL (Uniform Resource Locator) - Resource and the Protocol (where to get it.  how to get it.)
 * HTTP Verb - GET, POST, DELETE, UPDATE, etc.
-* HTTP Headers - Options of how you would like the data handled, message sent, authenticated, etc..
+* HTTP Headers - Options of how you would like the data handled, message sent, authenticated, etc.
 * HTTP Body - "Letter in the Envelope".  (Not present for GET since you're just requesting data)
 
 ---
@@ -113,14 +112,14 @@ User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (K
 
 ## HTTP Message Body
 
-* HTTP Message Body is the content that you actually trying to transfer.  ***Nearly all HTTP responses will have a Message Body***.
+* HTTP Message Body is the content that you are actually trying to transfer.  ***Nearly all HTTP responses will have a Message Body***.
 
 A message body is only required on an HTTP request when attempting to update data on the server.
 * GET    - None.
 * POST   - Message body is content to save on server.
 * PUT    - Message body is content to replace on a server.
-* DELETE - None
-* HEAD   - None
+* DELETE - None.
+* HEAD   - None.
 
 ---
 
@@ -131,7 +130,7 @@ A message body is only required on an HTTP request when attempting to update dat
 * Content-Type      - The content type that the client is specifically requesting.
 * Accept-Language   - The language the client wants content in.
 * Cookie            - Data ther server is able to persist between requests.
-* User-Agent        - What type of device the cilent is so that content is appropriate.
+* User-Agent        - What type of device the cilent is, so that content is appropriate.
 * Authorization     - A shared secret key between the client and server to access secured content.
 * ... there's about 30 more ...
 
@@ -160,7 +159,7 @@ Message Body
 
 The server sends a response after processing the HTTP Request.
 * Status Code  - Message about how the request was processed.
-* Message Body - Contains the content which could be an image, video, HTML, JSON, XML, etc.
+* Message Body - Contains the content, which could be an image, video, HTML, JSON, XML, etc.
 * Headers      - Information about the requested data.
 
 ---
@@ -169,7 +168,7 @@ The server sends a response after processing the HTTP Request.
 
 ***This is how the server talks to you***
 
-To tell you about the operation, the server communicates in numbers grouped by relevancy
+To tell you about the operation, the server communicates in numbers grouped by relevance.
 * 1xx - Purely Informational
 * 2xx - Success
 * 3xx - Redirection
