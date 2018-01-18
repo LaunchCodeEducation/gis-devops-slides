@@ -55,7 +55,7 @@ class: center, middle
 * `Type` - `FeatureCollection`
     * `features` - List of features
         * `geometry` - A Point, Linestring, or Polygon.
-        * `properties` - Data about the locationon the map.
+        * `properties` - Data about the location on the map.
 
 #### MultiGeometry
 * `Type` - `MultiGeometries`
@@ -66,7 +66,7 @@ class: center, middle
 ## FeatureCollections
 
 * Allows you to send data about multiple features on a map.
-* Each feature has a list of properties that provide additional data about the Feature
+* Each feature has a list of properties that provide additional data about the Feature.
 
 What type of features?
 
@@ -79,10 +79,10 @@ What type of features?
 ## WMS - Web Map Service
 
 * Open protocol that provides a standard way of requesting map data.
-    * `GetCapabilities` - allows a client to ask about how the map server can be configured to serve map data
+    * `GetCapabilities` - allows a client to ask about how the map server can be configured to serve map data.
     * `GetMap`          - returns a map image.
 
-***WMS provides an enpoint from which you can get Maps***
+***WMS provides an endpoint from which you can get Maps.***
 
 ---
 
@@ -108,14 +108,14 @@ OpenLayers is an open source javascript library that allows you to easily work w
 After you have a base map, you can add as many layers to it as you like
 
 ```
-    let bingLayer = new ol.layer.Tile({
-        visible: true,
-        preload: Infinity,
-        source: new ol.source.BingMaps({
-            key: 'AsJ83NnvqsJdSmURSKt3ySErannO79P9g0V-AeoA1Ojc8dc60ogLqMtb1FL2DQrG',
-            imagerySet: 'Road'
-        })
-    });
+let bingLayer = new ol.layer.Tile({
+    visible: true,
+    preload: Infinity,
+    source: new ol.source.BingMaps({
+        key: 'AsJ83NnvqsJdSmURSKt3ySErannO79P9g0V-AeoA1Ojc8dc60ogLqMtb1FL2DQrG',
+        imagerySet: 'Road'
+    })
+});
 ```
 ![Bing|250x250](bing-map-london.png)
 
@@ -130,11 +130,9 @@ jQuery is a lightweight JavaScript library for interacting with the DOM
 ```
 $('.blue');  // all elements on page with CSS class of blue
 $('#map');   // all elements on page with ID of 'map'
-$('#text').val();   // get the value from input field with ID .text
-
+$('#text').val();   // get value from input field with ID .text
 $('#map').append('</br>');   // add </br> tag to the map div
 $('#map').css('color', 'green'); // map div is green
-
 $('#map').on('click', function() {...  // listen for click on map div
 ```
 
