@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang=en>
+    <head>
+        <meta http-equiv=Content-Type content="text/html; charset=UTF-8">
+        <meta name=viewport content="width=device-width,initial-scale=1">
+        <link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
+
+    <!-- #ToDo: Change Title for the presentation -->
+    <title>REST</title>
+
+</head>
+
+<!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
+<body onload="var slideshow = remark.create({ratio: '16:9', navigation: {scroll: true, touch: true, click: false}, countIncrementalSlides: false, highlightLanguage: 'bash', highlightStyle: 'tomorrow-night-blue'});">
+
+<!-- #ToDo: Write your slides in MarkDown here -->
+<textarea id="source">
+
+class: center, middle
+
+# Week 3 - Day 1
+# RESTful Web Services
+
+---
+
+## Resources
+
+A **resource** is an entity on the Internet that has an identity and can be retrieved (i.e. has an address).
+
+We will typically think of a resource as a piece of "business data".
+
+--
+
+## Examples
+
+- Mike's user account on launchcode.org
+- The weather report for Monday, January 29 2018 for St. Louis, MO from wunderground.com
+- The map of the Fountain Park neighborhood of St. Louis
+
+---
+
+## Resrouces Formats
+
+The _format_ of a resource is an independent concept from the resources itself. Resources may be represented in different formats.
+
+--
+
+### Format Examples
+
+- HTML
+- JSON
+- XML
+- HTML
+
+---
+
+## URI / URL
+
+We identify resources using **uniform resource identifier** (URI), which is a string of characters that uniquely identifies a resource.
+
+--
+
+A **uniform resource locator** (URL), also known as a "web address", is a type of URI.
+
+--
+
+**Note**: URIs and URLs are _not_ the same, but we'll only use URLs in this course.
+
+---
+
+## URL Examples
+
+- `http://launchcode.org`
+- `https://twitter.com/launchcode/status/956273687170289666`
+- `ftp://myfileserver.com/info.pdf`
+- `mailto:chris@launchcode.org`
+
+---
+
+## URL Anatomy
+
+```nohighlight
+scheme:[//[user[:password]@]host[:port]][/path][?query][#fragment]
+```
+<br />
+<br />
+--
+
+For us, the scheme will almost always be `http` or `https`, and the most important/common portions are: scheme/protocol, host, port, path, query.
+
+---
+
+## REST
+
+**Representational State Transfer** (REST) is a set of constraints, or standards, for web services that allow systems to access and manipulate web resources
+
+REST was defined by Roy Fielding in his doctoral dissertation in 2000.
+
+--
+
+A "RESTful" web service:
+- Is stateless
+--
+
+- Is idempotent
+--
+
+- Uses HTTP/S to facilitate client/server communication
+--
+
+- Uses URLs to identify resources
+--
+
+- Uses HTTP/S methods to communicate actions to be taken on a resource
+
+---
+
+## RESTful URLs
+
+In REST, the URL identifies a resource. In practice, this means that the _path_ portion of the URL determines the resource in question at a given service.
+
+--
+
+-
+
+--
+
+- `https://api.twitter.com/1.1/statuses/show/956273687170289666` - the status (aka tweet) with ID 956273687170289666
+
+--
+
+
+
+-- 
+
+Note the distinction between _individual_ resources and _collections_ of resources in the last two examples. An individual resource will typically have an identifier (numeric or otherwise), while a collection 
+
+---
+
+## HTTP
+
+Recall that HTTP is Hypertext Transfer Protocol, and is the mechanism by which most web communications occur. It is based on a request/response exchange between a client and server that uses a standard format.
+
+---
+
+## HTTP Request Format
+
+![HTTP Request Format](images/http_request.png)
+
+---
+
+## HTTP Response Format
+
+![HTTP Response Format](images/http_response.png)
+
+---
+
+## HTTP Methods
+
+In REST, HTTP methods function as the **verbs** for a given request. Whereas a URL identifies a resource (the **noun** of a request), the HTTP method used determines what should be done with that resource.
+
+--
+
+- `POST` - create a new resource
+- `PUT` - replace the resource
+- `GET` - retrieve the resource (read only)
+- `DELETE` - remove the resource
+
+---
+
+## HTTP Status Codes
+
+In the response, HTTP status codes communicate the result of the action taken.
+
+--
+
+- 1xx - General information 
+- 2xx - Success
+- 3xx - Redirect
+- 4xx - Client side error
+- 5xx - Server side error
+
+--
+
+Most REST requests will have a response code of 200 (everything went as expected) or 201 (a new resource was created).
+
+---
+
+## Resource Format
+
+As we saw before, the **format** of a resource can vary (e.g. HTML, JSON, XML, etc). A resource in a given format is a **representation** of that resource.
+
+--
+
+The `Content-Type` header is used to communicate the format of the resource transfered in the HTTP request body. Common values are `application/json` and `application/xml`.
+
+--
+
+The `Accept` header is used to determine which format the server should return to the client. It can take on the same values as `Content-Type`, commonly know as **media types**.
+
+--
+
+The server is responsible for correctly handling and formatting the given resource based on the values of `Accept` and `Content-Type`
+
+---
+
+## Idempotence
+
+The concept of **idempotence** means that carrying out the same request twice has the same result as carrying it out once. 
+
+In other words, if we as a server to create a new resource via a `POST` request, and we repeat the request twice, a new resource is not created twice. 
+
+---
+
+## Statelessness
+
+REST services are **stateless**. This means that the server does not remember the requesting client from one request to another, and not history or context is preserved from one request to another.
+
+--
+
+REST requests must be authenticated each and every time (more on this tomorrow)
+
+--
+
+For a web application, state may exist in the form of cookies, sessions, or JavaScript. State _does not_ exist in the context of REST communications though.
+
+---
+
+## Nested Resources
+
+As with model objects, resources can be "owned" by other resources. When this happens, the owned resource lives "below" the owning resource in the identifying URL.
+
+--
+
+### Examples
+
+- `/companies/1234`
+- `/companies/1234/departments`
+- `/companies/1234/departments/7/`
+- `/companies/1234/departments/7/employees`
+
+---
+
+## Query Parameters as Filters
+
+In REST URLs, query paramters are used to filter collections
+
+--
+
+### Examples
+
+- `/companies?state=MO` - companies based in MO
+- `/companies/1234/employees?gender=F` - all female employees at the company with ID 1234
+
+</textarea>
+
+<script type="text/javascript" src="../js/remark-latest.min.js"></script>
+</body>
+</html>

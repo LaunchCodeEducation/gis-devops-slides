@@ -11,3 +11,7 @@
 * Class 5: APIs and HTTP
     * [HTTP](https://education.launchcode.org/gis-devops-slides/week1/day5_http.html#1)
     * [APIs](https://education.launchcode.org/gis-devops-slides/week1/day5_apis.html#1)
+
+# Week 3
+
+* [Class 1](week3/rest.html): RESTful web services
