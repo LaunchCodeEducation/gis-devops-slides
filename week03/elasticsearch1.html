@@ -1,0 +1,306 @@
+<!DOCTYPE html><html lang=en><head>
+  <meta http-equiv=Content-Type content="text/html; charset=UTF-8"><meta name=viewport content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
+    <title>Elasticsearch Day 1</title>
+
+</head>
+
+<!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
+<body onload="var slideshow = remark.create({ratio: '16:9', navigation: {scroll: true, touch: true, click: false}, countIncrementalSlides: false, highlightLanguage: 'bash', highlightStyle: 'tomorrow-night-blue'});">
+
+<!-- #ToDo: Write your slides in MarkDown here -->
+
+<textarea id="source">
+
+
+class: center, middle
+
+# Elasticsearch
+
+### Introduction
+
+---
+
+
+# ES Use cases
+
+* “You know, for search” - we’ll be focusing on search
+  * full text search
+  * online stores, “suggested for you”
+  * distance calculations
+* ELK Stack (Logstash log files and Kibana for viz)
+* Analytics - for very large datasets
+* NOT for primary datastore (data loss/corruption)
+
+---
+
+# Databases… So Far
+
+* SQL Relational Database
+* MySQL, PostgreSQL, SQLite
+* Defined schema
+* Allows you to set restrictions, run JOINs, avoid consistency issues
+![table1](table1.png)
+
+---
+
+# Databases… NoSQL
+
+* Non-Relational Database
+* MongoDB, CouchDB, Redis, Apache Cassandra
+* Flexible, dynamic table design
+* Fast, can be distributed  
+
+![snippet](snippet.png)
+---
+
+# JSON
+
+<div class = "left-column" >
+
+<ul>
+	<li>JavaScript Object Notation
+	<li>Data is text
+	<li>Converts to a JS object simply, quickly, no parsing
+	<li>Key:Value pairs make it easy to understand
+
+</div>
+<div class = "right-column">
+
+
+<img style = "transform: scale(2.2)" src = "JSONexample.png">
+
+</div>
+---
+
+# Lucene
+
+Elasticsearch is built on Lucene, a search library written in Java.
+
+* Stores data in an INDEX of Documents
+  * Each DOCUMENT has FIELDS (document expressed in JSON format)
+* Inverted Indices/Indexes - like in back of textbook   (faster to search, slower to write)
+* BOOST to weigh more important search terms
+* Boolean queries (AND, OR, NOT)
+* Lucene Query Syntax (mini-language for searching)
+
+---
+
+# Nodes, Clusters & Shards, Oh My!
+
+
+* A NODE is a single server, participating in the ES cluster.
+* A CLUSTER is a group of 1+ servers, who index/search together.
+* A SHARD is a bucket of data. This allows one index to be split among multiple nodes in one cluster. (Distribute data over multiple servers.)
+* ES will manage finding data in the various shards via a MASTER NODE when there are 2+ nodes in your cluster.
+	
+
+
+---
+# Clusters
+
+<p style="padding: 40px;"></p>
+
+
+<img style = "transform: scale(1.75) " src = "escluster.png">
+
+
+---
+<h1 style = "margin-bottom: 0px;" >Fault Tolerance</h1>
+
+* “health” and failure tolerance
+* Replicas distributed on different nodes in case of failures
+* Master node figures out which node has your data
+* REST for queries  
+  * Scale out — searches can be executed on replicas in parallel
+
+<img src = "clusterdiagram.png">
+
+---
+
+# Let Someone Else Manage It
+
+* AWS Hosted ES Service
+* Heroku’s Bonsai service
+* Searchly (IBM)
+* Etc…
+
+---
+
+# ES Alternatives?
+
+* **Stretch PostgreSQL before you reach for ES**
+* Apache Solr (also built on Lucene)
+* Sphinx
+* RavenDB (MS)
+
+---
+
+# Let’s use Elasticsearch!
+
+* Review cURL
+* Can use Request URI or Request body - we’ll use the request body which is more readable
+* The REST API - cat  
+  `$ curl -XGET ‘localhost:9200/_cat/indices?v&pretty’`
+
+---
+
+# Elasticsearch, search
+
+* The REST API - search
+  * `$ curl -XGET 'localhost:9200/book/_search?pretty' -H 'Content-Type: application/json' -d’ { "query": { "match_all": {} }, "from": 1, "size": 10 }'`
+  * hits - search results info
+  * hits.hits - actual array of search results
+  * No server-side paging, ES server side has completed the request
+
+---
+
+# Search Lingo
+
+Leaf Query Clauses
+* Can be used by themselves
+* Check for a value in a specified field
+* Types: match, term, range, …
+
+---
+
+
+# Search Lingo
+
+Compound Query Clauses
+* Wrap leaf queries or other compound queries
+* They can combine results or scores (dis_max, bool)
+* They can alter the behavior of queries
+* They can switch context…
+
+
+---
+
+# Filter Context
+
+* Does this document match?
+  * Simple yes or no
+  * No scores
+  * Best for structured data
+
+
+---
+
+# Query Context  
+
+* How well does this document match?
+  * Includes a _score indicating how well the doc matches compared to other docs
+  * Usually requires more fine-tuning
+
+---
+
+# More about Filter and Query
+
+<div class = "left-column" >
+
+	<ul>
+		<li><strong>Query</strong> and <strong>Filter</strong> leaf clauses can be combined in one  compound query</li>
+		<li>The "term" and "range" clauses use the filter context</li>
+		<li>They will remove non-matching results, but will not affect the _score for the matching results</li>
+	</ul>
+</div>
+
+<div class = "right-column">
+
+	<img src = "query1.png">
+
+</div>
+
+---
+
+# Full Text Queries
+
+* Full text queries are used to run searches on text fields like: email body, description of item
+* examples: `match`, `multi_match`, `common_terms`, `query_string`
+* They apply analyzers
+
+---
+
+# What’s an Analyzer?
+
+* Break text content down into word stems (known as tokens or terms)
+  * Those tokens are added to the inverted index
+  * Words like “the” and “and” are skipped
+* Can be customized for each text field in a mapping
+* ES includes an English default
+
+---
+
+# Boosts & Highlighting
+
+*  You can **boost** one field over another
+  * i.e. location matters more than price range, so increase the score on location matches
+* **“Highlight”** snippets from fields in your search can be returned with the results, allowing you to show users where the query matches are.
+
+---
+
+# Imprecise Queries
+
+* Include the same data multiple times in different ways, or perform multiple, slightly different queries. This gets real complicated but is a common strategy, especially when you can load the data after the page loads
+* The `more_like_this` query finds documents that are similar to your text or document(s)
+* **Fuzzy Queries** allow you to match misspellings
+  * Closeness to search term is calculated by edit distance. That is, the number of chars that would have to be deleted/added/changed
+
+---
+
+# Geo Queries
+
+* There are several ways to calculate physical distance in searches
+* Save latitude and longitude on the object (geo_point field)
+  * Calculate precisely based on lat/long of a second point - geo_distance query
+  * geo-bounding, faster - divide map into shaped areas (geo_shape field) and determine if your object is inside an area - geo_bounding_box or geo_polygon query
+
+---
+
+# Aggregations
+
+* Aggregations allow you to group and provide statistics about your data
+* ES can return hits and aggregated results in **one** response
+* Hits and aggregations are listed separately in the response
+  * `$curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d’ { "size": 0, "aggs": { "group_by_state": {"terms": {"field": “state.keyword"}}}}'`
+  * Similar in SQL: SELECT state, COUNT(\*) FROM bank GROUP BY state ORDER BY COUNT(\*) DESC
+
+---
+
+
+# Aggregations, how does that even?
+
+* An aggregation is like a function that builds a result set over a group of documents
+* You can get data like min, max, avg, sum, range,… things that are relatively easy to get out of SQL but are tough in a distributed environment
+
+---
+
+# Types of Aggregations
+
+The different aggs can be divided into categories:
+* Bucketing - divides documents into buckets
+* Metric - track and make computations over a dataset
+* Matrix - perform on multiple fields (limited implementation)
+* Pipeline - aggs of other aggs and metrics. “meta-aggs”
+
+---
+
+# Geo-Aggregations
+
+* geo_bounds: computes a bounding box containing all geo points for a field (i.e. give me an area containing all the concert venues in this collection of businesses)
+* geo_centroid: calculates the centroid/geometric center of a geo_polygon  (i.e. what’s the centroid among a collection of restaurants serving ice cream?)
+* geo_distance: User defines an origin point and a set of distance ranges, and it will return documents in those buckets of distance ranges. (i.e. what restaurants are within 10 miles of me? 25 miles?)
+
+---
+
+# Go Practice!
+
+* In the walkthrough, you will practice making queries against a cluster
+* https://ekyqz8nza5:6gz15xze7h@elasticsearch-traini-2142321757.us-east-1.bonsaisearch.net
+* Then in the studio, you will set up Elasticsearch on your own computer and experiment
+
+
+</textarea>
+
+<script type="text/javascript" src="../js/remark-latest.min.js"></script>
+</body>
+</html>
