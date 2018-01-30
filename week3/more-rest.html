@@ -3,10 +3,10 @@
     <head>
         <meta http-equiv=Content-Type content="text/html; charset=UTF-8">
         <meta name=viewport content="width=device-width,initial-scale=1">
-        <link rel="stylesheet" href="./css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
+        <link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
 
     <!-- #ToDo: Change Title for the presentation -->
-    <title>REST</title>
+    <title>More REST Topics</title>
 
 </head>
 
@@ -17,33 +17,195 @@
 <textarea id="source">
 
 class: center, middle
-background-color: #cacaca
-
-![Title](./images/logo_white.png)
-
----
-
-class: center, middle
 
 # More REST Topics
 
 ---
 
+## Topics
+
+We'll cover a few topics in this short lecture:
+
 - Authentication / Authorization
+- Application to mapping
 - HATEOAS
 - REST Maturity Model
-- 
 
-```html
-<!-- in the head -->
-<link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
+---
 
-<!-- before the closing body tag -->
-<script type="text/javascript" src="../js/remark-latest.min.js"></script>
+## Securing an API
+
+The REST API we have been working on is insecure:
+
+--
+
+- Anybody may access data via the API at any time
+
+--
+
+- When somebody accesses the API, we don't know who they are
+
+---
+
+## Authentication and Authorization
+
+There are two related concepts that must be employed to properly secure and API: **authentication** and **authorization**
+
+--
+
+**Authentication** is the process by which the identity of a user/requester is determined. 
+
+--
+
+**Authorization** is the process by which it is determined what an authenticated user is allowed to do.
+
+--
+
+Remember that authentication is about _identity_, authorization is about _permissions_
+
+---
+
+## Basic Authentication
+
+One way to enable authentication is to turn on "basic auth" on the server. This forces clients to include an `Authorization` header with a proper username/password. 
+
+![Basic Auth Flow](images/basic-auth.png)
+
+--
+
+The header value has the form `Basic [Base64 encoding of username:password]`. If a request does not include proper credentials, a 401 status code is returned.
+
+---
+
+## The Problem With Basic Auth
+
+Basic auth is a dumb/naive scheme. It is unable to distinguish between different users, and different types of requests. If a correct username/password pair is given, the request will _always_ be allowed.
+
+--
+
+Thus, there is no way to enable authorization. In other words, there is no way to allow different users to have different permissions.
+
+---
+
+## Key Authenticaion
+
+A better solution is to enable **key authentication**. In this scheme, each API user must have key (a string of characters) that they submit in the request. 
+
+--
+
+- The key may be placed in the `Authorization` header, or in the URL as a query parameter (e.g. `http://api.mydomain.com/some_endpoint?api_key=abcd1234`)
+
+--
+
+- Permissions may be granted on an per-user basis
+
+--
+
+- A key is typically obtained by registering with the API provider using a traditional user account
+
+---
+
+## OAuth
+
+OAuth is an open standard for access delegation. In short, this means it provides a mechanism for end-users of a service to grant an application access to their data.
+
+--
+
+Via the "OAuth flow", a key/token is issued dynamically by the API when a user grants the API client permission.
+
+--
+
+Examples of OAuth abound (cf. "Log in with Facebook" etc). We won't discuss it in detail, but you should read the article linked in the References section for this class.
+
+---
+
+## REST APIs and Mapping
+
+REST APIs can be used used to serve geo data. We'll use these later in the course, but here are a couple of examples for now:
+
+--
+
+[Boundless GeoServer](https://boundlessgeo.com/geoserver/) makes geo data avilable via a REST API that is capable of serving GeoJson
+
+--
+
+[Bing Maps REST Service](https://msdn.microsoft.com/en-us/library/ff701713.aspx) provides access to resources such as Locations, Elevations, Routes, Imagery, and more via a REST API
+
+---
+
+## Bing API Example
+
+Let's look at examples in the documentation for [Locations](https://msdn.microsoft.com/en-us/library/ff701710.aspx) resources
+
+---
+
+## HATEOAS
+
+**HATEOAS (Hypermedia as the Engine of Application State)** is a constraint of the REST application architecture.
+
+--
+
+RESTful services implementing HATEOAS include **hypermedia links** to related resources in responses.
+
+--
+
+This has the effect of decoupling an application from an API, since the client may rely on the links returned to access additional resources, rather than hard-coding URLs to resources.
+
+---
+
+## HATEOAS Example
+
+A request to `http://localhost:8080/api/customers` might return:
+
+```json
+[
+    {
+        "name": "Alice",
+        "links": [ {
+            "rel": "self",
+            "href": "http://localhost:8080/api/customer/1"
+        },
+        {
+            "rel": "cart",
+            "herf": "http://localhost:8080/api/carts/7"
+        }]
+    },
+    ...
+]
 ```
+
+---
+
+## The REST Maturity Model
+
+_Developed by Leonard Richardson and [written about](https://martinfowler.com/articles/richardsonMaturityModel.html) by Martin Fowler_
+
+The **REST Maturity Model** consists of 4 progressive levels that may be used to determine how "RESTful" an API is
+
+![REST Maturity](images/rest-maturity.png)
+
+---
+
+## The REST Maturity Model
+
+**Level 0**: Using HTTP as a communication format
+
+--
+
+**Level 1**: Serving resources. That is, endpoints are "nouns" that accept and provide resource-based data
+
+--
+
+**Level 2**: Using HTTP verbs to communicate actions to be taken on resources. At this level, a service is generally considered to be "RESTful"
+
+--
+
+**Level 3**: Implementing HATEOS (ie. hypermedia controls) to make the API self-documenting, and decouple server and client
+
+
 
 </textarea>
 
-<script type="text/javascript" src="./js/remark-latest.min.js"></script>
+<script type="text/javascript" src="../js/remark-latest.min.js"></script>
 </body>
 </html>
