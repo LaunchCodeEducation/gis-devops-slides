@@ -1,0 +1,171 @@
+<!DOCTYPE html><html lang=en><head><meta http-equiv=Content-Type content="text/html; charset=UTF-8"><meta name=viewport content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
+
+    <title>Day 5</title>
+
+</head>
+
+<!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
+<body onload="var slideshow = remark.create({ratio: '16:9', navigation: {scroll: true, touch: true, click: false}, countIncrementalSlides: false, highlightLanguage: 'bash', highlightStyle: 'tomorrow-night-blue'});">
+
+<!-- #ToDo: Write your slides in MarkDown here -->
+<textarea id="source">
+
+class: center, middle
+
+# Day 5
+### APIs
+
+---
+
+## APIs
+
+* How machines talk on the internet.
+
+--
+
+* We're going to be looking specifically about how machines talk about geospatial data.
+
+---
+
+## Introducing GeoJSON
+
+* Format standardized in 2007.
+* JSON code written to a specific format to comply with the standard.
+
+```
+{ "type": "FeatureCollection",
+"features": [
+  { "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [102.0, 0.5]
+      },
+      "properties": {
+        "prop0": "value0"
+      }
+    },
+   ]
+ }
+```
+
+---
+
+## Breaking GeoJSON Down
+#### FeatureCollection
+* `Type` - `FeatureCollection`
+    * `features` - List of features
+        * `geometry` - A Point, Linestring, or Polygon.
+        * `properties` - Data about the location on the map.
+
+#### MultiGeometry
+* `Type` - `MultiGeometries`
+    * `geometries` - List of geometries (like a political border)
+
+---
+
+## FeatureCollections
+
+* Allows you to send data about multiple features on a map.
+* Each feature has a list of properties that provide additional data about the Feature.
+
+What type of features?
+
+    * Points     - a set of coordinates on the map
+    * LineString - a line drawn across a map
+    * Polygon    - a series of points that enclose an area
+
+---
+
+## WMS - Web Map Service
+
+* Open protocol that provides a standard way of requesting map data.
+    * `GetCapabilities` - allows a client to ask about how the map server can be configured to serve map data.
+    * `GetMap`          - returns a map image.
+
+***WMS provides an endpoint from which you can get Maps.***
+
+---
+
+## OpenLayers
+
+OpenLayers is an open source javascript library that allows you to easily work with Maps in a browser.
+
+```
+  var map = new ol.Map({
+    layers: layers,
+    loadTilesWhileInteracting: true,
+    target: 'map',
+    view: new ol.View({
+      center: [-6655.5402445057125, 6709968.258934638],
+      zoom: 13
+    })
+  });
+```
+---
+
+## OpenLayers Layers
+
+After you have a base map, you can add as many layers to it as you like
+
+```
+let bingLayer = new ol.layer.Tile({
+    visible: true,
+    preload: Infinity,
+    source: new ol.source.BingMaps({
+        key: 'AsJ83NnvqsJdSmURSKt3ySErannO79P9g0V-AeoA1Ojc8dc60ogLqMtb1FL2DQrG',
+        imagerySet: 'Road'
+    })
+});
+```
+![Bing|250x250](bing-map-london.png)
+
+---
+
+## jQuery
+
+jQuery is a lightweight JavaScript library for interacting with the DOM
+
+* Helpful methods
+
+```
+$('.blue');  // all elements on page with CSS class of blue
+$('#map');   // all elements on page with ID of 'map'
+$('#text').val();   // get value from input field with ID .text
+$('#map').append('</br>');   // add </br> tag to the map div
+$('#map').css('color', 'green'); // map div is green
+$('#map').on('click', function() {...  // listen for click on map div
+```
+
+---
+
+## jQuery - AJAX
+
+AJAX allows the client to send to the server without causing entire page to refresh
+
+```
+$.ajax({
+  method: "GET",
+  url: "/routes",
+}).done(function( msg ) { alert( "Data " + msg)  });
+```
+
+```
+$.ajax({
+  method: "POST",
+  url: "/routes",
+  data: { name: "route1", type: "road" }
+}).done(function( msg ) {  alert( "Data Saved: " + msg );  });
+```
+
+
+---
+
+## Walkthrough
+
+A project using a WMS, jQuery, and GeoJSON.
+
+(add link here)
+
+
+
+</textarea><script type="text/javascript" src="../js/remark-latest.min.js"></script></body></html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html><html lang=en><head><meta http-equiv=Content-Type content="text/html; charset=UTF-8"><meta name=viewport content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
+
+<title>Day 5</title>
+
+</head>
+
+<!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
+<body onload="var slideshow = remark.create({ratio: '16:9', navigation: {scroll: true, touch: true, click: false}, countIncrementalSlides: false, highlightLanguage: 'bash', highlightStyle: 'tomorrow-night-blue'});">
+
+<!-- #ToDo: Write your slides in MarkDown here -->
+<textarea id="source">
+
+class: center, middle
+
+# Day 5
+### HTTP
+
+---
+
+## HTTP
+
+* Message protocol that is the foundation of the internet.
+--
+
+* Hypertext Transfer Protocol was designed for transferring hypertext (html).
+--
+
+* (It transfers much more than hypertext ... javascript, css, video, images, etc.)
+
+---
+
+## Imagine you had asked a robot for a webpage in 1997
+
+---
+
+## Meet Charlie the Robot
+![Charlie|250x250](charlie-the-robot.jpg)
+* Charlie only speaks HTTP
+
+---
+
+## A few things to know about Charlie the Robot
+
+* Request Response - You request a resource.  It returns the resource.  That's it.
+* Structured Requests - Just like mailing a letter, there is specific data that you have to put in specific places.
+* Number Codes - The robot does not know any words. It just returns resources and numbers.
+
+---
+
+## Request Response
+
+* When you type `http://localhost:63342/gis-devops-slides/week1/day5.html`, the browser produces this request:
+
+```
+Request URL:http://localhost:63342/gis-devops-slides/week1/day5.html?_ijt=uun1m30tcspl4il93ipl443pah
+Request Method:GET
+Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Accept-Encoding:gzip, deflate, br
+Accept-Language:en-US,en;q=0.9
+Cache-Control:max-age=0
+Connection:keep-alive
+Cookie:optimizelyEndUserId=oeu1502034597292r0.21035548100896806; optimizelySegments=%7B%227282390156%22%3A%22false%22%2C%227252930080%22%3A%22direct%22%2C%227276750292%22%3A%22gc%22%2C%227233730390%22%3A%22none%22%7D; optimizelyBuckets=%7B%7D; Idea-2fdbf3fb=001be010-f245-4c28-9a8f-91710cd3abde
+Host:localhost:63342
+If-Modified-Since:Mon, 15 Jan 2018 22:15:13 GMT
+Upgrade-Insecure-Requests:1
+User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36
+```
+
+---
+
+## Breaking down the request
+
+* `http://education.lau.....`  - get the resource using the HTTP protocol.
+* `GET` - send me data.
+* `Accept:text/html,application/xhtml+xml` - only send me html or xhtml.
+* ...
+```
+Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Accept-Encoding:gzip, deflate, br
+Accept-Language:en-US,en;q=0.9
+Cache-Control:max-age=0
+Connection:keep-alive
+Cookie:optimizelyEndUserId=oeu1502034597292r0.21035548100896806; optimizelySegments=%7B%227282390156%22%3A%22false%22%2C%227252930080%22%3A%22direct%22%2C%227276750292%22%3A%22gc%22%2C%227233730390%22%3A%22none%22%7D; optimizelyBuckets=%7B%7D; Idea-2fdbf3fb=001be010-f245-4c28-9a8f-91710cd3abde
+Host:localhost:63342
+If-Modified-Since:Mon, 15 Jan 2018 22:15:13 GMT
+Upgrade-Insecure-Requests:1
+User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36
+    ```
+
+---
+
+## HTTP Request Redux
+
+* URL (Uniform Resource Locator) - Resource and the Protocol (where to get it.  how to get it.)
+* HTTP Verb - GET, POST, DELETE, UPDATE, etc.
+* HTTP Headers - Options of how you would like the data handled, message sent, authenticated, etc.
+* HTTP Body - "Letter in the Envelope".  (Not present for GET since you're just requesting data)
+
+---
+
+## HTTP Verbs
+
+* HTTP Verbs provide a standardized way to request actions from a server.
+* GET    - Retrieve a resource.
+* POST   - Save a resource.
+* PUT    - Replace a resource.
+* DELETE - Delete a resource
+* HEAD   - "Says Hello"
+* CONNECT, OPTIONS, TRACE, PATCH
+
+---
+
+## HTTP Message Body
+
+* HTTP Message Body is the content that you are actually trying to transfer.  ***Nearly all HTTP responses will have a Message Body***.
+
+A message body is only required on an HTTP request when attempting to update data on the server.
+* GET    - None.
+* POST   - Message body is content to save on server.
+* PUT    - Message body is content to replace on a server.
+* DELETE - None.
+* HEAD   - None.
+
+---
+
+## HTTP Message Headers
+
+* HTTP Message Headers allow you to provide additional context to the server about the request.
+* Accept            - The content type that the client is expecting.
+* Content-Type      - The content type that the client is specifically requesting.
+* Accept-Language   - The language the client wants content in.
+* Cookie            - Data ther server is able to persist between requests.
+* User-Agent        - What type of device the cilent is, so that content is appropriate.
+* Authorization     - A shared secret key between the client and server to access secured content.
+* ... there's about 30 more ...
+
+---
+## HTTP Message Response
+
+* The server sends a response after processing the HTTP Request.
+
+The following is an example response.
+```
+Status Code:304 Not Modified
+content-type:text/html
+date:Tue, 16 Jan 2018 00:21:20 GMT
+server:IntelliJ IDEA 2017.3.2
+X-Content-Type-Options:nosniff
+X-Frame-Options:SameOrigin
+x-xss-protection:1; mode=block
+
+Message Body
+...
+```
+
+---
+
+## HTTP Message Response Redux
+
+The server sends a response after processing the HTTP Request.
+* Status Code  - Message about how the request was processed.
+* Message Body - Contains the content, which could be an image, video, HTML, JSON, XML, etc.
+* Headers      - Information about the requested data.
+
+---
+
+## HTTP Status Codes
+
+***This is how the server talks to you***
+
+To tell you about the operation, the server communicates in numbers grouped by relevance.
+* 1xx - Purely Informational
+* 2xx - Success
+* 3xx - Redirection
+* 4xx - Client Error ("you messed up")
+* 5xx - Server Error ("server messed up")
+
+---
+
+## Essential Status Codes
+
+* 200 - Successful Request
+* 201 - Resource created
+* 301 - Moved Permanently
+* 400 - Bad Request
+* 401 - Unauthorized
+* 404 - Not Found
+* 500 - Internal Server Error
+* 503 - Server Unavailable (aka melting)
+
+---
+
+## Message Body - json
+
+* json - javascript object notation
+* arrays and maps holding data ... with a few exceptions
+    * in json, keys in a map must be written with double quotes
+    * in json, values can be represented as a string, number, json object, an array, boolean, or null.
+    * use json.parse to convert json into workable javascript.
+
+```
+var json = {"key1": "value1", "key2": ["option1", "option2"]}
+var javascriptmap = json.parse(json);
+console.log(javascriptmap.key2[1]);  // "option2"
+```
+
+---
+
+## Testing HTTP Services
+
+####cURL
+
+Get Data about Routes
+
+```curl -X GET http://localhost:8080/routes ```
+
+Get Data about Routes in JSON format
+
+```curl -X GET --header "Content-Type: application/json" http://localhost:8080/routes ```
+
+Post route data in JSON format
+
+```curl -X POST --header "Content-Type: application/json" --data '{"<key>":"<value>">}' http://localhost:8080/routes ```
+
+
+</textarea><script type="text/javascript" src="../js/remark-latest.min.js"></script></body></html>
