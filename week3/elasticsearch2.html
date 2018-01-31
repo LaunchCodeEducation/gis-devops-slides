@@ -46,11 +46,31 @@ class: center, middle
 # Document Mapping
 
 * Mapping is defining how the document and its fields/properties/props are stored and how it is indexed.
-	(You might think of this like a schema or migration for SQL.)
-* Field datatypes include: text, keyword, date, boolean, ip, double.
+  * You might think of this like a schema or migration for SQL.
+* Remember, you can index the same data multiple times.
+  * Maybe username is in a text field for full-text search but also in a keyword field for sorting/aggs.
+
+---
+
+# Field Types
+
+* Field datatypes include:
+  * text, keyword, date, boolean, ip, double
   * object or nested which support nesting JSON
   * geo_point, geo_shape, completion (specialized types)
-* Remember, you can index the same data multiple times. Maybe username is in a text field for full-text search but also in a keyword field for sorting/agg
+
+
+---
+
+# _id
+
+* Lucene/ES uses a foreign key `_id`, just like many other databases.
+* The contents will be a hash, not sequential numbers.
+  * This is to avoid collisions - two records accidentally being assigned the same `_id` because two nodes tried to write at the same time.
+  * Since data is potentially distributed to many servers, managing unique ids is complicated.
+
+
+
 
 ---
 
@@ -103,12 +123,36 @@ https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/abou
 
 ---
 
+# Elasticsearch.js
+
+<div class = "left-column" >
+
+  <ul>
+    <li>Queries in this library are virtually the same syntax as regular Elasticsearch.</li>
+    <li>We’ll cover this in more depth in the walkthrough.</li>
+  </ul>
+</div>  
+
+<div class = "right-column" >
+  <img   src = "clientsearch.png">
+</div>  
+---
+
 # Requests in the Browser
 
 * We’re going to use JavaScript to have buttons submit searches on our data using Ajax.
 * We will have to manage CORS in order to do this
-  * CORS, what is it? Protect the user!
-  * More info: https://en.wikipedia.org/wiki/Cross-origin_resource_sharing
+  * In the walkthrough we will show you how to tell your Elasticsearch cluster that your application is allowed to access the data, called “whitelisting.”
+  * By default, web browsers are not allowed to make requests to other servers. This is to prevent data from being pushed and pulled from unauthorized web sites.
+
+---
+
+# CORS, What Is It?
+
+* CORS stands for "cross origin resource sharing."
+* This is a W3 spec meant to prevent malicious behavior on websites.
+* CORS allows servers to specify not just who can access its assets, but also how the assets can be accessed.
+* Further reading: https://www.codecademy.com/articles/what-is-cors  
 
 ---
 
@@ -117,6 +161,7 @@ https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/abou
 * In the walkthrough, you will practice retrieving and creating document mappings.
 * Then in the studio, you will set up Elasticsearch in your Airwaze project using Elasticsearch.js.
   * We’re going to write a query and handle it client-side using Ajax in jQuery.  
+* ES Official Docs: https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html  
 
 </textarea>
 
