@@ -33,6 +33,16 @@ class: center, middle
 
 ---
 
+# Elasticsearch Index
+
+* An index is a collection of similar data (books, people).
+* Each piece of data is a document (like one record in SQL, a specific book).
+* Each document is made up of fields, sometimes called properties/props.
+* Each field has a type, just like in SQL.
+* The types interact with searches.  For instance, a geo distance query can only be run on a geo point field.  
+
+---
+
 # Document Mapping
 
 * Mapping is defining how the document and its fields/properties/props are stored and how it is indexed.   
@@ -66,7 +76,7 @@ You can map data dynamically! Hey, we’ve been doing it!
 
 ---
 
-# Is there an easier way?
+# Is There an Easier Way?
 
 * Most production apps use a library. It’s faster to write and easier to avoid errors, with a little upfront learning cost.
 * There are many language-specific official clients, with libraries built atop them:
@@ -87,9 +97,10 @@ You can map data dynamically! Hey, we’ve been doing it!
 # Elasticsearch in the Browser: 
 
 * We will be using Elasticsearch.js in jQuery:   
-https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/about.html
-* Using ES in the browser is still experimental, but the learning overhead is low because syntax is very close to regular Elasticsearch.
-* This should be a fast experience for the user because they won’t have to wait for round-trips to the server.
+https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/about.html 
+  * This library is currently available in multiple flavors (vanilla js, Angular, and jQuery).
+* The learning overhead is low because syntax is very close to regular Elasticsearch.
+* This should be a fast experience for the user (they won’t have to wait for round-trips to the server).
 
 ---
 
