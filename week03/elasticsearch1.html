@@ -29,7 +29,15 @@ class: center, middle
   * distance calculations
 * ELK Stack (Logstash log files and Kibana for viz)
 * Analytics - for very large datasets
-* NOT for primary datastore (data loss/corruption)
+
+---
+
+# ES Antipattern
+
+* NOT for primary datastore. Use PostgreSQL, MySQL, MongoDB, etc. instead.
+* Why?
+  * data loss/corruption
+  * slow writes — NRT (Near Real Time)
 
 ---
 
