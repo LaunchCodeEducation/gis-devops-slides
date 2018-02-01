@@ -16,15 +16,14 @@ class: center, middle
 
 # Elasticsearch
 
-### (continued)
+## Mappings and Documents
 
 ---
-
 
 # Elasticsearch Review
 
 * Used for: Searches, Logging, Analytics
-  * full text search, online stores “suggested for you”, calculating geospatial data
+  * full text search, online stores "suggested for you", calculating geospatial data
 * Stores data in JSON format
 * Distributed - allows for lots of data, can search very fast
   * But write speed is slow compared to SQL
@@ -35,60 +34,68 @@ class: center, middle
 
 # Elasticsearch Index
 
-* An index is a collection of similar data (books, people).
-* Each piece of data is a document (like one record in SQL, a specific book).
-* Each document is made up of fields, sometimes called properties/props.
-* Each field has a type, just like in SQL.
-* The types interact with searches.  For instance, a geo distance query can only be run on a geo point field.  
+* An index is a collection of similar data (books, people)
+* Each piece of data is a document (like one record in SQL, a specific book)
+* Each document is made up of fields, sometimes called properties
+* Each field has a type, just like in SQL
+* The types interact with searches. For instance, a geo distance query can only be run on a `geo_point` field
 
 ---
 
 # Document Mapping
 
-* Mapping is defining how the document and its fields/properties/props are stored and how it is indexed.
-  * You might think of this like a schema or migration for SQL.
-* Remember, you can index the same data multiple times.
-  * Maybe username is in a text field for full-text search but also in a keyword field for sorting/aggs.
+* A mapping defines how the document and its fields are stored and indexed
+
+--
+
+* You might think of this like a schema in SQL
+
+--
+
+* A field can be indexed multiple times in different ways. For example, a username might be treated as a text field for full-text search but also in a keyword field for sorting and aggregation.
 
 ---
 
 # Field Types
 
 * Field datatypes include:
-  * text, keyword, date, boolean, ip, double
-  * object or nested which support nesting JSON
-  * geo_point, geo_shape, completion (specialized types)
-
+  * `text`, `keyword`, `date`, `boolean`, `ip`, `double`
+  * object or nested data, which support nesting JSON
+  * specialized types like `geo_point`, `geo_shape`, `completion`
 
 ---
 
 # _id
 
-* Lucene/ES uses a foreign key `_id`, just like many other databases.
-* The contents will be a hash, not sequential numbers.
-  * This is to avoid collisions - two records accidentally being assigned the same `_id` because two nodes tried to write at the same time.
-  * Since data is potentially distributed to many servers, managing unique ids is complicated.
+* Lucene/ES uses a foreign key `_id`, just like many other databases
+* The contents will be a hash, not sequential numbers
+  * This is to avoid collisions: two records accidentally being assigned the same `_id` because two nodes tried to write at the same time
+  * Since data is potentially distributed to many servers, managing unique ids is complicated
 
+---
 
+# Default Mapping
 
+TODO
 
 ---
 
 # Mapping Explosions
 
 You can map data dynamically! Hey, we’ve been doing it!
+
 * For dynamic fields, new field names will be auto added. If you don’t send ES data on the fields, it does this.
   * Some field types won’t be mapped correctly automatically (like geopoints).
-* This is super powerful but can get out of hand, leading to a variety of errors referred to as mapping explosions.
-* You can set limits to the number of fields, and how deep it can be nested to prevent errors (data loss).
+* This is very powerful but can get out of hand, leading to resource issues, referred to as **mapping explosions**
+* You can set limits to the number of fields, and how deep it can be nested to prevent such issues
 
 ---
 
 # When Data Changes
 
 * What if you need to add or change a field? re-indexing!
-* `_reindex` doesn’t actually change data in place.
-* It copies data over from an old index into a new one VERY FAST. You still have to set up the new one first.
+* `_reindex` doesn’t actually change data in place
+* It copies data over from an old index into a new one quickly. You still have to set up the new one first.
 * A good strategy is to timestamp the indices and keep an old one to fall back on in case of catastrophic failures
 * `book_index` points to book_index_20180127193111111
 * `book_index_201801251035111111` is still around just in case!
