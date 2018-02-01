@@ -4,13 +4,9 @@
 
 </head>
 
-<!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
 <body onload="var slideshow = remark.create({ratio: '16:9', navigation: {scroll: true, touch: true, click: false}, countIncrementalSlides: false, highlightLanguage: 'bash', highlightStyle: 'tomorrow-night-blue'});">
 
-<!-- #ToDo: Write your slides in MarkDown here -->
-
 <textarea id="source">
-
 
 class: center, middle
 
@@ -29,7 +25,7 @@ class: center, middle
   * But write speed is slow compared to SQL
   * Data integrity is an issue
   * Do not use as a primary datastore
-* ElasticSearch is a NoSQL datastore.
+* ElasticSearch is a NoSQL datastore
 
 ---
 
@@ -40,81 +36,6 @@ class: center, middle
 * There are no tables, just indices of documents.
 * There are no schemas, just whatever attributes are contained in the documents. (i.e. JSON)
 * Each attribute has a type.
-
----
-
-## Document Example
-
-The following is a document.  All of the airport documents as a group are an index.
-
-```json
-{
-  "_index": "airwaze",
-  "_type": "doc",
-  "_id": "CvExRWEBwC2aoUMP7lNh",
-  "_version": 1,
-  "_source": {
-    "name": "Port Moresby Jacksons International Airport",
-    "airport_id": 5,
-    "elevation_ft": 146,
-    "location": {
-      "type": "point",
-      "coordinates": [
-        147.22000122070312,
-        -9.443380355834961
-      ]}}}
-```
-
-# Elasticsearch Index
-
-* An index is a collection of similar data (books, people)
-* Each piece of data is a document (like one record in SQL, a specific book)
-* Each document is made up of fields, sometimes called properties
-* Each field has a type, just like in SQL
-* The types interact with searches. For instance, a geo distance query can only be run on a `geo_point` field
-
----
-
-# Document Mapping
-
-* A mapping defines how the document and its fields are stored and indexed
-
---
-
-* You might think of this like a schema in SQL
-
---
-
-* A field can be indexed multiple times in different ways. For example, a username might be treated as a text field for full-text search but also in a keyword field for sorting and aggregation.
-
----
-
-# Field Types
-
-* Field datatypes include:
-  * `text`, `keyword`, `date`, `boolean`, `ip`, `double`
-  * object or nested data, which support nesting JSON
-  * specialized types like `geo_point`, `geo_shape`, `completion`
-
----
-
-# _id
-
-* Lucene/ES uses a foreign key `_id`, just like many other databases
-* The contents will be a hash, not sequential numbers
-  * This is to avoid collisions: two records accidentally being assigned the same `_id` because two nodes tried to write at the same time
-  * Since data is potentially distributed to many servers, managing unique ids is complicated
-
----
-
-# Mapping Explosions
-
-You can map data dynamically! Hey, we’ve been doing it!
-
-* For dynamic fields, new field names will be auto added. If you don’t send ES data on the fields, it does this.
-  * Some field types won’t be mapped correctly automatically (like geopoints).
-* This is very powerful but can get out of hand, leading to resource issues, referred to as **mapping explosions**
-* You can set limits to the number of fields, and how deep it can be nested to prevent such issues
 
 ---
 
@@ -200,40 +121,46 @@ GET _search
 
 ---
 
-# When Data Changes
+# Elasticsearch Index
 
-If you want to add or a change a field in your mapping, you must **reindex**
+* An index is a collection of similar data (books, people)
+* Each piece of data is a document (like one record in SQL, a specific book)
+* Each document is made up of fields, sometimes called properties
+* Each field has a type, just like in SQL
+* The types interact with searches. For instance, a geo distance query can only be run on a `geo_point` field
 
---
+---
 
-The `_reindex` API allows you to create a new index with a new mapping:
+## Document Example
 
-```
-POST _reindex
+The following is a document.  All of the airport documents as a group are an index.
+
+```json
 {
-  "source": {
-    "index": "book"
-  },
-  "dest": {
-    "index": "book_"
-  }
-}
+  "_index": "airwaze",
+  "_type": "doc",
+  "_id": "CvExRWEBwC2aoUMP7lNh",
+  "_version": 1,
+  "_source": {
+    "name": "Port Moresby Jacksons International Airport",
+    "airport_id": 5,
+    "elevation_ft": 146,
+    "location": {
+      "type": "point",
+      "coordinates": [
+        147.22000122070312,
+        -9.443380355834961
+      ]}}}
 ```
 
 ---
 
-# Reindexing Notes
+# Field Types
 
-* `_reindex` doesn’t actually change data in place. **Index mappings are immutable.**
-* It copies data over from an old index into a new one quickly. You still have to set up the new one first.
-
----
-
-# What about Joins?
-
-* ElasticSearch is composed of only documents, no tables.
-* Joining with other documents is technically possible, but not recommended.
-* Let's look at an example.
+* Field datatypes include:
+  * `text`, `keyword`, `date`, `boolean`, `ip`, `double`
+  * object or nested data, which support nesting JSON
+  * specialized types like `geo_point`, `geo_shape`, `completion`
 
 ---
 
@@ -271,6 +198,76 @@ For Example:
 
 ---
 
+# What about Joins?
+
+* ElasticSearch is composed of only documents, no tables.
+* Joining with other documents is technically possible, but not recommended.
+
+---
+
+# _id
+
+* Lucene/ES uses a foreign key `_id`, just like many other databases
+* The contents will be a hash, not sequential numbers
+  * This is to avoid collisions: two records accidentally being assigned the same `_id` because two nodes tried to write at the same time
+  * Since data is potentially distributed to many servers, managing unique ids is complicated
+
+---
+
+# Document Mapping
+
+* A mapping defines how the document and its fields are stored and indexed
+
+--
+
+* You might think of this like a schema in SQL
+
+--
+
+* A field can be indexed multiple times in different ways. For example, a username might be treated as a text field for full-text search but also in a keyword field for sorting and aggregation.
+
+---
+
+# Mapping Explosions
+
+You can map data dynamically! Hey, we’ve been doing it!
+
+* For dynamic fields, new field names will be auto added. If you don’t send ES data on the fields, it does this.
+  * Some field types won’t be mapped correctly automatically (like geopoints).
+* This is very powerful but can get out of hand, leading to resource issues, referred to as **mapping explosions**
+* You can set limits to the number of fields, and how deep it can be nested to prevent such issues
+
+---
+
+# When Data Changes
+
+If you want to add or a change a field in your mapping, you must **reindex**
+
+--
+
+The `_reindex` API allows you to create a new index with a new mapping:
+
+```
+POST _reindex
+{
+  "source": {
+    "index": "book"
+  },
+  "dest": {
+    "index": "book_"
+  }
+}
+```
+
+---
+
+# Reindexing Notes
+
+* `_reindex` doesn’t actually change data in place. **Index mappings are immutable.**
+* It copies data over from an old index into a new one quickly. You still have to set up the new one first.
+
+---
+
 # Kibana
 
 **DevTools for ElasticSearch**
@@ -304,7 +301,8 @@ _Walkthrough_
 
 <div class = "right-column" >
   <img   src = "clientsearch.png">
-</div>  
+</div>
+
 ---
 
 # Requests in the Browser
