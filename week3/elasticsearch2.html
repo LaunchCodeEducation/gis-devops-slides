@@ -30,8 +30,45 @@ class: center, middle
   * But write speed is slow compared to SQL
   * Data integrity is an issue
   * Do not use as a primary datastore
+* ElasticSearch is a NoSQL datastore.
 
 ---
+
+# NoSQL Data Stores
+
+* NoSQL really means "Not SQL"
+* There are no rows, just documents. (i.e. JSON)
+* There are no tables, just indices of documents.
+* There are no schemas, just whatever attributes are contained in the documents. (i.e. JSON)
+* Each attribute has a type.
+
+---
+
+## Document Example
+
+The following is a document.  All of the airport documents as a group are an index.
+
+```
+{
+  "_index": "airwaze",
+  "_type": "doc",
+  "_id": "CvExRWEBwC2aoUMP7lNh",
+  "_version": 1,
+  "_source": {
+    "name": "Port Moresby Jacksons International Airport",
+    "airport_id": 5,
+    "elevation_ft": 146,
+    "location": {
+      "type": "point",
+      "coordinates": [
+        147.22000122070312,
+        -9.443380355834961
+      ]
+    }
+  }
+}
+```
+
 
 # Elasticsearch Index
 
@@ -59,7 +96,6 @@ class: center, middle
   * object or nested which support nesting JSON
   * geo_point, geo_shape, completion (specialized types)
 
-
 ---
 
 # _id
@@ -68,9 +104,6 @@ class: center, middle
 * The contents will be a hash, not sequential numbers.
   * This is to avoid collisions - two records accidentally being assigned the same `_id` because two nodes tried to write at the same time.
   * Since data is potentially distributed to many servers, managing unique ids is complicated.
-
-
-
 
 ---
 
@@ -81,6 +114,94 @@ You can map data dynamically! Hey, we’ve been doing it!
   * Some field types won’t be mapped correctly automatically (like geopoints).
 * This is super powerful but can get out of hand, leading to a variety of errors referred to as mapping explosions.
 * You can set limits to the number of fields, and how deep it can be nested to prevent errors (data loss).
+
+---
+
+## Queries: Simple Matching
+
+Find anything close.
+
+```
+GET _search
+{
+  "query": {
+    "match": {
+      "name": "TEXT"
+    }
+  }
+}
+```
+
+---
+
+## Queries: Filter
+
+Find only fields matching the criteria.
+
+```
+GET _search
+{
+  "query": {
+    "bool": { 
+      "filter": [  # only include if passes criteria 
+        {
+				  "range" : {
+            "elevation_ft" : {
+              "gte" : 1100
+            }
+          }
+  			}
+			]
+    }
+  }
+}
+```
+
+---
+
+## Queries: Aggregations: 
+
+Perform calculations on groups of documents.
+
+```
+GET _search
+{
+  "aggs": {
+    "avg_elevation": {
+      "avg": {
+        "field": "elevation_ft"
+      }
+    }
+  }
+}
+```
+
+---
+
+## Queries: Pagination
+
+`size` limits results returned
+`from` allows easy pagination
+
+```
+GET _search
+{
+  "query": {
+    "bool": { 
+      "should": [ 
+        {
+          "match": {
+            "name": "Airport"
+          }
+        }
+      ]
+    }
+  },
+  "from": 0,
+  "size": 50
+}
+```
+
 
 ---
 
@@ -95,31 +216,69 @@ You can map data dynamically! Hey, we’ve been doing it!
 
 ---
 
-# Is There an Easier Way?
+# What about Joins?
 
-* Most production apps use a library. It’s faster to write and easier to avoid errors, with a little upfront learning cost.
-* There are many language-specific official clients, with libraries built atop them:
-  * Python - elasticsearch-py, requests, urllib
-  * Ruby - elasticsearch-ruby, elasticsearch-rails, searchkick, chewy
-  * … some others including .NET, JavaScript, PHP
+* ElasticSearch is composed of only documents, no tables.
+* Joining with other documents is technically possible, but not recommended.
+* Let's look at an example.
 
 ---
 
-# Elasticsearch in Java
+# Parent Child Relationships
 
-* Spring Data Elasticsearch, Jest, Spring Data Jest, Java REST Client, Elastisch (Clojure)…
-*  Internal Java API?
-  * Since ES is written in Java, it is possible to use the internal Java API used by Elasticsearch itself instead of the REST API (higher maintenance cost could buy you faster implementation).
+* Documents that are related should be stored in a parent child relationship.
+* There will be one document, that has nested JSON inside of it.
+
+For Example:
+
+* For each airport, there are many routes..
+* Instead of two tables, each airport will contain the JSON for all routes. 
 
 ---
 
-# Elasticsearch in the Browser: 
+# Parent Child Example
 
-* We will be using Elasticsearch.js in jQuery:   
-https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/about.html 
-  * This library is currently available in multiple flavors (vanilla js, Angular, and jQuery).
-* The learning overhead is low because syntax is very close to regular Elasticsearch.
-* This should be a fast experience for the user (they won’t have to wait for round-trips to the server).
+
+```
+{
+  "_source": {
+    "name": "Port Moresby Jacksons International Airport",
+    "airport_id": 5,
+    "elevation_ft": 146,
+    "routes": [
+				{
+					"src": "STL",
+					"dst": "LAX",
+					"airline": "NZ"
+				}
+      ]
+    ]
+  }
+}
+
+``` 
+
+---
+
+# Kibana
+
+***#DevTools for ElasticSearch***
+
+Kibana sits on top of your ElasticSearch
+
+Kibana provides:
+* Fast, convenient way to access the data in your cluster.
+* DevTools to run queries (no more cURL).
+* Visualizations so that you can analyze your data.
+
+>>> Walkthrough
+
+---
+
+# Elasticsearch.js
+
+* We will be using [Elasticsearch.js in jQuery](https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/about.html) 
+* Allow you to execute ElasticSearch queries directly from the browser.
 
 ---
 
