@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang=en>
+  
+<head>
+    <meta http-equiv=Content-Type content="text/html; charset=UTF-8">
+    <meta name=viewport content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
+    <title>Day 5</title>
+</head>
+
+
+<!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
+<body onload="var slideshow = remark.create({ratio: '16:9', navigation: {scroll: true, touch: true, click: false}, countIncrementalSlides: false, highlightLanguage: 'bash', highlightStyle: 'tomorrow-night-blue'});">
+
+<!-- #ToDo: Write your slides in MarkDown here -->
+<textarea id="source">
+
+class: center, middle
+
+# Day 5
+### ES2015, ESLint, Webpack
+
+---
+
+## JavaScript
+
+* Created in 1995 by Brendan Eich for Netscape
+--
+
+* Later became an independent specification (ECMA Script) that others could implement it
+--
+
+* https://en.wikipedia.org/wiki/ECMAScript (Click to see the versions)
+--
+
+* ES2015 (the 6th version of ECMAScript) was a major change and is used by new projects at the NGA
+
+---
+
+
+## Where Does JavaScript Run (execute) ?
+--
+
+* Server via Node.js
+  * Language features are defined by what is installed on the server
+--
+
+* Browser
+  * Language features allowed depends on the browser
+--
+
+* How can we check what is supported in each browser?  
+  * [https://caniuse.com/#search=es6](https://caniuse.com/#search=es6)
+
+---
+## How to Use ES2015 even if your target environment does not?
+* You can use a tool called a **transpiler**
+--
+
+* A transpilier will convert your ES2015 code into a version of JavaScript that will run on your target env
+--
+
+* Babel is the transpiler used at the NGA
+--
+
+* Babel is incorpated into the js build tool to produce environment friendly js while allowing the developers use new language features
+  * How do you feel about that?
+
+---
+## Linting
+--
+
+* “Linting” does not mean to put lint into your code
+--
+
+* It means to a analyze code by checking if it complies with a set of coding rules/standards
+--
+
+* The name refers to removing lint. We want to remove bugs and bad styles from our code.
+--
+
+  * The first *linter* was using in 1978 for the c language
+  * More history here https://en.wikipedia.org/wiki/Lint_(software)
+--
+
+* There are numerous *linters*, multiples for each language
+  * [https://en.wikipedia.org/wiki/List_of_tools_for_static_code_analysis](List of code analyzers by language)
+
+
+---
+## Linting Rules
+
+* There are many rules and code styles decisions to be considered when writing JavaScript
+--
+
+* How does the team stay consistent and produce similar, industry standards compliant code?
+--
+
+* First you pick a set of rules your code should follow.
+--
+
+* Then make sure all code that is committed passes the rule set
+
+---
+## Enforce the Rules
+
+* Use tools like ESLint to analyze our files
+--
+
+* Use rule sets like the Airbnb ESLint rules (used at the NGA)
+--
+
+* Don't let the code build or be merged until all code passes
+
+---
+##ES2015
+
+* Sometimes linters can be used to ensure new language featurs are being used
+--
+
+* Like the new JavaScript features in ES2015
+--
+
+* We are now going to take a look at some of those features...
+
+---
+## ES2015 - let
+```javascript
+{
+  var name = 'Percy';
+}
+console.log(name);
+```
+```javascript
+{
+  let name = 'Percy';
+}
+console.log(name);
+```
+
+---
+## ES2015 - const
+```javascript
+var user = { name: 'percy', id: 1};
+user = 'percy';
+console.log(user.name);  //Throws runtime error!
+```
+```javascript
+const user = { name: 'percy', id: 1};
+//user = 'percy'; THIS NO LONGER COMPILES
+console.log(user.name);
+```
+
+---
+## ES2015 - Template Strings
+```javascript
+  const name = "Percy's";
+  const sentence = name + " lucky number is " + Math.random() + "\n" + "wow i'm on a new line!";
+  console.log(sentence);
+```
+```javascript
+  const name = "Percy's";
+  const sentence = `${name} lucky number is ${Math.random()}
+  wow i'm on a new line!`;  //can contain new lines
+  console.log(sentence);
+```
+
+---
+## Fat Arrow Functions =>
+```javascript
+const add = function(a, b) {
+  return a + b;
+};
+console.log(add(1,2));
+```
+```javascript
+const add = (a, b) => {
+  return a + b;
+};
+console.log(add(1,2));
+```
+```javascript
+const add = (a,b) =>  a + b;
+console.log(add(1,2));
+```
+
+---
+## Fat Arrow Functions => pt 2
+```javascript
+const isEven = function(x) {
+  return x % 2 == 0;
+};
+console.log(isEven(2));
+```
+```javascript
+const isEven = (x) => {
+  return x % 2 == 0;
+};
+console.log(isEven(2));
+```
+```javascript
+const isEven = x => x % 2 == 0;
+console.log(isEven(2));
+```
+
+---
+## Fat Arrow Functions => pt 3
+```javascript
+const getRandom = function() {
+  return Math.random() * 100 1;
+};
+console.log(getRandom());
+```
+```javascript
+const getRandom = () =>  Math.random() * 100;
+console.log(getRandom());
+```
+
+---
+## Default Parameter Values
+```javascript
+const getRandom = (multiplier = 100) =>  Math.random() * multiplier;
+console.log(getRandom(10));
+console.log(getRandom(7));
+console.log(getRandom());
+```
+---
+## Compare ES2015 to Old 
+* [Try out ES2015 with Babel](http://babeljs.io/repl/#?babili=false&browsers=&build=&builtIns=false&code_lz=NoRgNATGDMC6B0BbAhgBwBQDsAEBeAfNjgNTYgCUA3EA&debug=false&forceAllTransforms=false&shippedProposals=false&circleciRepo=&evaluate=true&fileSize=false&lineWrap=false&presets=es2015%2Clatest&prettier=false&targets=&version=6.26.0&envVersion=)
+
+---
+## Leaving a Few Things Out
+* Not covering these other features of ES2015
+  * Classes
+  * Promises
+  * Spread Operators
+  * Destructring
+* I don’t want your heads to explode… yet
+
+---
+##Webpack
+
+* Build tool for JavaScript projects
+--
+
+* Basically like Gradle, but for JavaScript
+--
+
+* Turns numerous (html, .js, .css files) into a few build artifacts
+--
+
+* Like springBoot, Webpack has a handy development web server that you can use locally
+--
+
+* More details and a cool diagram here https://webpack.js.org/
+
+</textarea>
+
+<script type="text/javascript" src="../js/remark-latest.min.js"></script></body></html>
+</body>
+</html>
