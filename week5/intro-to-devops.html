@@ -102,11 +102,369 @@ Developers are encouraged to own the lifecycle of their application.
 
 You will be learning how to manage your app's pipeline.
 
-1. Basic Operations - How to deploy an app on a remote server and troubleshoot issues.
-2. Operations in a Cloud Environment - How to deploy apps that are secure and scale in the cloud.
-3. Best Practices of Cloud Operations - How to make your deployed app as simple and reliable as possible.
+1. Basic Ops - How to deploy an app on a remote server and troubleshoot issues.
+2. Ops in a Cloud Environment - How to deploy apps that are secure and scale in the cloud.
+3. Best Practices of Cloud Ops - How to make your deployed app as simple and reliable as possible.
 4. Build Systems - How to build your project. 
-5. Continuous Integration / Continuous Deployment - Building the deployment pipeline for yor app.
+5. Continuous Integration / Continuous Deployment - Building the deployment pipeline for your app.
+
+---
+
+### Basic Ops
+
+In order to do basic ops, it is important to understand the following topics:
+1. Building code to run in "production"
+2. Accessing remote machines
+3. Unix systems and permissions
+4. Networking and Ports
+5. App Troubleshooting
+
+---
+
+## Building code to run in the cloud
+
+Right now you are used to running your code from Intellij IDEA.
+
+This works great for development, but there are important changes required to be ran in "production":
+
+1. Code has to be package to run on a server (Java is Jar or WAR file).
+2. Code is optimized or obfuscated.
+3. System credentials have to be changed.
+
+---
+
+### What do you mean Jar and WAR
+
+Java Archive File and Web Archive file (respectively)
+
+* Both are ZIP files whose contents are arranged in a particular order.
+* (Unzip a jar file some time and you can see what is inside)
+* Contains all of the compiled code required to run a program. 
+
+**Difference**
+
+JAR Files are typically used as libraries so that you can include in other projects
+
+WAR Files are deployed on a web server like Tomcat, Weblogic, etc.
+
+---
+
+### Executable Jar files
+
+**There are also executable jar files**
+
+```
+java -jar myapp.jar
+```
+--
+**Hint**  
+
+SpringBoot comes with the ability to create an executable jar file with the web server baked in.  
+
+This means that you can put the Jar file on any machine that has Java and you will have a web app!
+---
+
+### SSH: Accessing Remote Machines
+
+SSH allows you to gain access to a remote computer's command line.
+
+```
+ssh mike@192.38.233.11
+```
+
+(which is saying)
+```
+ssh {username}@{ip address}  # connect to ip address with username
+```
+
+---
+
+## SSH stands for **SECURE** Shell
+
+SSH uses public key encryption to create a secure connection between your computer and the remote computer.
+
+* Each computer participating in SSH stores a public key and a private key in the `~/.ssh` directory.
+
+* Each computer shares the public key.
+
+* Each computer keeps The private key is strictly secret.
+
+* Using a [Diffie-helman key exchange](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange) a shared secret is generated which can be used as a key to encrypt traffic between the two clients.
+
+---
+
+## SSH Authentication Types
+
+*No matter what, you need to have public private keys in your `~/.ssh` directory to use SSH.* 
+
+**Password Authentication** - the username and password for a user on that machine can be used in SSH.  
+* Highly insecure because it is vulnerable to brute force attacks
+
+**Key based Authentication** - only certain public keys are allowed to access a specific machine.
+* Secure. The combination of the public key and the private key provides access.
+* Allowed keys are stored in the `~/.ssh/known_hosts` file.
+* Example - Github allows you to provide a public key that you can use to autheticate your code pushes.
+
+---
+
+## Unix Systems
+
+Unix operating systems are designed to support many users accessing one machine.
+
+* Anyone that wants to access a machine has a username and password.
+* Each user "owns" a specific portion of the file system called the Home Directory 
+```
+/home/{username}
+```
+* Each user is part of a group.
+* Every file specifies which users or which groups can access the file..
+```
+$ ls -la
+drwxrwxr-x+ 56 root  admin  1904 Jan 30 11:58 Applications
+drwxr-xr-x+ 62 root  wheel  2108 Nov  7 13:28 Library
+...
+```
+---
+
+## Unix: File Access
+
+Take a look at how file access is configured.
+
+```
+$ ls -la
+drwxrwxr-x+ 56 root  admin  1904 Jan 30 11:58 Applications
+drwxr-xr-x+ 62 root  wheel  2108 Nov  7 13:28 Library
+...
+```
+
+**r** - provides read access
+**w** - provides write access
+**x** - provides execute access
+
+```
+drwx------+ ... # provides rwx to the owner 
+d---rwx---+ ... # provides rwx to the group 
+d------rwx+ ... # provides rwx to the others 
+```
+
+---
+
+## Unix: More Permissions
+
+Who are the Owner, the Group, and Others???
+
+```
+$ ls -la
+drwxrwxr-x+ 56 root  admin  1904 Jan 30 11:58 Applications
+drwxr-xr-x+ 62 root  wheel  2108 Nov  7 13:28 Library
+...
+```
+**root** is the Owner
+
+**admin** is the Group
+
+*Others is everyone else!*
+
+---
+
+## Unix: Permission Examples
+
+```
+$ ls /home/skywalker
+drwxr-xr-x   11 skywalker staff    374 Sep 30 15:43 Code
+drwx------+  68 skywalker staff   2312 Jan 31 20:51 Desktop
+drwxrwx---+  23 skywalker staff    782 Jan 30 11:58 Documents
+```
+
+`~/home/skywalker/Desktop`
+* Only `skywalker` can read, write, and execute files 
+
+`~/home/skywalker/Documents`
+* `skywalker` and any user in the group `staff` can read, write, and execute fles 
+
+*Anyone on the compouter can execute programs in `~/home/skywalker/Code`.* 
+
+---
+
+# Unix is designed to provide users the **minimal amount** of access to the system 
+
+---
+
+## Unix: Permissions for All!
+
+All users on a Unix system have a username and a home directory.
+
+All **processes** on a Unix system also have a user.
+
+---
+
+## Unix Processes
+
+*Everything happening on your Unix machine is running as a process*
+
+Take a look at the processes running right now:
+```
+ps -o pid,ppid,tty,uid,args 
+  PID  PPID TTY        UID ARGS
+ 1234  1233 ttys000    501 -bash
+ 8119  1234 ttys000    501 python -m SimpleHTTPServer
+ 5294   287 ttys002    501 /bin/bash --rcfile /Applications/IntelliJ IDEA CE.app/Contents/p
+```
+**pid** - the unique identifier for the process
+
+**ppid** - the id of the parent process
+
+**tty** - the terminal session that triggered the process
+
+**uid** - the user id that owns the process
+
+**args** - what process is running
+
+---
+
+## Unix Processes
+
+### Normal Processes
+
+* Every process has a parent.
+* A process either comes from a **fork**  of an exisitng process
+* Or **exec** replaces the existing process 
+* *Owned by the user that initiated the process*
+
+### Daemon Processes
+
+Daemon processes are special processes that are run in the background. 
+
+(e.g. Databases, webservers, etc.)
+
+*Daemon processes need to be assigned their own user*
+
+
+---
+
+## Working with Daemon processes
+
+Daemon processes can be started in several ways:
+
+1.  Using an ampersand at the end of a command
+```
+$ kibana &
+```
+
+2. Start through `init` or `systemd`
+```
+$ sudo service elasticsearch start
+```
+
+---
+
+## **systemd** for server startup 
+
+**Systemd** is a great way to run processes in the background.
+
+* Can be configured to run automatically on start up.
+* Easy commands to control the process:
+```
+$ sudo system {processname} start 
+$ sudo system {processname} restart 
+$ sudo system {processname} stop
+``` 
+
+---
+
+## **systemd** configuration
+
+Systemd is configured by placing a script in the `/etc/systemd/system` directory
+
+`/etc/systemd/system/{your-app}.service`
+```
+[Unit]
+Description=A Spring Boot application
+After=syslog.target
+ 
+[Service]
+User=app_user
+ExecStart=/path/to/your-app.jar SuccessExitStatus=143 
+ 
+[Install] 
+WantedBy=multi-user.target
+```
+
+---
+
+## **systemd** configuration
+
+*Remember, your app needs to run as it's own user for security reasons*
+
+1. Create a user and set the password
+```
+$ sudo useradd app_user
+$ sudo passwd some_solid_password
+```
+
+2. Set permissions and ownership of your app
+```
+$ sudo chown app_user:app_user_group your-app.jar
+$ sudo chmod 500 your-app.jar
+
+```
+
+3. Start it up and see it run
+```
+$ sudo service your-app start
+
+```
+
+---
+
+
+
+---
+
+## **Not** Working with Daemon a process
+
+If you want a daemon process to go away:
+
+1. Find the process that you want to go away
+```
+$ ps aux | grep name_of_process_to_go_away
+```
+2. Get the PID of the process
+```
+$ ps -o pid,ppid,tty,uid,args 
+  PID  PPID TTY        UID ARGS
+ 8119  1234 ttys000    501 python -m SimpleHTTPServer # PID 8119
+```
+
+---
+
+## **Not** Working with Daemon a process
+
+3. Send the signal to spin down
+```
+$ kill -9 8119 
+```
+
+4. Check to make sure it is gone
+```
+$ ps aux | grep name_of_process_to_go_away
+```
+
+---
+
+# A Unix Tour 
+
+Important Unix paths from Root
+* `/home/` - home directory of all users
+* `/opt/` - third party packages that don't conform to Linux hierarchy
+* `/var/` - variable data, **logs**, often changed files
+* `/bin/` - common binaries
+* `/sbin/` - binaries used by the system administrators
+* `/boot/` - static files on the bootloader (i.e. Linux kernel)
+* `/dev/` - devices such as CD drive
+* `/lib/` - essential libraries and kernel modules
+* `/mnt/` - temporary mount (i.e. for USB)
+* `/tmp/` - temporary files
 
 ---
 
