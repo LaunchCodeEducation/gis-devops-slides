@@ -360,14 +360,16 @@ $ sudo service elasticsearch start
 
 ## **systemd** for server startup 
 
-**Systemd** is a great way to run processes in the background.
+**Systemd** is a Linux tool that allows you to manage **units** (i.e. services, sockets, devices, etc.).
 
-* Can be configured to run automatically on start up.
-* Easy commands to control the process:
+* Systemd provides an easy way to interface with services.
+* Systemd allows more finegrained control over how a process runs.
 ```
-$ sudo system {processname} start 
-$ sudo system {processname} restart 
-$ sudo system {processname} stop
+$ sudo systemctl {processname} start  # start server in background 
+$ sudo systemctl {processname} restart 
+$ sudo systemctl {processname} stop
+$ sudo systemctl {processname} enable  # auto start on boot
+$ sudo systemctl {processname} disable # auto end on boot
 ``` 
 
 ---
@@ -376,6 +378,7 @@ $ sudo system {processname} stop
 
 Systemd is configured by placing a script in the `/etc/systemd/system` directory
 
+*Note: User lets you run the process as a specific user on your system*
 `/etc/systemd/system/{your-app}.service`
 ```
 [Unit]
@@ -390,6 +393,20 @@ ExecStart=/path/to/your-app.jar SuccessExitStatus=143
 WantedBy=multi-user.target
 ```
 
+---
+
+## **jounalctl** logs 
+
+Journalctl is a command that makes it easy to access the logs of your service.
+
+*Typically log files are accessed in the `/var/log` directory*
+
+```
+$ journalctl      # view all logs (oldest first)
+$ journalctl -b   # view logs from current boot
+$ journalctl -u nginx.service  # all logs from nginx 
+$ journalctl -b -u nginx.service  # all logs from nginx boot 
+```
 ---
 
 ## **systemd** configuration
@@ -414,10 +431,6 @@ $ sudo chmod 500 your-app.jar
 $ sudo service your-app start
 
 ```
-
----
-
-
 
 ---
 
