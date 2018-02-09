@@ -23,11 +23,11 @@ class: center, middle
 
 * In the early 2000s, Amazon was building infrastructure and tools to support Amazon.com.
 * In 2006, Amazon brought their tools and infrastructure public with EC2.
-* They were the first company to make a public cloud offering..
+* They were the first company to make a public cloud offering.
 * Currently AWS control 35% of the cloud market.
-* AWS offers 98 different products 
+* AWS offers 98 different products.
 
--- 
+--
 
 ### [70% of Internet Traffic Goes Through AWS Northern Virginia](http://www.nextgov.com/analytics-data/2016/01/70-percent-global-internet-traffic-goes-through-northern-virginia/124976/)
 ...
@@ -64,7 +64,11 @@ You have options:
 * DigitalOcean
 --
 
-* Linode ... hundreds more
+* Linode
+
+--
+
+* hundreds more
 --
 
 ### People choose because it is the **complete tool** for **highly available** systems.
@@ -79,21 +83,21 @@ AWS has an uptime of **99.95%**.
 
 --
 
-*4 hours of downtime is not good enough for most companies*
+*4 hours of downtime is not good enough for most companies*.
+
+---
+
+## AWS Redundancy
+
+Reducing the the points of failure by creating failover backup systems.
 
 --
 
-###**Redundancy**
-
-Reducing the the points of failure by creating failover back up systems.
+* You can achieve even higher uptime by distributing your systems across  "Availability Zones."
 
 --
 
-* You can achieve even higher uptime by distributing your systems across  "Availability Zones".
-
---
-
-* Amazon has 52 Availability Zones across the globe.  Each "AZ" is independently powered and cooled.  Each has their own networking and security. 
+* Amazon has 52 Availability Zones across the globe.  Each "AZ" is independently powered and cooled.  Each has its own networking and security. 
 
 --
 
@@ -162,15 +166,15 @@ As traffic increases, having one server causes problems:
 
 * An **RDS** database is simply an specialized EC2 instance that has Postgres, MySQL, Oracle, or MariaDB installed.
 
-* An **RDS** databases have a few extra perks.  
+* **RDS** databases have a few extra perks.  
 
-* An **RDS** database has **high availability**.  This means that behind the scenes AWS automatically creates multiple copies of your database in different datacenters.  If one data center goes down, your database is still up.
+* An **RDS** database has **high availability**.  This means that behind the scenes AWS automatically creates multiple copies of your database in different data centers.  If one data center goes down, your database is still up.
 
 ---
 
 ## **AWS** by Example
 
-Server with a separte Database
+Server with a separate Database
 
 **Warning!** The communication between the web application and the database is not encrypted!
 
@@ -182,7 +186,7 @@ Server with a separte Database
 
 ### Cloud Security
 
-* Traditional data centers protect data with with physical security and firewalls.
+* Traditional data centers protect data with physical security and firewalls.
 
 * In the cloud, **EVERYTHING** is potentially open to the public.
 
@@ -221,7 +225,7 @@ EC2 Server with a database in a VPC
 
 As the app traffic increases, the load on the server increases. 
 
-The increased load has also causes sysytem failures resulting in downtime.
+The increased load can cause system failures resulting in downtime.
 
 ### Solution
 
@@ -236,7 +240,7 @@ Elastic Load Balancers
 
 ## **AWS** by Example
 
-**EC2** Server behind an **ELB** using an **RDS** database withing a **VPC**
+**EC2** Server behind an **ELB** using an **RDS** database within a **VPC**
 
 <img src="images/simple_server_with_elb.png"></img>
 
@@ -335,11 +339,11 @@ Trying 159.89.182.183...
 ---
 --- 
 
-## A word about **Ports**
+## A Word about **Ports**
 
 Ports accept TCP connections for your computer.
 
-* All TCP connection that comes into your computer arrives on a **Port**. 
+* All TCP connections that come into your computer arrive on a **Port**. 
 
 * There are 65,535 ports on your computer.
 
@@ -348,12 +352,12 @@ Ports accept TCP connections for your computer.
 The 65,535 ports on your computer are in three groups:
 
 1. **Well Known Ports** (0-1023) - Specifically allocated by IANA.  Example - 22 is SSH, 25 - SMTP, 80 - HTTP, 443 - HTTPS. 
-2. **Registered Ports** (1024-49151) - There can be registered with IANA.  Considered "Semi Reserved". 
-3. **Ephemeral Ports** (49152-65535) - Programs are free to use these ports anytime they want.
+2. **Registered Ports** (1024-49151) - There can be registered with IANA.  Considered "Semi Reserved." 
+3. **Ephemeral Ports** (49152-65535) - Programs are free to use these ports any time they want.
 
 ---
 
-## A word about **Ports**
+## A Word about **Ports**
 
 ### How it works
 
@@ -363,9 +367,9 @@ The 65,535 ports on your computer are in three groups:
 
 * When the incoming connection comes in, the computer moves their conversation to an ephemeral port so that the it can continue listening on original port.
 
---
+---
 
-**Example**
+## Port Example
 
 * You ssh into a server at port 22.
 
