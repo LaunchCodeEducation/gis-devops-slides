@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang=en><head><meta http-equiv=Content-Type content="text/html; charset=UTF-8"><meta name=viewport content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
 
     <!-- #ToDo: Change Title for the presentation -->
-    <title>Agile Development</title>
+    <title>Intro to Dev Ops</title>
     
     </head>
     
@@ -38,10 +38,11 @@ In the past, Hardware was:
 
 However, starting in the early 2000s computing began to change:
 * Computing began to scale horizontally (more machines)
-* New Way:  If you needed more memory, CPU, etc. you added another machine.
+* New Way:  If you needed more memory, CPU, etc. you add another machine.
 * (Old Way:  If you needed more memory, CPU, etc. you threw away your current machine and bought a bigger one)
 
-<img src="googles-first-server.jpg">Google's First Production Servers</img>
+<img src="googles-first-server.jpg"></img>
+<div style = "text-align:center">Google's First Production Servers</div>
 
 ---
 
@@ -71,7 +72,7 @@ Cloud Computing was a game changer because:
 
 ---
 
-### DevOps puts the developer in the Operations
+## DevOps Puts the Developer in the Operations
 
 Cloud Virtualized Computing made operations accessible to the developer.
 
@@ -84,21 +85,21 @@ This is good for the developer because:
 
 ---
 
-### DevOps in the Workplace
+## DevOps in the Workplace
 
 Developers are encouraged to own the lifecycle of their application.
 
 * The app that you write locally needs to be deployable on a server.
 * The app that you write locally also needs to go through a series of checks:
-** All tests need to pass.
-** All linters need to pass.
-** All security checks need to pass.
+  * All tests need to pass.
+  * All linters need to pass.
+  * All security checks need to pass.
 * The app that you write locally needs to be able to scale under load.
 * When there is a problem with your app, you will need to be able to discover the issue.
 
 ---
 
-### This Week
+## This Week
 
 You will be learning how to manage your app's pipeline.
 
@@ -110,7 +111,7 @@ You will be learning how to manage your app's pipeline.
 
 ---
 
-### Basic Ops
+## Basic Ops
 
 In order to do basic ops, it is important to understand the following topics:
 1. Building code to run in "production"
@@ -121,50 +122,51 @@ In order to do basic ops, it is important to understand the following topics:
 
 ---
 
-## Building code to run in the cloud
+## Building Code to Run in the Cloud
 
-Right now you are used to running your code from Intellij IDEA.
+Right now you are used to running your code from IntelliJ IDEA.
 
-This works great for development, but there are important changes required to be ran in "production":
+This works great for development, but there are important changes required for code to be run in "production":
 
-1. Code has to be package to run on a server (Java is Jar or WAR file).
+1. Code has to be packaged to run on a server (Java is JAR or WAR file).
 2. Code is optimized or obfuscated.
 3. System credentials have to be changed.
 
 ---
 
-### What do you mean Jar and WAR
+## What Do You Mean, JAR and WAR?
 
 Java Archive File and Web Archive file (respectively)
 
 * Both are ZIP files whose contents are arranged in a particular order.
-* (Unzip a jar file some time and you can see what is inside)
+* (Unzip a jar file some time and you can see what is inside.)
 * Contains all of the compiled code required to run a program. 
 
 **Difference**
 
-JAR Files are typically used as libraries so that you can include in other projects
+JAR Files are typically used as libraries so that you can include in other projects.
 
 WAR Files are deployed on a web server like Tomcat, Weblogic, etc.
 
 ---
 
-### Executable Jar files
+## Executable Jar Files
 
 **There are also executable jar files**
 
 ```
-java -jar myapp.jar
+java -jar myapp.jar 
+
 ```
---
+
 **Hint**  
 
-SpringBoot comes with the ability to create an executable jar file with the web server baked in.  
+Spring Boot comes with the ability to create an executable Jar file with the web server baked in.  
 
 This means that you can put the Jar file on any machine that has Java and you will have a web app!
 ---
 
-### SSH: Accessing Remote Machines
+## SSH: Accessing Remote Machines
 
 SSH allows you to gain access to a remote computer's command line.
 
@@ -174,12 +176,12 @@ ssh mike@192.38.233.11
 
 (which is saying)
 ```
-ssh {username}@{ip address}  # connect to ip address with username
+ssh {username}@{ip address} #connect to ip address with username
 ```
 
 ---
 
-## SSH stands for **SECURE** Shell
+## SSH Stands for **SECURE** Shell
 
 SSH uses public key encryption to create a secure connection between your computer and the remote computer.
 
@@ -187,9 +189,9 @@ SSH uses public key encryption to create a secure connection between your comput
 
 * Each computer shares the public key.
 
-* Each computer keeps The private key is strictly secret.
+* Each computer keeps the private key strictly secret.
 
-* Using a [Diffie-helman key exchange](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange) a shared secret is generated which can be used as a key to encrypt traffic between the two clients.
+* Using a [Diffie-helman key exchange](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange), a shared secret is generated which can be used as a key to encrypt traffic between the two clients.
 
 ---
 
@@ -200,10 +202,10 @@ SSH uses public key encryption to create a secure connection between your comput
 **Password Authentication** - the username and password for a user on that machine can be used in SSH.  
 * Highly insecure because it is vulnerable to brute force attacks
 
-**Key based Authentication** - only certain public keys are allowed to access a specific machine.
+**Key-based Authentication** - only certain public keys are allowed to access a specific machine.
 * Secure. The combination of the public key and the private key provides access.
 * Allowed keys are stored in the `~/.ssh/known_hosts` file.
-* Example - Github allows you to provide a public key that you can use to autheticate your code pushes.
+* Example - GitHub allows you to provide a public key that you can use to autheticate your code pushes.
 
 ---
 
@@ -212,12 +214,17 @@ SSH uses public key encryption to create a secure connection between your comput
 Unix operating systems are designed to support many users accessing one machine.
 
 * Anyone that wants to access a machine has a username and password.
-* Each user "owns" a specific portion of the file system called the Home Directory 
+* Each user "owns" a specific portion of the file system called the Home Directory.
 ```
 /home/{username}
 ```
+
+---
+
+## Unix Users
+
 * Each user is part of a group.
-* Every file specifies which users or which groups can access the file..
+* Every file specifies which users or which groups can access the file.
 ```
 $ ls -la
 drwxrwxr-x+ 56 root  admin  1904 Jan 30 11:58 Applications
@@ -263,7 +270,7 @@ drwxr-xr-x+ 62 root  wheel  2108 Nov  7 13:28 Library
 
 **admin** is the Group
 
-*Others is everyone else!*
+*__Others__ is everyone else!*
 
 ---
 
@@ -282,7 +289,7 @@ drwxrwx---+  23 skywalker staff    782 Jan 30 11:58 Documents
 `~/home/skywalker/Documents`
 * `skywalker` and any user in the group `staff` can read, write, and execute fles 
 
-*Anyone on the compouter can execute programs in `~/home/skywalker/Code`.* 
+*Anyone on the computer can execute programs in `~/home/skywalker/Code`.* 
 
 ---
 
@@ -300,9 +307,9 @@ All **processes** on a Unix system also have a user.
 
 ## Unix Processes
 
-*Everything happening on your Unix machine is running as a process*
+*Everything happening on your Unix machine is running as a process.*
 
-Take a look at the processes running right now:
+<!--- This doesn't fit on the slide: Take a look at the processes running right now:---->
 ```
 ps -o pid,ppid,tty,uid,args 
   PID  PPID TTY        UID ARGS
@@ -327,7 +334,7 @@ ps -o pid,ppid,tty,uid,args
 ### Normal Processes
 
 * Every process has a parent.
-* A process either comes from a **fork**  of an exisitng process
+* A process either comes from a **fork** of an existing process
 * Or **exec** replaces the existing process 
 * *Owned by the user that initiated the process*
 
@@ -337,28 +344,28 @@ Daemon processes are special processes that are run in the background.
 
 (e.g. Databases, webservers, etc.)
 
-*Daemon processes need to be assigned their own user*
+*Daemon processes need to be assigned their own user*.
 
 
 ---
 
-## Working with Daemon processes
+## Working with Daemon Processes
 
 Daemon processes can be started in several ways:
 
-1.  Using an ampersand at the end of a command
+* Using an ampersand at the end of a command
 ```
 $ kibana &
 ```
 
-2. Start through `init` or `systemd`
+* Start through `init` or `systemd`
 ```
 $ sudo service elasticsearch start
 ```
 
 ---
 
-## **systemd** for server startup 
+## **systemd** for Server Startup 
 
 **Systemd** is a Linux tool that allows you to manage **units** (i.e. services, sockets, devices, etc.).
 
@@ -374,9 +381,9 @@ $ sudo systemctl {processname} disable # auto end on boot
 
 ---
 
-## **systemd** configuration
+## **systemd** Configuration
 
-Systemd is configured by placing a script in the `/etc/systemd/system` directory
+Systemd is configured by placing a script in the `/etc/systemd/system` directory.
 
 *Note: User lets you run the process as a specific user on your system*
 `/etc/systemd/system/{your-app}.service`
@@ -395,11 +402,11 @@ WantedBy=multi-user.target
 
 ---
 
-## **jounalctl** logs 
+## **jounalctl** Logs 
 
 Journalctl is a command that makes it easy to access the logs of your service.
 
-*Typically log files are accessed in the `/var/log` directory*
+*Typically log files are accessed in the `/var/log` directory*.
 
 ```
 $ journalctl      # view all logs (oldest first)
@@ -409,9 +416,9 @@ $ journalctl -b -u nginx.service  # all logs from nginx boot
 ```
 ---
 
-## **systemd** configuration
+## **systemd** Configuration
 
-*Remember, your app needs to run as it's own user for security reasons*
+*Remember, your app needs to run as its own user for security reasons*.
 
 1. Create a user and set the password
 ```
@@ -419,14 +426,19 @@ $ sudo useradd app_user
 $ sudo passwd some_solid_password
 ```
 
-2. Set permissions and ownership of your app
+2. Set permissions and ownership of your app:
+
 ```
 $ sudo chown app_user:app_user_group your-app.jar
 $ sudo chmod 500 your-app.jar
 
 ```
+---
 
-3. Start it up and see it run
+## **systemd** Configuration
+
+Then start it up and see it run:
+
 ```
 $ sudo service your-app start
 
@@ -434,15 +446,15 @@ $ sudo service your-app start
 
 ---
 
-## **Not** Working with Daemon a process
+## **Not** Working with Daemon Processes
 
 If you want a daemon process to go away:
 
-1. Find the process that you want to go away
+(1) Find the process that you want to go away.
 ```
 $ ps aux | grep name_of_process_to_go_away
 ```
-2. Get the PID of the process
+(2) Get the PID of the process.
 ```
 $ ps -o pid,ppid,tty,uid,args 
   PID  PPID TTY        UID ARGS
@@ -451,28 +463,30 @@ $ ps -o pid,ppid,tty,uid,args
 
 ---
 
-## **Not** Working with Daemon a process
+## **Not** Working with Daemon Processes
 
-3. Send the signal to spin down
+
+(3) Send the signal to spin down.
 ```
 $ kill -9 8119 
 ```
 
-4. Check to make sure it is gone
+(4) Check to make sure it is gone.
 ```
 $ ps aux | grep name_of_process_to_go_away
 ```
 
 ---
 
-# A Unix Tour 
 
-Important Unix paths from Root
-* `/home/` - home directory of all users
+
+##Important Paths from Root:
+
+* `/home/` - home directory of all users 
 * `/opt/` - third party packages that don't conform to Linux hierarchy
 * `/var/` - variable data, **logs**, often changed files
 * `/bin/` - common binaries
-* `/sbin/` - binaries used by the system administrators
+* `/sbin/` - binaries used by the system administrators<
 * `/boot/` - static files on the bootloader (i.e. Linux kernel)
 * `/dev/` - devices such as CD drive
 * `/lib/` - essential libraries and kernel modules
