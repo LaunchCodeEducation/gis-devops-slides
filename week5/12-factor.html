@@ -1,0 +1,405 @@
+<!DOCTYPE html><html lang=en><head><meta http-equiv=Content-Type content="text/html; charset=UTF-8"><meta name=viewport content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
+
+    <!-- #ToDo: Change Title for the presentation -->
+    <title>Intro to AWS</title>
+    
+    </head>
+    
+    <!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
+    <body onload="var slideshow = remark.create({ratio: '16:9', navigation: {scroll: true, touch: true, click: false}, countIncrementalSlides: false, highlightLanguage: 'bash', highlightStyle: 'tomorrow-night-blue'});">
+    
+    <!-- #ToDo: Write your slides in MarkDown here -->
+<textarea id="source">
+
+class: center, middle
+
+# **12 Factor App**
+
+### A Methodology for building **Cloud Native** Apps
+
+---
+
+## 12 Factor App
+
+The **12 Factor App** methodology was created by Heroku as a series of best practices for deploying apps on the cloud.  
+
+---
+
+## **CloudNative** Applications
+
+### Yes, It's a buzzword.
+
+"Cloud-native is an approach to building and running applications that fully exploits the advantage of the cloud computing delivery model"
+
+--
+
+What Advantages?
+
+* Nearly limitless computing power
+
+* On demand infrastructure
+
+* Faster time to market through automation
+
+---
+
+## **Cloud Native** vs. Traditional
+
+### A Comparision
+
+--
+
+Traditional - A single server serves an application.
+
+--
+
+**Cloud Native** - Multiple (perhaps 100's) servers serve an application. 
+
+--
+
+### Lifespan
+
+--
+
+Traditional - The application lives on a server for a long time (years).
+
+--
+
+**Cloud Native** - The application could live on a serve for a short time (hours).
+
+--
+
+###Scale
+
+--
+
+Traditional - The bigger server you buy, the more traffic you can handle.
+
+--
+
+**Cloud Native** - You can handle any traffic any time.
+
+---
+
+### The Twelve Factors
+
+1.  Codebase
+2.  Dependencies
+3.  Config
+4.  Backing Services
+5.  Build, Release, Run
+6.  Processes
+7.  Port Binding
+8.  Concurrency
+9.  Disposability
+10. Dev/prod Parity
+11. Logs
+12. Admin Processes
+
+---
+
+## **Twelve Factor App** - Scalability
+
+### Creating a Cloud Native app scales
+
+4. Backing Services
+6. Processes
+8. Concurrency
+9. Disposability
+11. Logs
+
+---
+
+## **Twelve Factor App** - Maintainability
+
+### Creating a **stable** Cloud Native app under constant change.
+
+1. Codebase
+2. Dependencies
+3. Config
+5. Build, release, run
+6. Port Binding
+10. Dev/prod parity 
+12. Admin Processes 
+
+---
+
+## Scaling **Twelve Factor Apps**
+
+--
+
+### **Ephemeral** Servers and Non Ephemeral Servers 
+
+--
+<br/>
+
+**Ephemeral** Servers are non permanent
+
+* Temporary, "Throw Away" Servers.
+* Any server that scales should be ephemeral.
+
+--
+
+<br/>
+
+Non Ephemeral Servers are semi-permanent 
+
+* Don't replace them unless you have to. 
+* Your database is non-ephemeral because it is a permanent data store.  
+
+---
+
+## **Ephemeral** by Example
+
+<img src="images/ephemeral_servers.png"></img>
+
+---
+
+## **Ephemeral** == Scalable
+
+1. In order for a machine to scale it needs to be ephemeral.
+
+--
+
+2. Each machine has to look exactly the same at the others.
+
+--
+
+3. Each machine can contain no state.
+
+--
+
+<br>
+
+### Here's how to make it happen.
+
+---
+
+## 4. Backing Services
+
+A **backing service** is any service that is shared among application servers.
+
+* Permanent Datastores - Databases
+
+* Caching and Temporary Storage  - ElasticSearch 
+
+* General Shared Utilities - Sending Email, Message Queues, etc. 
+
+--
+
+### Example
+
+ElasticSearch - Your server could seamlessly interchange a local ElasticSearch and a remote ElasticSearch on AWS.
+
+---
+
+## 6. Stateless Processes
+
+**Stateless Processes** is the "leave no trace* camping principle for servers.
+
+*Note: You can leave a trace, but it won't matter because it might not be there in the next request*
+
+--
+
+<br>
+
+###--> Request Amnesia##
+* Each request has a fresh start.  Anything that was on the server last time is gone.
+
+--
+
+Here's why:
+
+--
+
+* Your app is most likely running multiple app servers.  Your request is randomly distributed to any app server. 
+
+--
+
+*Note: When we say stateless, we are referring to the disk.  Memory is except from the stateless rule.
+
+---
+
+## 8. Concurrency
+
+Applications should scale horizonatally.  
+
+--
+
+(This is principle is pretty apparent)
+
+---
+
+## 9. Disposability
+
+Autoscaling means that servers can rapidly be spun up... and down..
+--
+
+* Your machine should be ephemeral.  After any request, your machine could be spun down through autocaling.  All state on the machine is lost. 
+--
+
+* Conversely, your machine needs to spin up as quickly as possible. Your application can be setup to autoscale, but it is at risk while it is waiting for machines to intialize. 
+
+---
+
+## 11. Logs
+
+Logs are very important piece of state that have to be managed correctly.
+
+--
+
+* Logs fill up hard drives and kill applications.
+
+* Traditionally, logs have been "rotated" (i.e. periodically shipped to another server).
+
+--
+
+### **Twelve Factor** says that logs should never even touch the server.
+
+--
+
+* The best way to handle logs is to treat them as event streams.  
+
+* Logs are treated as event streams and are streamed directly to a log handler like Splunk, Kibana, etc.  
+
+---
+
+## 1. Codebase
+
+Each server should correpsond to one codebase.
+
+--
+
+As applications get bigger...
+
+### **Conway's Law** - The architecture of a codebase eventually mirrors the organizational structure of the teams producing the code. 
+
+--
+
+* Releasing an application becames very complicated if there are the release of several sub applications have to be coordinated. 
+
+--
+
+### This is called the **Monolith**
+
+--
+
+**Twelve Factor** encourages a one to one relationship between an app and an app server.
+
+--
+
+* **Monoliths** can be broken down by extracing code into shareable libraries or microservices. 
+
+---
+
+### **Microservices** are the new library.
+
+A **Microservice** is an application in the form of an API that does one specific task.
+
+--
+
+* Each **Microservice** returns one piece of data that contributes to an overall page or API.
+
+--
+
+* The advantage of microservices over libraries is that APIs can be updated real time.  Libraries require everything to be recompiled.
+
+--
+
+Netflix and Amazon heavily rely on Microservices.  For example:
+
+-- 
+
+* Amazon's "Suggested Products" is a microservice that returns relevant products for a specific user.
+* Amazon's Checkout button is a microservice designed specifically for processing orders.
+* Amazon's "Reviews" section is a microservice that returns reviews for a product.
+
+---
+
+## 2. Dependencies
+
+An app should contain all of the dependencies required to run.
+
+--
+
+* This means more than just pulling dependencies from Maven and npm.
+--
+
+* The app should not depend upon the server for anything.
+--
+
+* The app contains everything including the app server.
+--
+
+<br>
+--
+
+* Modern web app servers like Spring Boot package the web server inside the jar.  `java -jar your-app.jar` is all it takes to run. 
+
+---
+
+## 3. Config
+
+
+**Twelve Factor** recommends that all configuration and credentials be separated from the code.
+
+--
+
+Configuration and credentials include:
+
+--
+
+* URLs to backing services
+
+--
+
+* Credentials to AWS, Google Maps, Twitter, Facebook, etc.
+
+--
+
+### Treat your app as if it could be open sourced at any point.
+
+--
+
+* Your app will need to function across a variety environments (dev, testing, staging, production).  Each environment will have it's own configuration and credential.
+
+--
+
+**Environment Variables** are considered a best practice for maintaining configuration. 
+
+---
+
+## Build, release, run 
+
+Your app should be built first then released.
+
+--
+
+* Build phase is packaging the app so that it can be deployed on a server
+
+(Remember to include all of the dependencies, including the web server)
+
+--
+
+* A build is an attempt to create a release.  A release can have many builds.
+
+--
+
+* Each release is tagged with a unique number so that it can reerenced in the future.
+
+---
+
+## Port Binding
+
+---
+
+## Dev/Prod Parity
+
+---
+
+## Admin Processes
+
+</textarea>
+
+<script type="text/javascript" src="../js/remark-latest.min.js"></script></body></html>
+    
