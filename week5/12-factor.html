@@ -369,7 +369,7 @@ Configuration and credentials include:
 
 ---
 
-## Build, release, run 
+## 5. Build, release, run 
 
 Your app should be built first then released.
 
@@ -389,15 +389,243 @@ Your app should be built first then released.
 
 ---
 
-## Port Binding
+## 7. Port Binding
+
+In traditional infrastructure,  many applications ran on a single machine.  This required carefully mapping ports to each application.
+
+--
+
+In **Cloud Native** applications, one application runs on one machine.  This reduces the complexity of setup.
 
 ---
 
-## Dev/Prod Parity
+## 12. Admin Processes
+
+Avoid every having to run a script on a server.
+
+--
+
+### **Immutable** environments produce expected results.  Mutable environments potentially produce unexpected results.
+
+--
+
+* When you run a script on a server, you are changing it's internal state.  **Your server should be stateless**.
+
+--
+
+* You may have 20+ servers operating at a time.  How do you ensure that the script runs at the exact same time as the rest of the machines.
+
+--
+
+Solution:
+
+--
+
+* Everytime you need to change a server, throw away the old one and make a new one from scratch.
+
+--
+
+* Create RESTful endpoints to run the task.
+
+--
+
+For example, if you need to reindex Elasticsearch, create an endpoint `/_cluster/reindex` to that performs the reindex task.
 
 ---
 
-## Admin Processes
+## 10. Dev / Prod Parity
+
+Each environment (development, testing, staging) should be as similar as possible to production.
+
+--
+
+This means: 
+
+--
+
+* You use the **same** databases.
+
+--
+
+* You use the **same** backing services.
+
+--
+
+* You use the **same** server configuration.
+
+--
+
+* They're all backing services.  Just swap out the URL to a dev or staging service.
+
+--
+
+### Unit tests help prevent errors in logic.  Full integration tests check **everything else**.
+
+---
+
+## 10. Dev / Prod Parity (cont)
+
+
+Environments:
+
+--
+
+* **Production** - this is the real deal.  You can't test or even access this system.  Everything has to be perfect.
+
+--
+
+* **Staging** - this system is a mirror image of production.  You are working with a copy of live data.
+
+--
+
+* **Test** - this system checks that everyone's code works correctly **together**.
+
+--
+
+* **Development** - this is your local environment.
+
+---
+
+## 10. Dev/Prod Parity (cont)
+
+### Errors in production are tough to **track down**  and cause **data loss**. 
+
+--
+
+**Every step** has to be automated.
+
+--
+
+* Ideally, the setup script that you use on your local environment is exactly the same the setup script that you use for production.
+
+--
+
+* You will likely  hand off packaged code to run on a machine that you will never touch.  **That's why DevOps is so important**.
+
+* You will need to script your deployment so that you can have confidence it will run correctly on production.
+
+---
+
+### Which of the **The Twelve Factors** principles does Airwaze meet?
+
+**Codebase** - *one app from one codebase.* 
+--
+
+* ✅ Good! The Airwaze codebase produces one artifact that is deployed on one server.
+
+--
+
+**Dependencies** - *the app has **everything** it needs to run* 
+
+--
+
+* ✅  Good! SpringBoot packages a the TomCat webserver into the executable jar file.
+
+--
+
+**Config** - *credentials, URLS, etc. can **easily be changed** for each environment*  
+
+--
+
+* ✅  Good!  Airwaze has a `application.properties` for Dev and a `application-test.properties` for test. 
+
+--
+
+* ❗ Improve.  The URL, username, and password of our app are hard coded. Ideally, these should be environment variables. 
+
+---
+
+### Which of the **The Twelve Factors** principles does Airwaze meet?
+
+**Backing Services** - *functionality your app depends on should be bound by a URL* 
+
+--
+
+* ✅  Good! The database can easily be swapped out for a database on another machine by inputting a different URL.
+
+
+--
+
+* ❗ Improve. ElasticSearch is embedded and cannot easily be swapped out for another machine. 
+
+--
+
+**Build, Release, Run** - *code is built and released before runnig on the server*
+
+--
+
+* ✅  Good! Code is built and packaged as a jar using Gradle.
+
+--
+
+* ❗ Improve. We should assign a unique ID to each packaged jar so that it can be tracked back to the commit. 
+
+---
+
+**Processes** - *servers run as stateless processes.  i.e **request amnesia** *
+
+--
+
+* ✅  Good! While the app server is running, nothing is accessed from the file system. 
+
+--
+
+**Port Binding** - *servers can be bound to any port... typically one port per server*
+
+--
+
+* ✅  Good! Airwaze can even have the port configured via an environment variable. 
+
+--
+
+**Concurrency** - *applications scale **horizontally**... instead of servers getting bigger*
+
+--
+
+* ✅  Good! We have multiple servers behing an ELB. 
+
+--
+
+* ❗ Improve. Currently our servers do not scale up if traffic increases. 
+
+---
+
+**Disposability** - *servers can be spun up and thrown away **quickly***
+
+--
+
+* ✅  Good! Airwaze stores nothing on the local file system.  SpringBoot spins up in under a minute. 
+
+--
+
+**Dev/prod Parity** - *dev, test, and staging closely **mirror** production*
+
+--
+
+* ❗ Improve. Currently, we have to manually configure a new environment.  It should be automatically spun up.  
+
+--
+
+**Logs** - *logs are treated like output streams and are **never** stored on the server*
+
+--
+
+* ❗ Improve. Currently logs are stored on the machine. These logs should immediately be streamed to a log server. 
+
+--
+
+**Admin Processes** - *never run scripts on a machine, instead create an API endpoint*
+
+--
+
+* ✅ Good!  We can reuse our `reindex` elasticsearch  REST endpoint from Zika on our airwaze app.  
+
+---
+
+#Questions?
+
+---
+
 
 </textarea>
 
