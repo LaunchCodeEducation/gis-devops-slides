@@ -251,6 +251,90 @@ Keep scaling as many **EC2** instances as you need!
 
 ---
 
+## The Key is the **VPC**
+
+**VPC** stands for Virtual Private Cloud.  
+
+--
+
+The **VPC** is a virtually isolated network i.e. "bubble" on the internet.
+
+-- 
+
+* By default, nothing can enter or your leave your **VPC**. There is zero access to or from the internet. 
+
+--
+
+* Access to end from the **VPC** is configured through fine grained network **Access Control List**.
+
+--
+
+* Inside the **VPC*, subnets can be configured with additional ACLs for even more fine grained control.*
+
+--
+
+* The VPC is initialized by providing a **CIDR** block to define the IP space.
+
+---
+
+## A word about **CIDR** Blocks
+
+CIDR is a notation used to describe the IP addresses within a network or subnet.
+
+--
+
+<br>
+CIDR addresses are composed of two parts:
+1. A template for the IP address `192.168.0.0`
+2. A bit mask indicating the range of IP addresses available.  `/24` 
+
+--
+
+Put them together and you have a full CIDR block!  `192.168.0.0/24`.
+
+--
+
+* The **CIDR** bit mask controls how many IP addresses are allocated to a network or subnet.
+
+--
+
+* The **CIDR** template indicates what range of IP addresses you want to use.
+
+---
+
+## CIDR examples
+
+--
+
+### **Primer** - IPv4 address space spans from `0.0.0.0` to `255.255.255.255`
+* A total of 4,294,967,296 possible IP addresses. 
+
+--
+
+```
+192.168.0.0/24     .............  192.168.0.0 - 192.168.0.255
+192.168.0.0/16     .............  192.168.0.0 - 192.168.255.255
+0.0.0.0/16         .............  0.0.0.0 - 255.255.255.255
+```
+
+--
+
+Most of the time ... pick your favoriate IP address range and choose a bit mask of 
+* **24** - 255 Possible IP addresses - small network or subnet 
+* **16** - 65,536 Possible IP addresses - large network or subnet
+* **0** -  44,294,967,296 Possible IP addresses - VERY large
+
+--
+
+**CIDR** bit masks are most likely: 24, 16, 8, 4, 2
+
+```
+0.0.0.0/0  # selects all IP addresses
+
+```
+
+---
+
 ## **Troubleshooting** TCP Connections
 
 If you want to keep your sanity while setting up your VPC, you need to know how to **troubleshoot** TCP connections.
