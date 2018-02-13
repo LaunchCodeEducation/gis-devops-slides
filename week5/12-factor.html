@@ -13,21 +13,21 @@
 
 class: center, middle
 
-# **12 Factor App**
+# **Twelve Factor App**
 
 ### A Methodology for building **Cloud Native** Apps
 
 ---
 
-## 12 Factor App
+## Twelve Factor App
 
-The **12 Factor App** methodology was created by Heroku as a series of best practices for deploying apps on the cloud.  
+The **Twelve Factor App** methodology was created by Heroku as a series of best practices for deploying apps in the cloud.  
 
 ---
 
-## **CloudNative** Applications
+## **Cloud Native** Applications
 
-### Yes, It's a buzzword.
+### Yes, it's a buzzword.
 
 "Cloud-native is an approach to building and running applications that fully exploits the advantage of the cloud computing delivery model"
 
@@ -37,7 +37,7 @@ What Advantages?
 
 * Nearly limitless computing power
 
-* On demand infrastructure
+* On-demand infrastructure
 
 * Faster time to market through automation
 
@@ -65,7 +65,7 @@ Traditional - The application lives on a server for a long time (years).
 
 --
 
-**Cloud Native** - The application could live on a serve for a short time (hours).
+**Cloud Native** - The application could live on a server for a short time (hours).
 
 --
 
@@ -81,46 +81,52 @@ Traditional - The bigger server you buy, the more traffic you can handle.
 
 ---
 
-### The Twelve Factors
+## The Twelve Factors
 
-1.  Codebase
-2.  Dependencies
-3.  Config
-4.  Backing Services
-5.  Build, Release, Run
+<div class = "left-column" >
+
+1.  Codebase <br>
+2.  Dependencies<br>
+3.  Config<br>
+4.  Backing Services<br>
+5.  Build, Release, Run<br>
 6.  Processes
-7.  Port Binding
-8.  Concurrency
-9.  Disposability
-10. Dev/prod Parity
-11. Logs
+</div>
+<div class = "right-column">
+7.  Port Binding<br>
+8.  Concurrency<br>
+9.  Disposability<br>
+10. Dev/prod Parity<br>
+11. Logs<br>
 12. Admin Processes
-
+</div>
 ---
 
 ## **Twelve Factor App** - Scalability
 
-### Creating a Cloud Native app scales
-
-4. Backing Services
-6. Processes
-8. Concurrency
-9. Disposability
+### Creating a Cloud Native app scales:
+<div>
+4. Backing Services<br>
+6. Processes<br>
+8. Concurrency<br>
+9. Disposability<br>
 11. Logs
-
+</div>
 ---
 
 ## **Twelve Factor App** - Maintainability
 
 ### Creating a **stable** Cloud Native app under constant change.
+<div>
 
-1. Codebase
-2. Dependencies
-3. Config
-5. Build, release, run
-6. Port Binding
-10. Dev/prod parity 
+1. Codebase<br>
+2. Dependencies<br>
+3. Config<br>
+5. Build, release, run<br>
+6. Port Binding<br>
+10. Dev/prod parity<br> 
 12. Admin Processes 
+</div>
 
 ---
 
@@ -128,12 +134,12 @@ Traditional - The bigger server you buy, the more traffic you can handle.
 
 --
 
-### **Ephemeral** Servers and Non Ephemeral Servers 
+### **Ephemeral** Servers and Non-Ephemeral Servers 
 
 --
 <br/>
 
-**Ephemeral** Servers are non permanent
+**Ephemeral** Servers are non-permanent.
 
 * Temporary, "Throw Away" Servers.
 * Any server that scales should be ephemeral.
@@ -142,7 +148,7 @@ Traditional - The bigger server you buy, the more traffic you can handle.
 
 <br/>
 
-Non Ephemeral Servers are semi-permanent 
+Non-Ephemeral Servers are semi-permanent.
 
 * Don't replace them unless you have to. 
 * Your database is non-ephemeral because it is a permanent data store.  
@@ -161,7 +167,7 @@ Non Ephemeral Servers are semi-permanent
 
 --
 
-2. Each machine has to look exactly the same at the others.
+2. Each machine has to look exactly the same as the others.
 
 --
 
@@ -195,13 +201,13 @@ ElasticSearch - Your server could seamlessly interchange a local ElasticSearch a
 
 ## 6. Stateless Processes
 
-**Stateless Processes** is the "leave no trace* camping principle for servers.
+**Stateless Processes**: the "leave no trace* camping principle for servers.
 
-*Note: You can leave a trace, but it won't matter because it might not be there in the next request*
+*Note: You can leave a trace, but it won't matter because it might not be there in the next request*.
 
 --
 
-<br>
+
 
 ###--> Request Amnesia##
 * Each request has a fresh start.  Anything that was on the server last time is gone.
@@ -216,17 +222,17 @@ Here's why:
 
 --
 
-*Note: When we say stateless, we are referring to the disk.  Memory is except from the stateless rule.
+*Note: When we say stateless, we are referring to the disk.  Memory is exempt from the stateless rule.
 
 ---
 
 ## 8. Concurrency
 
-Applications should scale horizonatally.  
+Applications should scale horizontally.  
 
 --
 
-(This is principle is pretty apparent)
+(This principle is pretty apparent)
 
 ---
 
@@ -235,16 +241,16 @@ Applications should scale horizonatally.
 Autoscaling means that servers can rapidly be spun up... and down..
 --
 
-* Your machine should be ephemeral.  After any request, your machine could be spun down through autocaling.  All state on the machine is lost. 
+* Your machine should be ephemeral.  After any request, your machine could be spun down through autoscaling.  All state on the machine is lost. 
 --
 
-* Conversely, your machine needs to spin up as quickly as possible. Your application can be setup to autoscale, but it is at risk while it is waiting for machines to intialize. 
+* Conversely, your machine needs to spin up as quickly as possible. Your application can be set up to autoscale, but it is at risk while it is waiting for machines to intialize. 
 
 ---
 
 ## 11. Logs
 
-Logs are very important piece of state that have to be managed correctly.
+Logs are very important pieces of state that have to be managed correctly.
 
 --
 
@@ -276,13 +282,17 @@ As applications get bigger...
 
 --
 
-* Releasing an application becames very complicated if there are the release of several sub applications have to be coordinated. 
+* Releasing an application becames very complicated if the release of several sub applications have to be coordinated. 
 
 --
 
 ### This is called the **Monolith**
 
---
+---
+
+## 1. Codebase
+
+
 
 **Twelve Factor** encourages a one to one relationship between an app and an app server.
 
@@ -294,21 +304,22 @@ As applications get bigger...
 
 ### **Microservices** are the new library.
 
-A **Microservice** is an application in the form of an API that does one specific task.
+A **microservice** is an application in the form of an API that does one specific task.
 
 --
 
-* Each **Microservice** returns one piece of data that contributes to an overall page or API.
+* Each **microservice** returns one piece of data that contributes to an overall page or API.
 
 --
 
-* The advantage of microservices over libraries is that APIs can be updated real time.  Libraries require everything to be recompiled.
+* The advantage of microservices over libraries is that APIs can be updated in real time.  Libraries require everything to be recompiled.
+
+---
+
+### Netflix and Amazon heavily rely on microservices.  
+For example:
 
 --
-
-Netflix and Amazon heavily rely on Microservices.  For example:
-
--- 
 
 * Amazon's "Suggested Products" is a microservice that returns relevant products for a specific user.
 * Amazon's Checkout button is a microservice designed specifically for processing orders.
@@ -329,9 +340,7 @@ An app should contain all of the dependencies required to run.
 --
 
 * The app contains everything including the app server.
---
 
-<br>
 --
 
 * Modern web app servers like Spring Boot package the web server inside the jar.  `java -jar your-app.jar` is all it takes to run. 
@@ -355,13 +364,15 @@ Configuration and credentials include:
 
 * Credentials to AWS, Google Maps, Twitter, Facebook, etc.
 
---
+---
+
+## 3. Config
 
 ### Treat your app as if it could be open sourced at any point.
 
 --
 
-* Your app will need to function across a variety environments (dev, testing, staging, production).  Each environment will have it's own configuration and credential.
+* Your app will need to function across a variety of environments (dev, testing, staging, production).  Each environment will have its own configuration and credentials.
 
 --
 
@@ -375,9 +386,9 @@ Your app should be built first then released.
 
 --
 
-* Build phase is packaging the app so that it can be deployed on a server
+* Build phase is packaging the app so that it can be deployed on a server.
 
-(Remember to include all of the dependencies, including the web server)
+(Remember to include all of the dependencies, including the web server.)
 
 --
 
@@ -385,7 +396,7 @@ Your app should be built first then released.
 
 --
 
-* Each release is tagged with a unique number so that it can reerenced in the future.
+* Each release is tagged with a unique number so that it can referenced in the future.
 
 ---
 
@@ -401,7 +412,7 @@ In **Cloud Native** applications, one application runs on one machine.  This red
 
 ## 12. Admin Processes
 
-Avoid every having to run a script on a server.
+Avoid ever having to run a script on a server.
 
 --
 
@@ -409,15 +420,15 @@ Avoid every having to run a script on a server.
 
 --
 
-* When you run a script on a server, you are changing it's internal state.  **Your server should be stateless**.
+* When you run a script on a server, you are changing its internal state.  **Your server should be stateless**.
 
 --
 
-* You may have 20+ servers operating at a time.  How do you ensure that the script runs at the exact same time as the rest of the machines.
+* You may have 20+ servers operating at a time.  How do you ensure that the script runs at the exact same time on each machine?
 
---
+---
 
-Solution:
+### Solution:
 
 --
 
@@ -429,7 +440,7 @@ Solution:
 
 --
 
-For example, if you need to reindex Elasticsearch, create an endpoint `/_cluster/reindex` to that performs the reindex task.
+For example, if you need to reindex Elasticsearch, create an endpoint `/_cluster/reindex` that performs the reindex task.
 
 ---
 
@@ -437,9 +448,7 @@ For example, if you need to reindex Elasticsearch, create an endpoint `/_cluster
 
 Each environment (development, testing, staging) should be as similar as possible to production.
 
---
 
-This means: 
 
 --
 
@@ -502,6 +511,8 @@ Environments:
 
 * You will likely  hand off packaged code to run on a machine that you will never touch.  **That's why DevOps is so important**.
 
+--
+
 * You will need to script your deployment so that you can have confidence it will run correctly on production.
 
 ---
@@ -519,7 +530,7 @@ Environments:
 
 --
 
-* ✅  Good! SpringBoot packages a the TomCat webserver into the executable jar file.
+* ✅  Good! Spring Boot packages the tomcat webserver into the executable jar file.
 
 --
 
@@ -550,7 +561,7 @@ Environments:
 
 --
 
-**Build, Release, Run** - *code is built and released before runnig on the server*
+**Build, Release, Run** - *code is built and released before running on the server*
 
 --
 
@@ -561,6 +572,8 @@ Environments:
 * ❗ Improve. We should assign a unique ID to each packaged jar so that it can be tracked back to the commit. 
 
 ---
+
+### Which of the **The Twelve Factors** principles does Airwaze meet?
 
 **Processes** - *servers run as stateless processes.  i.e **request amnesia** *
 
@@ -582,7 +595,7 @@ Environments:
 
 --
 
-* ✅  Good! We have multiple servers behing an ELB. 
+* ✅  Good! We have multiple servers behind an ELB. 
 
 --
 
@@ -590,11 +603,13 @@ Environments:
 
 ---
 
+### Which of the **The Twelve Factors** principles does Airwaze meet?
+
 **Disposability** - *servers can be spun up and thrown away **quickly***
 
 --
 
-* ✅  Good! Airwaze stores nothing on the local file system.  SpringBoot spins up in under a minute. 
+* ✅  Good! Airwaze stores nothing on the local file system.  Spring Boot spins up in under a minute. 
 
 --
 
@@ -612,7 +627,9 @@ Environments:
 
 * ❗ Improve. Currently logs are stored on the machine. These logs should immediately be streamed to a log server. 
 
---
+---
+
+### Which of the **The Twelve Factors** principles does Airwaze meet?
 
 **Admin Processes** - *never run scripts on a machine, instead create an API endpoint*
 
