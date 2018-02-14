@@ -39,17 +39,17 @@ The REST API we have been working on is insecure:
 
 --
 
-- Anybody may access data via the API at any time
+- Anybody may access data via the API at any time.
 
 --
 
-- When somebody accesses the API, we don't know who they are
+- When somebody accesses the API, we don't know who they are.
 
 ---
 
 ## Authentication and Authorization
 
-There are two related concepts that must be employed to properly secure an API: **authentication** and **authorization**
+There are two related concepts that must be employed to properly secure an API: **authentication** and **authorization**.
 
 --
 
@@ -61,7 +61,7 @@ There are two related concepts that must be employed to properly secure an API: 
 
 --
 
-Remember that authentication is about _identity_, authorization is about _permissions_
+Remember that authentication is about _identity_; authorization is about _permissions_.
 
 ---
 
@@ -89,7 +89,7 @@ Thus, there is no way to enable authorization. In other words, there is no way t
 
 ## Key Authentication
 
-A better solution is to enable **key authentication**. In this scheme, each API user must have key (a string of characters) that they submit in the request. 
+A better solution is to enable **key authentication**. In this scheme, each API user must have a key (a string of characters) that they submit in the request. 
 
 --
 
@@ -97,11 +97,11 @@ A better solution is to enable **key authentication**. In this scheme, each API 
 
 --
 
-- Permissions may be granted on an per-user basis
+- Permissions may be granted on an per-user basis.
 
 --
 
-- A key is typically obtained by registering with the API provider using a traditional user account
+- A key is typically obtained by registering with the API provider using a traditional user account.
 
 ---
 
@@ -125,17 +125,17 @@ REST APIs can be used to serve geo data. We'll use these later in the course, bu
 
 --
 
-[Boundless GeoServer](https://boundlessgeo.com/geoserver/) makes geo data avilable via a REST API that is capable of serving GeoJson
+[Boundless GeoServer](https://boundlessgeo.com/geoserver/) makes geo data avilable via a REST API that is capable of serving GeoJSON.
 
 --
 
-[Bing Maps REST Service](https://msdn.microsoft.com/en-us/library/ff701713.aspx) provides access to resources such as Locations, Elevations, Routes, Imagery, and more via a REST API
+[Bing Maps REST Service](https://msdn.microsoft.com/en-us/library/ff701713.aspx) provides access to resources such as Locations, Elevations, Routes, Imagery, and more via a REST API.
 
 ---
 
 ## Bing API Example
 
-Let's look at examples in the documentation for [Locations](https://msdn.microsoft.com/en-us/library/ff701710.aspx) resources
+Let's look at examples in the documentation for [Locations](https://msdn.microsoft.com/en-us/library/ff701710.aspx) resources.
 
 ---
 
@@ -167,7 +167,7 @@ A request to `http://localhost:8080/api/customers` might return:
         },
         {
             "rel": "cart",
-            "herf": "http://localhost:8080/api/carts/7"
+            "href": "http://localhost:8080/api/carts/7"
         }]
     },
     ...

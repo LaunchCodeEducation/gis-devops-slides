@@ -39,9 +39,9 @@ We will typically think of a resource as a piece of "business data".
 
 ---
 
-## Resrouces Formats
+## Resources Formats
 
-The _format_ of a resource is an independent concept from the resources itself. Resources may be represented in different formats.
+The _format_ of a resource is an independent concept from the resource itself. Resources may be represented in different formats.
 
 --
 
@@ -50,7 +50,6 @@ The _format_ of a resource is an independent concept from the resources itself. 
 - HTML
 - JSON
 - XML
-- HTML
 
 ---
 
@@ -92,7 +91,7 @@ For us, the scheme will almost always be `http` or `https`, and the most importa
 
 ## REST
 
-**Representational State Transfer** (REST) is a set of constraints, or standards, for web services that allow systems to access and manipulate web resources
+**Representational State Transfer** (REST) is a set of constraints, or standards, for web services that allow systems to access and manipulate web resources.
 
 REST was defined by Roy Fielding in his doctoral dissertation in 2000.
 
@@ -198,7 +197,7 @@ The `Accept` header is used to determine which format the server should return t
 
 --
 
-The server is responsible for correctly handling and formatting the given resource based on the values of `Accept` and `Content-Type`
+The server is responsible for correctly handling and formatting the given resource based on the values of `Accept` and `Content-Type`.
 
 ---
 
@@ -206,17 +205,17 @@ The server is responsible for correctly handling and formatting the given resour
 
 The concept of **idempotence** means that carrying out the same request twice has the same result as carrying it out once. 
 
-In other words, if we as a server to create a new resource via a `POST` request, and we repeat the request twice, a new resource is not created twice. 
+In other words, if we ask a server to create a new resource via a `POST` request, and we repeat the request twice, a new resource is not created twice. 
 
 ---
 
 ## Statelessness
 
-REST services are **stateless**. This means that the server does not remember the requesting client from one request to another, and not history or context is preserved from one request to another.
+REST services are **stateless**. This means that the server does not remember the requesting client from one request to another, and neither history nor context is preserved from one request to another.
 
 --
 
-REST requests must be authenticated each and every time (more on this tomorrow)
+REST requests must be authenticated each and every time (more on this tomorrow).
 
 --
 
@@ -241,7 +240,7 @@ As with model objects, resources can be "owned" by other resources. When this ha
 
 ## Query Parameters as Filters
 
-In REST URLs, query paramters are used to filter collections
+In REST URLs, query paramters are used to filter collections.
 
 --
 
