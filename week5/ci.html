@@ -1,8 +1,18 @@
 <!DOCTYPE html><html lang=en><head><meta http-equiv=Content-Type content="text/html; charset=UTF-8"><meta name=viewport content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
 
     <!-- #ToDo: Change Title for the presentation -->
-    <title>Continous Integration</title>
-    
+    <title>Continuous Integration</title>
+    <style>
+        .special { 
+            color: orangered;
+        }
+        .remark-slide-content img.graphic {
+            width: 175px !important;   
+        }
+        .underline {
+            text-decoration: underline;
+        }
+    </style>
     </head>
     
     <!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
@@ -13,15 +23,30 @@
 
 class: center, middle
 
-# Continous Integration
+# Continuous Integration
+
+
+
+---
+## Continuous Integration
+###Aims to improve the quality of software
+###and reduce the amount of effort needed to deliver it
+
+
+
+---
+## How do we do that?
+###By applying quality control and integration testing early and often
+###Instead of doing those after ALL the development has been done
+
 
 ---
 
-## Continous Integration
+## Communication and Integration
 
 --
 
-* Is all about code and human communication
+* Is all about code and human communication/coordination
 --
 
 * What was built 
@@ -33,11 +58,20 @@ class: center, middle
 * When was it deployed
 --
 
-* What version can we roll back to
+* Get feedback from client
+--
+
+* What version can we roll back to if something blows up
 
 
 ---
 ## Important Software Dev Goals
+
+--
+* Keep build time <= 10 minutes (per project)
+--
+
+* Simple deployment to different environments
 --
 
 * Quick feedback
@@ -55,10 +89,27 @@ class: center, middle
 * Reduce risk
 --
 
+* Automated Tests!
+
 
 ---
 
-## Continuous Deployment
+## Continuous D Words
+--
+
+###Continuous <span class="special">Deployment</span> 
+--
+
+##VS
+--
+
+###Continuous <span class="special">Delivery</span>
+
+
+
+---
+
+## Continuous <span class="special">Deployment</span>
 --
 
 * Is the ability to automatically deploy software to different environments
@@ -68,16 +119,16 @@ class: center, middle
 
 
 ---
-## Continuous Delivery
+## Continuous <span class="special">Delivery</span>
 --
 
-* One step back from Continous *Deployment*
+* One step back from Continuous *Deployment*
 --
 
-* With every merge into `master` we *deliver* an artifact that *can* be deployed
+* With every merge into `master` we <span class="underline">deliver</span> an artifact that <span class="underline">can</span> be deployed
 --
 
-* More steps have to be done to actually deploy te artifact (example artifcat: .jar file)
+* More steps have to be done to actually deploy te artifact
 --
 
 * Every “check-in” is ready to/could be released to production
@@ -86,7 +137,40 @@ class: center, middle
 
 ---
 ## Jenkins
-* TBD
+* Open source software that is used for Continuous Integration
+--
+
+* Is installed on a server and used by ops/dev/qa
+--
+
+* Will clone your repo, build, test, package, lint, deliver, deploy...
+--
+<img class="graphic" src="../images/jenkins-cool.jpg">
+
+
+---
+## Jenkins Terminology
+--
+
+* Project - Example: Airwaze Compile project that will build your code
+--
+
+* Workspace - The directory where files for a project are stored. Usually a cloned repo.
+--
+
+* Plugins - Projects used plugins: git, junit, aws (there are plugins for everything)
+--
+
+* View - Simply a configurable list of projects (useful if you have lots of projects)
+--
+
+* Build History - List of previous project builds and the results from them
+--
+
+* Downstream Projects - Happen after this project
+* Upstream Projects - Happen before this project
+
+
 
 
 </textarea>
