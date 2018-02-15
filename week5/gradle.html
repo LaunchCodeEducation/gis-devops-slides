@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang=en>
+    <head>
+        <meta http-equiv=Content-Type content="text/html; charset=UTF-8">
+        <meta name=viewport content="width=device-width,initial-scale=1">
+        <link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
+
+    <!-- #ToDo: Change Title for the presentation -->
+    <title>Intro to Gradle</title>
+
+</head>
+
+<!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
+<body onload="var slideshow = remark.create({ratio: '16:9', navigation: {scroll: true, touch: true, click: false}, countIncrementalSlides: false, highlightLanguage: 'bash', highlightStyle: 'tomorrow-night-blue'});">
+
+<!-- #ToDo: Write your slides in MarkDown here -->
+<textarea id="source">
+
+class: center, middle
+
+# Intro to Gradle
+
+---
+
+class: center, middle
+
+## What do you (think you) know about Gradle?
+
+---
+
+## Compiling Java Code
+
+Remember this?
+
+--
+
+```nohighlight
+$ javac Hello.java
+```
+
+<br>
+
+--
+
+Creates a new file `Hello.class` which can be run with:
+
+```nohighlight
+$ java Hello
+```
+
+---
+
+## Compiling With Dependencies
+
+`Hello.java` (in project root):
+
+```java
+class Hello {
+    public static void main(String[] args) {
+        System.out.println(En.message);
+    }
+}
+```
+
+--
+
+`En.java` (located in `messages/`)
+
+```java
+class En {
+    public static final String message = "Hello world";
+}
+```
+
+---
+
+## Compiling With Dependencies
+
+To compile and package `En.java`:
+
+```nohighlight
+$ javac En.java
+$ jar lib.jar En.class
+```
+<br>
+
+Creates a `lib.jar` file containing the classfile `En.class`
+
+--
+
+To compile `Hello.java`, which dependes on `lib.jar`:
+
+```nohighlight
+$ javac -cp "messages/lib.jar" Hello.java
+```
+<br>
+
+--
+
+**Whew! This seems like a lot of work! How can we ever manage compiling projects that consist of dozens (or even hundreds!) of classes and external dependencies?!**
+
+---
+
+## Gradle To The Rescue
+
+**Gradle** is a build tool primarily used in Java applications (though usable for other types of projects as well).
+
+<br>
+
+![Gradle logo](images/gradle.png)
+
+---
+
+## What Gradle Does
+
+- Manages project dependencies (local or remote)
+
+--
+
+- Uses build files written in Groovy
+
+--
+
+- Provides a DSL (domain-specific language) to streamline build config
+
+--
+
+- Is highly extensible via plugins
+
+---
+
+## About Groovy
+
+The Groovy language:
+
+--
+
+* Is object-oriented
+
+--
+
+* Runs on the JVM
+
+--
+
+* Has functional features (incl. closures)
+
+--
+
+* Is "more dynamic" than Java (can change classes via code like in JS)
+
+---
+
+## Gradle vs. Other Build Tools
+
+### Ant and Ivy
+
+**Ant** is a flexible, "opinionless" Java build tool configured via XML. It provides _no dependency management_, and is an Apache project.
+
+--
+
+**Ivy** provides dependency management for Any projects.
+
+--
+
+### Maven
+
+Also an Apache project, **Maven** uses the **project object model** to represent and carry out Java builds (configured via `pom.xml`). It also dictates project structure.
+
+---
+
+## Gradle vs. Other Build Tools
+
+Gradle builds upon concepts of other build tools to provide a better and more flexible build framework.
+
+Important Gradle differentiators:
+--
+
+- No XML
+
+--
+
+- Programmatic nature allows for more flexible, expressive configuration (configuration is code)
+
+--
+
+- Allows for multi-project builds
+
+---
+
+## An Example build.gradle File
+
+```groovy
+plugins {
+    id 'java'
+    id 'application'
+}
+
+mainClassName = 'App'
+
+dependencies {
+    compile 'com.google.guava:guava:23.0'
+    testCompile 'junit:junit:4.12'
+}
+
+repositories {
+    mavenCentral()
+}
+```
+
+---
+
+## Project Structure
+
+For Java projects, Gradle imposes the Maven project structure:
+
+<br>
+
+![Maven project structure](images/gradle-project-structure.png)
+
+---
+
+## Gradle Components
+
+A Gradle build has several components that can be configured:
+
+- **Tasks** are the fundamental "actions" of a build. They are what we ask Gradle to do for us (e.g. test, build, run, etc)
+
+--
+
+- **Plugins** are extensions that enable project-specific behavior, such as tasks specific to the project type (e.g. `bootRun` is provided by the `'org.springframework.boot'` plugin)
+
+--
+
+- **Dependencies** are the external libraries that your project uses. These can be local (via a JAR) or remote (via a repository)
+
+---
+
+## Tasks
+
+We interact with Gradle via tasks. For example, to run all of the tests in a Java project:
+
+```nohighlight
+$ gradle test
+```
+<br>
+--
+
+We can view available tasks this way:
+
+```nohighlight
+$ gradle tasks
+```
+<br>
+--
+
+Tasks consist of **configuration** and **action** blocks
+
+---
+
+## Task Actions
+
+Declare and add an action to a task (in `build.gradle`):
+
+```groovy
+task hello
+
+hello << {
+    println "hello world"
+}
+```
+
+--
+
+Run the task:
+
+```nohighlight
+$ gradle hello
+> Task :hello 
+hello world
+BUILD SUCCESSFUL in 2s
+1 actionable task: 1 executed
+```
+
+---
+
+## Task Actions
+
+Task actions are appended:
+
+```groovy
+task hello
+hello << { println "hello" }
+hello << { println "world" }
+```
+<br>
+--
+
+Each block `{ println "hello" }` is an example of a **closure** in Groovy. A closure is essentially an anonymous function. Be giving the `hello` task additional closures, we're telling it to run each function in sequence.
+
+---
+
+## Task Configuration
+
+Before a task executes its action blocks, it executes its **configuration blocks**
+
+```groovy
+task hello
+hello << { println "hello" }
+hello { println "Some setup stuff..." }
+```
+
+--
+
+```nohighlight
+$ gradle hello
+> Task :hello 
+> Configure project : 
+Some setup stuff...
+
+> Task :hello 
+hello
+
+BUILD SUCCESSFUL in 2s
+1 actionable task: 1 executed
+```
+
+---
+
+## Where Do Tasks Come From?
+
+--
+
+### Gradle Itself
+
+Gradle comes with some pre-defined tasks: `init`, `wrapper`, `components`, `dependencies`, `help`, and so on... 
+
+--
+
+### Plugins
+
+Tasks may also be provided by plugins. For example, the Java plugin provides: `test`, `build`, `run`, `jar`, `clean`, and many others.
+
+--
+
+### Project-Specific
+
+User-defined tasks, as we just demonstrated.
+
+---
+
+## Dependent Tasks
+
+Tasks can depend on one another.
+
+For example, running `gradle test` in a Java project results in the following tasks being executed:
+
+```nohighlight
+:compileJava
+:processResources
+:classes
+:compileTestJava
+:processTestResources
+:testClasses
+:test
+```
+
+---
+
+## Task Graph
+
+The full dependency picture is actually more complicated. When executing a task, Gradle must recursively create a **directed acyclic graph (DAG)** of dependent tasks.
+
+![Task graph](images/task-graph.png)
+
+---
+
+## Creating Dependent Tasks
+
+```groovy
+task hello
+hello << { println "hello" }
+
+task world { dependsOn hello }
+world << { println "world" }
+```
+
+Running `gradle world` will result in the `hello` task being run, followed by the `world` task.
+
+---
+
+## Alternatively...
+
+```groovy
+task hello << { println "hello" }
+
+task world (dependsOn: hello) << { println "world" }
+```
+
+---
+
+## Task Lifecycle Phases
+
+Gradle builds have three lifecycle phases:
+
+* **Initialization**: Decide which projects are supposed to be part of the build (for multi-build projects)
+
+--
+
+* **Configuration**: Tasks are assembled into an internal representation based on dependencies (the task DAG); set up variables and data structures need by task actions. This is when cofiguration blocks are run.
+
+--
+
+* **Execution**: Run build tasks in order. This is when action blocks are run.
+
+---
+
+## Tasks Are Objects
+
+So they have object-like behaviors:
+
+- Tasks have types (by default they are of type `DefaultTask`)
+
+--
+
+- Tasks have methods. The methods of `DefaultTask` are: `dependsOn`, `doFirst`, `doLast`, `onlyIf`
+
+--
+
+- Tasks have properties. The properties of `DefaultTask` are: `didWork`, `enabled`, `path`, `logger`, `logging`, `description`, `temporaryDir`
+
+--
+
+- Tasks can be extended. Some Gradle-provided tasks that you may extend are: `DefaultTask`, `Copy`, `Jar`, `JavaExec`
+
+---
+
+## Plugins
+
+**Plugins** provide a means of adding project-specific behavior to Gradle.
+
+--
+
+Plugins can:
+
+- Add new tasks
+
+--
+
+- Extend core objects (e.g. add new DSL elements)
+
+--
+
+- Apply specific configuration (e.g. add org-specific repositories, non-default build directories, etc)
+
+--
+
+In addition to built-in plugins like `'java'`, plugins are published at [plugins.gradle.org](https://plugins.gradle.org/)
+
+---
+
+## Plugin Usage
+
+To include a plugin in a project:
+
+```groovy
+plugins {
+    id 'java'
+    id 'application'
+    id "com.dorongold.task-tree" version "1.3"
+}
+```
+<br>
+--
+
+You may also see the "legacy" DSL syntax from time to time:
+
+```groovy
+apply plugin 'java'
+```
+
+---
+
+## Dependencies
+
+Projects using the Java plugin may define dependencies.
+
+--
+
+Dependencies:
+
+- May be remote (provided via a repository)
+
+--
+
+- May be local (provided via a JAR)
+
+--
+
+- Are recursively resolved by internal construction of a DAG, to find dependencies dependencies
+
+--
+
+- Have "scope" (more on this in a minute)
+
+--
+
+- Can be viewed by running `gradle dependencies`
+
+---
+
+## Dependency Scope
+
+Each dependency has a **scope** which determines which tasks require it. Tasks specify the scope in which they run.
+
+A scope is a configuration element defined by a plugin.
+
+--
+
+For Java projects, the most commonly used scopes are:
+
+- `compile`
+- `runtime`
+- `testCompile`
+- `testRuntime`
+- `archive`
+
+---
+
+## Delcaring Dependencies
+
+```groovy
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile(group: 'org.postgresql', name: 'postgresql', version: '42.1.4')
+	compile('org.springframework.security:spring-security-crypto')
+	testCompile('com.h2database:h2')
+	runtime('org.springframework.boot:spring-boot-devtools')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+```
+
+---
+
+## Resolving Dependencies
+
+One of the most commonly used remote repositories for resolving dependencies is the **Maven Central Repository** at [search.maven.org](https://search.maven.org/)
+
+--
+
+Gradle is able to pull in dependencies from Maven and Ivy repositories.
+
+--
+
+Many organizations host their own internal repositories for publishing and resolving org-specific dependencies
+
+
+</textarea>
+
+<script type="text/javascript" src="../js/remark-latest.min.js"></script>
+</body>
+</html>
