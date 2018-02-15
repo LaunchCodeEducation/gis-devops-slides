@@ -497,7 +497,7 @@ Dependencies:
 
 --
 
-- Are recursively resolved by internal construction of a DAG, to find dependencies dependencies
+- Are recursively resolved by internal construction of a DAG, to find dependencies of other dependencies
 
 --
 
@@ -559,6 +559,10 @@ Gradle is able to pull in dependencies from Maven and Ivy repositories.
 --
 
 Many organizations host their own internal repositories for publishing and resolving org-specific dependencies
+
+--
+
+**Note:** Remote dependencies are cached locally in `~/.gradle/`. If you're experiencing dependency issues, it can be useful to delete this directory in order to force Gradle to cleanly fetch all remote dependencies.
 
 
 </textarea>
