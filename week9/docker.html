@@ -47,6 +47,10 @@ class: center, middle
 
 * Essentially, a Linux container is a standalone Linux machine that is running on top of an existing Linux OS.
 
+--
+
+* Docker gets some of its magic from using a Union file systems, UnionFS, which operates by creating layers.
+
 ---
 
 ## Linux **Containers**
@@ -106,6 +110,44 @@ You would also have the ability to spin up other images:
 --
 
 * Immutability.  Create once, then throw away.
+
+--
+
+* No install setups.  Anyone can easily have the exact same setup running in prod.
+
+---
+
+## Union File Systems
+
+### VMs are BIG, bulky, and slow.  Docker is lightweight and fast.  WTF?
+
+--
+
+* UnionFS uses layers to provide **copy on write** storage.
+
+--
+
+* UnionFS excels when you assume that *most* files in a file system remain unchanged.
+
+---
+
+## Union File Systems
+
+### An Example 
+
+Imagine you have 10 CentOS containers running on your machine.  Here is what you know is true:
+
+--
+
+* Each CentOS container is looking at the exact same files in their virtual filesystem.
+
+--
+
+* Container A writes a new file to the `/home` directory.  Container A writes a new layer to the virtual filesystem.
+
+--
+
+* Only Container A sees the new layer.  The rest of the containers remain looking at the base image file system.
 
 ---
 
@@ -197,6 +239,131 @@ f91976ba8452  example   "/bin/bash" About a minute ago   Exited (0)   8 seconds 
 ```
 ---
 
+## Common Docker Challenges
+
+###**Pro** - Docker provides a completely isolated environment.  
+
+--
+
+* Docker provides fresh machine everytime.
+
+* Setup is entirely scripted.
+
+--
+
+###**Challenge** - Sharing things with a Docker container.
+
+--
+
+* What if you need to set environment variables for your app?
+
+--
+
+* What if you're working locally and you want the container to run the local version of your code?
+
+---
+
+## **Solving** Common Docker Challenges
+
+### Environment Variables
+
+* Environment variables can be injected into the container using the `-e VAR=VALUE` format on the `docker run` command.
+
+```
+docker run -e PORT=80 some_image
+```
+
+---
+
+## **Solving** Common Docker Challenges
+
+### Injecting Files
+
+* In development, use the `--mount` command to have a file inside of the container write directly through to a host file.
+
+```
+docker run --mount type=bind,source="$(pwd)"/build/libs,\
+target=/app
+```
+
+* This mount an executable jar file in `{project root}/build/libs` into the container at the `/app` directory.
+
+---
+
+## Common Docker Challenges
+
+###**Pro** - Docker environments are designed to run a single process.
+
+--
+
+* The machine setup stays relatively simple.
+
+--
+
+###**Challenge** - Running multi server systems. 
+
+
+* How would you run the web app as a Docker container and connect to the database or Elasticsearch?
+
+---
+
+## **Solving** Common Docker Challenges
+
+### Connecting Docker Containers
+
+Docker Compose allows you to connect multiple docker containers together.
+
+--
+
+* Docker Compose uses a config file to manipulate Docker's built in networking capabilities. 
+
+--
+
+* *Docker Compose allows you to spin up **entire applications** and not just individual machines* 
+
+---
+
+## **Solving** Common Docker Challenges
+
+### Docker Compose
+
+This a `docker-compose.yml` 
+
+```
+version: "2"
+services:
+  es:
+    image: elasticsearch
+  web:
+    image: prakhar1989/foodtrucks-web
+    command: python app.py
+    ports:
+      - "5000:5000"
+```
+
+---
+
+## **Solving** Common Docker Challenges
+
+### Breaking down the `docker-compose.yml`
+
+
+```
+version: "3.3"
+services: # list all of the containers
+  web:  
+    image: prakhar1989/foodtrucks-web
+    command: python app.py
+    ports:
+      - "5000:5000"
+```
+
+*is equivalent to*
+
+`$ docker run -p 5000:5000 example-image python.app.py`
+
+---
+
 ## Docker **Best Practices**
 
 ### Docker containers are designed to run one process.
@@ -246,6 +413,7 @@ f91976ba8452  example   "/bin/bash" About a minute ago   Exited (0)   8 seconds 
 
 ---
 
+---
 
 ### Common Docker Commands
 
@@ -256,6 +424,7 @@ There are several commands you need to know:
 * **`docker ps`**     - lists all available images
 * **`docker stop`**   - turns off a container
 * **`docker rm`**     - deletes an image
+* **`sudo docker exec -i -t docker_id /bin/bash`** - jump in shell of existing server
 * **`docker --help`** - look up all of the commands you don't know
 
 ---
