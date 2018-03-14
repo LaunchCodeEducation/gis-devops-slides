@@ -1,0 +1,193 @@
+<!DOCTYPE html><html lang=en><head><meta http-equiv=Content-Type content="text/html; charset=UTF-8"><meta name=viewport content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
+
+    <!-- #ToDo: Change Title for the presentation -->
+    <title>Certificates</title>
+    
+    </head>
+    
+    <!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
+    <body onload="var slideshow = remark.create({ratio: '16:9', navigation: {scroll: true, touch: true, click: false}, countIncrementalSlides: false, highlightLanguage: 'bash', highlightStyle: 'tomorrow-night-blue'});">
+    
+    <!-- #ToDo: Write your slides in MarkDown here -->
+<textarea id="source">
+
+class: center, middle
+
+# Certificate Authentication
+
+
+### Highly **Secure** Access to Websites, Servers, and Services 
+
+---
+
+## Certificates mean **Trust**
+
+* Certificates are based on public private key encryption another party to verify your identity.
+
+--
+
+* Every secure transaction online involves a certificate to verify that you are actually talking to the website (Amazon, Google, LaunchCode) that you think you are talking to.
+
+--
+
+* Certificates can also be used to verify the identity of users.  Highly secure because certificates are cryptographically sound (where as a username password combination can be guessed or cracked). 
+
+---
+
+## Certifcates: How exactly do they work?
+
+### *Trust has to start somewhere*
+
+--
+
+There are two typical scenarios where certificates are used:  
+
+--
+
+1) An organization wants to verify it's online presence.  
+
+--
+
+2) An organization wants to verify the identity of its user.
+
+---
+
+## Certificates for Identity
+
+For website certificates, well know Certificate Authorities (CAs) will vouch for an organization's identity.
+
+--
+
+For Example:
+
+--
+
+* Your buy a certificate from DigiCert for $100.  
+
+--
+
+* DigiCert needs to verify your identity so they send you a postcard via snail mail to verify the address of your organization.
+
+--
+
+* You complete the registration and DigiCert gives you a certificate that you can add to your website. 
+
+--
+
+* When people visit your website they will see that DigiCert vouches for your identity.
+
+--
+
+* Certificates are like credit cards!  If you lose one you have to let the CA know otherwise the certificate could be used on a malicious website to deceive your users.
+
+---
+
+## Certificates for Verification
+
+If an organization wants to verify the identity of its users, it will act as a certificate authority.  
+
+--
+
+For Example,
+
+--
+
+* The organization wants to verify users using a more secure method than username and password.
+
+--
+
+* The organization becomes a Certificate Authority and begins issuing certificates to the users of their system.
+
+(P.S.  Anyone can become a Certificate Authority.  Creation of certificates happens via the open source `openssl` library.)
+
+--
+
+* Users provide their certificate to authenticate to organizational systems.
+
+--
+
+(A PEM file used to access AWS is an example of certificate used to authenticate)
+
+---
+
+### What is a Certificate?
+
+--
+
+* A certificate is simply a **public key** with some extra information that can be verified by a private key.*
+
+--
+
+Format of X509 Certificates:
+```
+Version
+Certificate Serial Number
+Certificate Algorithm Identifier
+Issuer
+Validity Period
+Subject
+Public Key
+Certificate Authority Digital Signature
+```
+
+---
+
+## Breaking down a Certificate
+
+### Subject
+
+The name of the computer, user, network device, or service that the CA is vouching for (i.e. launchcode.org or mike@launchcode.org)
+
+### Issuer
+
+This is the Certificate Authority that issued the certificate.
+
+### Public Key
+
+There is a corresponding private key that is used to encrypt all traffic between the sources. 
+
+### Certificate Authority Digital Signature
+
+The Certificate Authority provides a hash of the certificate that can be verified against a public key from that Certificate Authority.
+
+---
+
+View a certificate from a website.
+
+---
+
+## Breaking down a certificate
+
+A `.pem` file is simply a Base64 encoding of a certificate!
+
+View a `.pem` file.
+
+---
+
+## Who to Trust?
+
+### *How do our computers know who to trust?*
+
+--
+
+The world as a whole has already decided who to trust by default.  You can choose to trust more or different Certificate Authorities.
+
+--
+
+Every computer, device, server, or Operating System comes with pre installed certificates of all of the major trusted Certificate Authorities around the world.
+
+--
+
+
+
+---
+
+#Questions?
+
+---
+
+
+</textarea>
+
+<script type="text/javascript" src="../js/remark-latest.min.js"></script></body></html>
+    
