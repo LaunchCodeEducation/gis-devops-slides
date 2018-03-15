@@ -17,3 +17,7 @@
 * [Class 1](week3/rest.html): RESTful web services
 * [Class 3](week3/elasticsearch1.html): ElasticSearch
 * [Class 4](week3/elasticsearch2.html): Kibana & ElasticSearch.js
+
+# Week 9
+
+* [Class 4](week9/oauth2.html): OAuth2
