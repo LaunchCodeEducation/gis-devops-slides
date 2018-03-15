@@ -1,0 +1,503 @@
+<!DOCTYPE html><html lang=en><head><meta http-equiv=Content-Type content="text/html; charset=UTF-8"><meta name=viewport content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
+
+    <!-- #ToDo: Change Title for the presentation -->
+    <title>Docker</title>
+    
+    </head>
+    
+    <!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
+    <body onload="var slideshow = remark.create({ratio: '16:9', navigation: {scroll: true, touch: true, click: false}, countIncrementalSlides: false, highlightLanguage: 'bash', highlightStyle: 'tomorrow-night-blue'});">
+    
+    <!-- #ToDo: Write your slides in MarkDown here -->
+<textarea id="source">
+
+class: center, middle
+
+# Intro to Docker
+
+
+### Incredibly Fast, Lightweight, version-controlled 
+
+###**Linux Containers** 
+
+---
+
+## Docker
+
+* Docker was founded an Open Source project in 2013 as a way to provide extremely light weight **Linux containers**.
+
+--
+
+* In 2015, Docker formed the Open Container Initiative as a means to provide open source governance to the spread of **Linux containers**.
+
+--
+
+* Docker (and Linux container technologies) are seeing widespread adoption across the inudstry and are used heavily in **Cloud Native** applications. 
+
+---
+
+## Linux **Containers**
+
+### What are they?
+
+--
+"A Linux® container is a set of processes that are isolated from the rest of the system, running from a distinct image that provides all files necessary to support the processes."
+
+--
+
+* Essentially, a Linux container is a standalone Linux machine that is running on top of an existing Linux OS.
+
+--
+
+* Docker gets some of its magic from using a Union file systems, UnionFS, which operates by creating layers.
+
+---
+
+## Linux **Containers**
+
+### An Example
+
+You have a CentOS EC2 Instance runnning on AWS with Docker installed.
+
+--
+
+This allows you to spin up a PostGIS container.
+
+--
+
+* The PostGIS container has its own image.
+--
+
+* The PostGIS container has its own processes.
+--
+
+* The PostGIS container exposes port 5432.
+---
+
+## Linux **Containers**
+
+### Example Continued
+
+You would also have the ability to spin up other images:
+--
+
+* An Elasticsearch image you could talk to on port 9300.
+--
+
+* An GeoServer image you could talk to on port 8080.
+--
+
+* A Node image for a microserver on port 8001.
+--
+
+---
+
+## Why **Linux Containers** and Docker?
+
+--
+
+### **Linux Containers** are everything we ever wanted VMs to be and more...
+
+--
+
+* Incredibly fast spin up time.  Docker prebakes images.
+--
+
+* Version Control.  Docker allows images to be scripted.  
+--
+
+* Replicable Environments.  Docker images spin up the same everytime.
+--
+
+* Immutability.  Create once, then throw away.
+
+--
+
+* No install setups.  Anyone can easily have the exact same setup running in prod.
+
+---
+
+## Union File Systems
+
+### VMs are BIG, bulky, and slow.  Docker is lightweight and fast.  WTF?
+
+--
+
+* UnionFS uses layers to provide **copy on write** storage.
+
+--
+
+* UnionFS excels when you assume that *most* files in a file system remain unchanged.
+
+---
+
+## Union File Systems
+
+### An Example 
+
+Imagine you have 10 CentOS containers running on your machine.  Here is what you know is true:
+
+--
+
+* Each CentOS container is looking at the exact same files in their virtual filesystem.
+
+--
+
+* Container A writes a new file to the `/home` directory.  Container A writes a new layer to the virtual filesystem.
+
+--
+
+* Only Container A sees the new layer.  The rest of the containers remain looking at the base image file system.
+
+---
+
+## Docker - How it works...
+
+--
+
+###**First:** Dockerfile 
+
+* A script that specifies the base image (Linux flavor) and what should be installed. 
+
+--
+
+###**Second:** Image 
+
+* `docker build` "prebakes" your Dockerfile as an image so that it can be spun up quickly. 
+
+--
+
+###**Third:** Container
+
+* `docker run` creates a Linux **container** based on your image.
+
+---
+
+## **First:** Dockerfile
+
+`Dockerfile` is the blue print for the Image that is used to create a container.
+
+```
+# the base image
+FROM centos:7
+
+# install commands
+RUN yum -y update
+RUN rpm -ivh http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+
+# specify the port to be exposed
+EXPOSE 8080
+
+
+# run the application
+CMD["python", "-m SimpleHTTPServer"]
+```
+
+---
+
+## **Second:** Image
+
+`docker build` runs the Dockerfile and "prebakes" an image.
+
+```
+$ docker build --tag example .
+
+Sending build context to Docker daemon  68.61kB
+Step 1/4 : FROM centos:7
+7: Pulling from library/centos
+af4b0a2388c6: Pull complete 
+Digest: sha256:6247c7082d4c86c61b00f7f2e3edbf7f072a24aa8edc28b5b68b3de3101bc1ce
+Status: Downloaded newer image for centos:7
+ ---> ff426288ea90
+ Step 2/4 : RUN yum -y update
+ ...
+```
+
+```
+$ docker images
+REPOSITORY  TAG                 IMAGE ID            CREATED             SIZE
+example     latest              6bb88ddf2b57        4 minutes ago       374MB
+```
+
+---
+
+## **Third:** Container
+
+`docker run` starts up a container of the specified image
+
+```
+$ docker run -i -t example
+[root@f91976ba8452 /]# 
+[root@f91976ba8452 /]# ls
+anaconda-post.log  bin  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+```
+
+```
+$ docker ps 
+CONTAINER ID  IMAGE     COMMAND     CREATED              STATUS    PORTS             NAMES
+f91976ba8452  example   "/bin/bash" About a minute ago   Exited (0)   8 seconds ago   amazing_brown
+```
+---
+
+## Common Docker Challenges
+
+###**Pro** - Docker provides a completely isolated environment.  
+
+--
+
+* Docker provides fresh machine everytime.
+
+* Setup is entirely scripted.
+
+--
+
+###**Challenge** - Sharing things with a Docker container.
+
+--
+
+* What if you need to set environment variables for your app?
+
+--
+
+* What if you're working locally and you want the container to run the local version of your code?
+
+---
+
+## **Solving** Common Docker Challenges
+
+### Environment Variables
+
+* Environment variables can be injected into the container using the `-e VAR=VALUE` format on the `docker run` command.
+
+```
+docker run -e PORT=80 some_image
+```
+
+---
+
+## **Solving** Common Docker Challenges
+
+### Injecting Files
+
+* In development, use the `--mount` command to have a file inside of the container write directly through to a host file.
+
+```
+docker run --mount type=bind,source="$(pwd)"/build/libs,\
+target=/app
+```
+
+* This mount an executable jar file in `{project root}/build/libs` into the container at the `/app` directory.
+
+---
+
+## Common Docker Challenges
+
+###**Pro** - Docker environments are designed to run a single process.
+
+--
+
+* The machine setup stays relatively simple.
+
+--
+
+###**Challenge** - Running multi server systems. 
+
+
+* How would you run the web app as a Docker container and connect to the database or Elasticsearch?
+
+---
+
+## **Solving** Common Docker Challenges
+
+### Connecting Docker Containers
+
+Docker Compose allows you to connect multiple docker containers together.
+
+--
+
+* Docker Compose uses a config file to manipulate Docker's built in networking capabilities. 
+
+--
+
+* *Docker Compose allows you to spin up **entire applications** and not just individual machines* 
+
+---
+
+## **Solving** Common Docker Challenges
+
+### Docker Compose
+
+This a `docker-compose.yml` 
+
+```
+version: "2"
+services:
+  es:
+    image: elasticsearch
+  web:
+    image: prakhar1989/foodtrucks-web
+    command: python app.py
+    ports:
+      - "5000:5000"
+```
+
+---
+
+## **Solving** Common Docker Challenges
+
+### Breaking down the `docker-compose.yml`
+
+
+```
+version: "3.3"
+services: # list all of the containers
+  web:  
+    image: prakhar1989/foodtrucks-web
+    command: python app.py
+    ports:
+      - "5000:5000"
+```
+
+*is equivalent to*
+
+`$ docker run -p 5000:5000 example-image python.app.py`
+
+---
+
+## Docker **Best Practices**
+
+### Docker containers are designed to run one process.
+
+--
+
+* The CMD line in your Dockerfile indicates the one process that should be running.
+
+--
+
+* The container should only have one responsibility, on main job.
+
+--
+
+* Using **Docker Compose** multiple Docker containers can be linked together (i.e. web app container and a database container).: 
+
+---
+
+## Docker **Best Practices**
+
+### Docker containers are designed to be immutable.
+
+--
+
+* All of the container setup is scripted in the Dockerfile.
+
+--
+
+* Immutability means a consistently known state.  Update the Dockerfile, throw away all of your containers and spin up new ones. 
+
+
+---
+
+## Docker **Best Practices**
+
+### Avoid storing application data on the Docker container.  
+
+--
+
+* Remember Docker is essentially version controlling the file system.  It increases the size of your container.
+
+--
+* In development, use the `mount` flag to write or reference directly to the host machine. 
+
+--
+* In production, logs should stream to a log aggregation service.
+
+---
+
+---
+
+### Common Docker Commands
+
+There are several commands you need to know:
+
+* **`docker build`**  - creates an image based on a Dockerfile
+* **`docker run`**    - creates a container based on an image
+* **`docker ps`**     - lists all available images
+* **`docker stop`**   - turns off a container
+* **`docker rm`**     - deletes an image
+* **`sudo docker exec -i -t docker_id /bin/bash`** - jump in shell of existing server
+* **`docker --help`** - look up all of the commands you don't know
+
+---
+
+## Docker Commands 
+
+###`docker build` 
+
+Options
+
+* `docker build --tag someName`  - specifies "someName" as the name of your image.
+
+--
+
+Other useful commands:
+* `docker images` - lists all images currently on your machine.
+* `docker rmi someName` - deletes the image named "someName"
+
+---
+
+## Docker Commands 
+### `docker run`
+
+Options
+
+`docker run someName`   - Create a container from the someName image.
+
+--
+
+`docker run -i -t someName`   - Start a container with the terminal as the main process
+
+--
+
+`docker run -p 80:8080 someName`   - Publish port 8080 of the container on port 80 of 127.0.0.1 (the machine running Docker) 
+
+--
+
+`docker run --name myContainer someName` - Create a container named "myContainer"
+
+---
+
+## Docker Commands
+
+### Other helpful commands
+
+-- 
+
+`docker ps` - list all running containers
+
+--
+
+`docker ps -a` - list all containers
+
+--
+
+`docker stop someName` - stop the container named "someName"
+
+--
+
+`docker rm someName` - delete the container named "someName"
+
+--
+
+`docker logs someName` - view all of the written to STDOUT for "someName"
+
+---
+
+#Questions?
+
+---
+
+
+</textarea>
+
+<script type="text/javascript" src="../js/remark-latest.min.js"></script></body></html>
+    
