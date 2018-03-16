@@ -22,7 +22,11 @@ class: center, middle
 
 ## Certificates mean **Trust**
 
-* Certificates are based on public private key encryption another party to verify your identity.
+* Certificates are based on public key encryption.
+
+--
+
+* Certificates allow one party to verify the identity of another party.
 
 --
 
@@ -36,7 +40,6 @@ class: center, middle
 
 ## Certifcates: How exactly do they work?
 
-### *Trust has to start somewhere*
 
 --
 
@@ -49,6 +52,12 @@ There are two typical scenarios where certificates are used:
 --
 
 2) An organization wants to verify the identity of its user.
+
+--
+
+### **Trust** has to start somewhere
+
+* Certificates are created via open source software like `openssl`.  Anyone can create a certificate.  It's all about who you trust.
 
 ---
 
@@ -96,17 +105,15 @@ For Example,
 
 --
 
-* The organization becomes a Certificate Authority and begins issuing certificates to the users of their system.
-
-(P.S.  Anyone can become a Certificate Authority.  Creation of certificates happens via the open source `openssl` library.)
+* The organization becomes a begins issuing certificates to the users of their system.
 
 --
 
-* Users provide their certificate to authenticate to organizational systems.
+* In order to access systems, users must present their certificate to verify their identity.
 
 --
 
-(A PEM file used to access AWS is an example of certificate used to authenticate)
+* Anyone can become a Certificate Authority.  Creation of certificates happens via the open source `openssl` library.
 
 ---
 
@@ -134,33 +141,18 @@ Certificate Authority Digital Signature
 
 ## Breaking down a Certificate
 
-### Subject
+**Subject** - The name of the computer, user, network device, or service that the CA is vouching for (i.e. launchcode.org or mike@launchcode.org)
 
-The name of the computer, user, network device, or service that the CA is vouching for (i.e. launchcode.org or mike@launchcode.org)
+**Issuer** - This is the Certificate Authority that issued the certificate.
 
-### Issuer
+**Public Key** - There is a corresponding private key that is used to encrypt all traffic between the sources. 
 
-This is the Certificate Authority that issued the certificate.
-
-### Public Key
-
-There is a corresponding private key that is used to encrypt all traffic between the sources. 
-
-### Certificate Authority Digital Signature
-
-The Certificate Authority provides a hash of the certificate that can be verified against a public key from that Certificate Authority.
+**Certificate Authority Digital Signature** - The Certificate Authority provides a hash of the certificate that can be verified against a public key from that Certificate Authority.
 
 ---
 
 View a certificate from a website.
-
----
-
-## Breaking down a certificate
-
-A `.pem` file is simply a Base64 encoding of a certificate!
-
-View a `.pem` file.
+![](images/launchcode_certificate.png)
 
 ---
 
@@ -170,15 +162,74 @@ View a `.pem` file.
 
 --
 
-The world as a whole has already decided who to trust by default.  You can choose to trust more or different Certificate Authorities.
+The world as a whole has already decided who to trust by default.  
 
 --
 
-Every computer, device, server, or Operating System comes with pre installed certificates of all of the major trusted Certificate Authorities around the world.
+* Every computer, device, server, or Operating System comes with pre installed certificates of all of the major trusted Certificate Authorities around the world.
 
 --
 
+* You can choose to trust additional certificate authorities.
 
+--
+
+* You can generate certificates and have those certficates be trusted by your browser.
+
+---
+
+## A quick word on Cryptography
+
+1. For thousands of years, the world has relied on **symmetric** cryptography (a shared secret between two parties). 
+
+--
+
+2. Now the world uses **assymetric** cryptography (also known as `public-key cryptography`).
+
+--
+
+3. In **assymetric** cryptography, one key is used for encrypting (public key) and another key is used for decrypting (private key). 
+
+--
+
+4. **assymetric** cryptography is computationally expensive.  Typically, it is only used to establish a **symmetric** key that is shared.
+
+
+---
+
+## How your Browser trusts
+
+1. Your browser downloads the certificate from a website. The certificate is signed with the private key of a trusted certificate authority.
+
+--
+
+2. Your browser checks to make sure the signature of the certificate can be decrypted using one of the trusted certficates factory installed on the machine. 
+
+--
+
+3. Your browser verifies that the URL on the certificate matches the URL the browser is visiting.
+
+--
+
+4. Your browser generates a symmetric key that can be used to encrypt all traffic between the browser and the server.  The symmetric key is encrypted with the public key from the certifcate and sent to the server.
+
+---
+
+## How your Server trusts
+
+Certificates can also be used to identify and authorize users.
+
+--
+
+* Every user is granted a certificate signed by a certificate authority created by an organization.
+
+--
+
+* All certificates that are allowed to access a server are stored in a `truststore` on that server.
+
+--
+
+* When you visit a site, your browser presents a certificate.  The server verifies that the certificate is signed and not expired.
 
 ---
 
