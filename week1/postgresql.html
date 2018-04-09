@@ -20,9 +20,17 @@ class: center, middle
 ## Lightning SQL Review
 
 * Databases
+--
+
 * Tables
+--
+
 * Columns
+--
+
 * Constraints
+--
+
 * SELECT, INSERT, UPDATE, DELETE
 
 ---
@@ -30,17 +38,33 @@ class: center, middle
 ## Postgresql
 
 * Is a Relational Database that uses SQL
+--
+
+* What does Relational mean?
+--
+
 * It is free to and open source with thousands of contributors
+
+--
 * It's going to store our data!
+--
 
 ---
 
 ## Databases AND Schemas
 
 * Create Database
+--
+
 * Create Schemas inside the Database
+--
+
 * Create Tables inside the Schema
+--
+
 * Reasons to use Schemas
+--
+
   * To allow many users to use one database without interfering with each other.
   * To organize database objects into logical groups to make them more manageable.
   * Third-party applications can be put into separate schemas so they cannot collide with the names of other objects.
@@ -49,9 +73,18 @@ class: center, middle
 
 ## psql CLI
 
+* CLI = command line interface
+--
+
 * Allows you to run postgresql commands on a database
+--
+
 * You can Create, Modify, Update, Delete anything on a database
+--
+
 * \h alter - provides help for ALTER command
+--
+
 * \q - quits psql program
 
 ---
@@ -65,14 +98,20 @@ class: center, middle
 ## Database Migrations
 
 * When you do the below... as part of a build/deployment
+--
+
   * create a database
   * alter table(s), column(s), constraint(s)
   * insert data
   * translate data
 
 * The database changes have to be rolled out with the new code files changes
-  * The code won't work without an updated data source
-  * Like deployments migrations are named/numbered
+--
+
+* The code won't work without an updated data source
+--
+
+* Like deployments, migrations are named/numbered
 
 ---
 
@@ -89,6 +128,5 @@ class: center, middle
 
 * [https://education.launchcode.org/gis-devops/walkthroughs/#Setup](https://education.launchcode.org/gis-devops/walkthroughs/#Setup)
 
----
 
 </textarea><script type="text/javascript" src="../js/remark-latest.min.js"></script></body></html>
