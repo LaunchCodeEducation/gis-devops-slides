@@ -34,22 +34,29 @@ class: center, middle
 ---
 
 ## Meet Charlie the Robot
-![Charlie|250x250](charlie-the-robot.jpg)
 * Charlie only speaks HTTP
+![Charlie|250x250](charlie-the-robot.jpg)
+
 
 ---
 
 ## A few things to know about Charlie the Robot
+--
 
 * Request Response - You request a resource.  It returns the resource.  That's it.
+--
+
 * Structured Requests - Just like mailing a letter, there is specific data that you have to put in specific places.
-* Number Codes - The robot does not know any words. It just returns resources and numbers.
+--
+
+* Number Codes (status) - The robot does not know any words. It just returns resources and numbers.
 
 ---
 
-## Request Response
+## Request
 
 * When you type `http://localhost:63342/gis-devops-slides/week1/day5.html`, the browser produces this request:
+--
 
 ```
 Request URL:http://localhost:63342/gis-devops-slides/week1/day5.html?_ijt=uun1m30tcspl4il93ipl443pah
@@ -65,27 +72,6 @@ If-Modified-Since:Mon, 15 Jan 2018 22:15:13 GMT
 Upgrade-Insecure-Requests:1
 User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36
 ```
-
----
-
-## Breaking down the request
-
-* `http://education.lau.....`  - get the resource using the HTTP protocol.
-* `GET` - send me data.
-* `Accept:text/html,application/xhtml+xml` - only send me html or xhtml.
-* ...
-```
-Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
-Accept-Encoding:gzip, deflate, br
-Accept-Language:en-US,en;q=0.9
-Cache-Control:max-age=0
-Connection:keep-alive
-Cookie:optimizelyEndUserId=oeu1502034597292r0.21035548100896806; optimizelySegments=%7B%227282390156%22%3A%22false%22%2C%227252930080%22%3A%22direct%22%2C%227276750292%22%3A%22gc%22%2C%227233730390%22%3A%22none%22%7D; optimizelyBuckets=%7B%7D; Idea-2fdbf3fb=001be010-f245-4c28-9a8f-91710cd3abde
-Host:localhost:63342
-If-Modified-Since:Mon, 15 Jan 2018 22:15:13 GMT
-Upgrade-Insecure-Requests:1
-User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36
-    ```
 
 ---
 
@@ -135,7 +121,7 @@ A message body is only required on an HTTP request when attempting to update dat
 * ... there's about 30 more ...
 
 ---
-## HTTP Message Response
+## Response
 
 * The server sends a response after processing the HTTP Request.
 
@@ -150,7 +136,9 @@ X-Frame-Options:SameOrigin
 x-xss-protection:1; mode=block
 
 Message Body
-...
+<html>
+    <body>A really cool website</body>
+</html>
 ```
 
 ---
@@ -190,13 +178,29 @@ To tell you about the operation, the server communicates in numbers grouped by r
 
 ---
 
-## Message Body - json
+## Message Body
+
+* Can be HTML, JSON, images, css...
+
+---
+
+## JSON
+--
 
 * json - javascript object notation
-* arrays and maps holding data ... with a few exceptions
-    * in json, keys in a map must be written with double quotes
-    * in json, values can be represented as a string, number, json object, an array, boolean, or null.
-    * use json.parse to convert json into workable javascript.
+--
+
+* arrays and objects(hashes) holding data ... with a few exceptions
+--
+
+* keys in a object must be written with double quotes
+--
+
+* values can be represented as a string, number, json object, an array, boolean, or null
+--
+
+* `json.parse()` is used to convert json into workable javascript objects
+--
 
 ```
 var json = {"key1": "value1", "key2": ["option1", "option2"]}
@@ -222,5 +226,11 @@ Post route data in JSON format
 
 ```curl -X POST --header "Content-Type: application/json" --data '{"<key>":"<value>">}' http://localhost:8080/routes ```
 
+---
+
+## POSTMAN
+
+- Postman is a GUI program that allows you to make, execute, save, and edit HTTP requests
+- [https://www.getpostman.com/](https://www.getpostman.com/)
 
 </textarea><script type="text/javascript" src="../js/remark-latest.min.js"></script></body></html>
