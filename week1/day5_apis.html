@@ -27,10 +27,11 @@ class: center, middle
 
 ---
 
-## Introducing GeoJSON
+## GeoJSON
 
 * Format standardized in 2007.
 * JSON code written to a specific format to comply with the standard.
+--
 
 ```
 { "type": "FeatureCollection",
@@ -41,38 +42,46 @@ class: center, middle
       "coordinates": [102.0, 0.5]
       },
       "properties": {
-        "prop0": "value0"
+        "name": "St Louis Lambert Int Airport",
+        "abreviation": "STL"
       }
     },
-   ]
- }
+]}
 ```
 
 ---
 
 ## Breaking GeoJSON Down
-#### FeatureCollection
+FeatureCollection
+--
+
 * `Type` - `FeatureCollection`
     * `features` - List of features
         * `geometry` - A Point, Linestring, or Polygon.
         * `properties` - Data about the location on the map.
+--
 
-#### MultiGeometry
+MultiGeometry
 * `Type` - `MultiGeometries`
     * `geometries` - List of geometries (like a political border)
+    * contain multiple lines or multiple polygons
 
 ---
 
-## FeatureCollections
+## Geometry Types
+* Point     - a spot on the map (one coordinate)
+--
 
-* Allows you to send data about multiple features on a map.
-* Each feature has a list of properties that provide additional data about the Feature.
+* LineString - a line drawn across a map (multple coordinates)
+--
 
-What type of features?
+* Polygon    - a series of points that enclose an area (multple coordinates)
+--
 
-    * Points     - a set of coordinates on the map
-    * LineString - a line drawn across a map
-    * Polygon    - a series of points that enclose an area
+* MultiPolygon - you guessed it, multiple polygons that makeup one feature (like the shapes of the USA)
+--
+
+* [Examples here](https://macwright.org/2015/03/23/geojson-second-bite#geometry)
 
 ---
 

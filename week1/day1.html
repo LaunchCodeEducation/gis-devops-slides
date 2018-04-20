@@ -1,7 +1,11 @@
 <!DOCTYPE html><html lang=en><head><meta http-equiv=Content-Type content="text/html; charset=UTF-8"><meta name=viewport content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
 
 <title>Day 1</title>
-
+<style>
+  .remark-slide-content img.graphic {
+      width: 450px !important;   
+  }
+</style>
 </head>
 
 <!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
@@ -17,20 +21,31 @@ class: center, middle
 
 ---
 
-## Gitlab.com
+## Gitlab
 
-* Web application for managing and collaborating on git repos
-* Very similar to github
-* You can host your own gitlab inside your own network
-* That is appealing to security focused organizations
+* Is an open source **git repository** manager
+--
+
+* You can install it yourself and have your own "gitlab", [see this](https://about.gitlab.com/installation/) 
+--
+
+* Or you can use [gitlab.com](gitlab.com) in a similar way you would use github.com
+--
 
 ---
 
 ## Gitlab compared to Github
+--
+
+* Gitlab is open source and you can setup your own internal gitlab
+--
 
 * Pull Requests are called Merge Requests
-* You can have private projects for free accounts
-* We are using a free repo for our work in this class
+--
+
+* Free accounts can have private repos (Gitlab.com compared to Github.com)
+--
+
 * There are a few other minor differences, but nothing that should cause you any confusion
 * For a detailed list of differences see [https://about.gitlab.com/comparison/](https://about.gitlab.com/comparison/)
 
@@ -49,24 +64,55 @@ class: center, middle
 
 1. Go to gitlab.com in your web browser
 2. Create an account (create **new one** or create **using Github account**)
-3. Create an SSH key by following [these instructions](https://gitlab.com/help/ssh/README)
-4. Have instructor add you to certain groups
+3. Create an SSH key by following [these instructions](https://gitlab.com/help/ssh/README) (DON'T enter a pass phrase when prompted. Hit enter.)
+4. Send your gitlab username to the instructor so you can be added to certain groups
 5. Browse around the gitlab.com: groups, projects, settings...
 6. Clone a repo to make sure everything is setup correctly
 
 ---
 
 ## Git command review
+--
 
-* fork a repo - no a git command for this, but very useful
+* fork a repo - not an actual git command for this, but very useful
+--
+
 * git clone https://repo-url
+--
+
 * git status
+--
+
 * git checkout branch-name
-* git add *
+--
+
+* git add * or git add . `or` git add specific-filename.txt
+--
+
 * git commit -m "a most accurate message"
+
+---
+
+## More Git Commands
+
 * git push
+--
+
 * git pull
+--
+
 * git fetch
+--
+
+* git branch `and` git branch -a
+--
+* gite remote
+--
+
+* git remote show origin
+--
+
+* git remote add upstream url-of-a-repo
 
 ---
 
@@ -77,42 +123,71 @@ class: center, middle
 ---
 
 ## Intellij Refresher
- * We will use Intellij Community Edition
- * We will also use JDK 9
- * Create a new project
- * Check JDK version in Intellij
- * Mark folders as src, test, lib, excluded...
- * Run your code
- * Run your tests
- * How to save files
+--
 
----
+* We will use Intellij Community Edition (It's free!)
+--
 
-## Intellij Shortcuts
- * Generate - Ctrl Enter
- * Search for file  - Command shift o
- * Search for class - Command o
- * Recently opened - Command e
- * Shortcut menu - Command j
- * Code folding - Command shift - and +
- * Intentions Menu - Alt + Enter
- * Do you have any tips you want to share?
+* We will also use JDK 8
+--
+
+* Create a new project
+* Check JDK version in Intellij
+* Mark folders as src, test, lib, excluded...
+* Run your code
+* Run your tests
+* How to save files (they save automatically unless you turn that off)
 
 ---
 
 ## Intellij Tips
- * Open multiple files by splitting vertically or horizontally
- * Middle click or CMD click to go to source of a class or method
- * How to adjust font, colors, themes
- * Show method parameter name hints
- * Intentions Menu - Will solve all your problems
- * Do you have any tips you want to share?
+--
+
+* Ctrl Enter - Generate menu
+--
+
+* Command shift o - Search for file
+--
+
+* Command e - recently opened files
+--
+
+* Command j - shows you a shorcut menu
+--
+
+* Command shift - and + - expands for collapses code folding
+--
+
+* Command / - adds // comment in front of selected lines (removes if already present)
+--
+
+* Alt + Enter - Intentions menu (offers to solve problems for you)
+--
+
+
+---
+
+## Intellij Tips pt2
+--
+
+* Open multiple files by splitting vertically or horizontally
+--
+
+* Middle click or CMD click to go to source of a class or method
+--
+
+* Show/hide method parameter name hints
+--
+
+* Do you have any tips you want to share?
+
 ---
 
 ## Java Project Structure Conventions
+--
 
 * lib - contains jar files
-* out - the compiled class files
+* out/build - the compiled class files
 * src
   * main - java sources files
   * test - test java source files
@@ -120,11 +195,18 @@ class: center, middle
 ---
 
 ## Refactoring
+--
 
 * Changing code without changing its external behavior
-* Whey do you want to do this?
+* When do you want to do this?
+--
+
 * Better techniques come along
-* New libraries are discovered
+--
+
+* New requirements must be met
+--
+
 * The presence of "code smells"
   * Duplication
   * Bad naming conventions
@@ -132,41 +214,75 @@ class: center, middle
 ---
 
 ## Examples of Refactoring
+--
 
 * Renaming classes or methods
+--
+
 * Moving methods to a different class
+--
+
 * Moving classes to a different package
+--
+
 * Using a new sorting algorithm
+--
+
 * Using a feature in the language, that the previous coder didn’t know about
+--
+
+* Validation rules need to change based on new requirements
 
 ---
 
 ## After a Refactor
 
 * How do we know everything still work?
+--
+
 * We can give it the ol eye ball test... Looks good to me. Ship it!
-* Manually test the application a few times
-* Run the automated tets!
+--
+
+* Manually test the application a few times... I don't see any bugs. Ship it!
+--
+
+* Run the automated tests!... uh oh that thing I forgot about is broken :(
+
+---
+
+<img class="graphic" src="../images/ship-it-revert.gif">
 
 ---
 
 ## Automated Testing
+--
 
 Automated tests are code files that utilize all the features of your code
+--
+
 * Your classes are instantiated
-* The methods are executed
+--
+
+* Certain methods are executed (hopefully most of them)
+--
+
 * All in specific order to insure they all do what they are supposed to
 
 ---
 
 ## Benefits of Automated Tests
+--
 
 * They verify that the code functions as it should
   * All good here
   * Oops, I just broke something with that last change
+--
+
 * The tests themselves are documentation on what the code should do
   * Because the tests demonstrate proper usages of the code
   * With all the required inputs and expected outputs
+--
+
 * Unlike in code comments the tests can’t become stale
   * Tests will fail if the code behavior changes
 
@@ -175,9 +291,15 @@ Automated tests are code files that utilize all the features of your code
 ## Unit Test
 
 A specific type of automated test.
+--
+
 What is a “unit”?
-* The smallest testable unit of work
+--
+
+* The **smallest testable** unit of work
   * Most likely that is a function, but not always
+--
+
 * A single, clearly stated, desired behavior
   * Breaking it down this way makes is easier to find bugs when issues arise
 
@@ -186,42 +308,69 @@ What is a “unit”?
 ## Unit of Work Examples
 
 A single, clearly stated, desired behavior
+--
+
 * Method returns false if passed an empty array
+--
+
 * Method throws exception if passed a negative number
+--
+
 * Class constructor properly creates object when passed required parameters
 
 ---
 
 ## Best Practices
+--
 
 * Test should be deterministic
+--
+
   * Given the same starting state, the test will always have the same result
   * A test that passes “most of the time” is not a good test.
-* Grouped together properly
+--
+
+* Grouped together properly and focused
   * Don’t test totally unrelated things in the same test method or even the same test file
+--
+
 * Tests should pass before committing code
+--
+
 * Don’t test getters and setters
 
 ---
 
 ## Writing a Unit Test
+--
 
 The AAA's method helps to guide us
+--
+
 * Arrange
   * Variables that you will need
+--
+
 * Act
   * Call method(s)
+--
+
 * Assert
   * Check for specific results
 
 ---
 
 ## Unit Test Components
+--
 
 * Test
   * A single test function
+--
+
 * Fixture
   * A class file containing one or more test functions
+--
+
 * Test Runner
   * A library that executes the tests and provides a report
   * For us this will be a library called JUnit
@@ -235,21 +384,24 @@ A Java library that provides classes, methods, and assertions for organizaing an
 ---
 
 ## JUnit Annotations
+--
 
 * @Fixture
+--
+
 * @Test
+--
+
 * @Before
+--
+
 * @After
+--
+
 * @BeforeClass
+--
+
 * @AfterClass
-
----
-
- 
-## Testing for Failure
-
-* fail("If test gets here, then it should fail. Exception should have been thrown before.")
-* @Test(expect = IndexOutOfBoundsException.class)
 
 ---
  
