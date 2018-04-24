@@ -13,138 +13,283 @@
 class: center, middle
 
 # Day 2
-# Agile, Gradle, TDD
-
----
-
-## Agile
-
-* [Slides and Lesson Content](https://education.launchcode.org/gis-devops/week01/day2/)
+# Gradle, TDD
 
 ---
 
 ## Building Your Application
 
-What does it take to build your application?
+What does it take to build your Java application?
+--
+
 * Your Java code has to be compiled
+--
+
 * Finding and organizing code files you didn’t write (third party files)
+--
+
 * CSS, HTML, and JavaScript if you are making a web app
+--
+
 * Misc files: csv, database, settings...
 
 ---
 
 ## Third Party Libraries
+--
 
-* Have to be downloaded and referenced in your code  
-* Could be...
-  * Common logic used by all your team’s projects
-  * Third party libraries for
-      * Charts
-      * Database framework
-      * MVC framework
-      * etc
+* Have to be downloaded and referenced in your code 
+--
+
+* The libraries could be...
+--
+
+* Common logic used by all your team’s projects
+--
+
+* Third party libraries for
+    * Charts
+    * Database framework
+    * MVC framework
+    * Test runners
+    * etc
 
 ---
 
 ## Transivite Dependencies
+--
 
-Some libraries require other libraries to work
+* Some libraries require other libraries to work
+--
+
 * You want to use library A
-  * Library requires library B and C
-  * You have to include libraries A, B and C in your project
+--
+
+* Turns out Library A requires library B and C
+--
+
+* You have to include libraries A, B and C in your project
+--
+
 * This can be hard to manage when you use a lot of libraries
-* Also keeping your libraries up to date is tedious
+--
+
+  * Also keeping your libraries up to date is a pain as well
+  * Not only up to date, but everyone using the same verisons
 
 ---
 
 ## Build Artifacts
+--
 
 * File or files that result form your project being built
+--
+
 * .class files compiled by javac command
+--
+
 * .jar files created by jar commnad
-* misc other files
-* run your tests
+--
+
+* test results
+
+
+---
+
+## What are our current build tools?
+--
+
+- Intellij
+- Javac
 
 ---
 
 ## Hello Gradle
 
-* Manages your project artifacts
-  * The files created when your project is built
-    * Jar files, War files
-  * Artifacts can also be any type of file
+* Gradle is a **Build Automation System** (straight from wiki page)
+--
+
+* Can be configured to...
+  * Build your project
+  * Run your tests
+  * Deploy your code
+  * Analyze your code
+  * Creates your project artifacts
+  * Download and Manage Dependencies
 
 ---
 
-## More Gradle
+## Gradle - Dependency Management
+--
 
 * Manages Dependencies (libraries)
-  * Correct version of the library
-  * Transitive libraries
-  * Dependency conflict resolution
-  * Repository where libraries are stored
-    * All the jar files have to be stored somewhere
-    * A repository catalogs the libraries by name and version
+--
+
+* Correct version of the library
+--
+
+* Transitive libraries
+--
+
+* Dependency conflict resolution
+--
+
+* Repository where libraries are stored (remote and locally)
+--
+
+  * All the jar files have to be stored somewhere
+  * A repository catalogs the libraries by name and version
 
 ---
 
 ## How to Configure Gradle
+--
 
-* Add tasks in build.gradle
-* Use plugins
+* build.gradle <- the key to it all
+--
+ 
+  * contains the dependencies you want
+--
+  
+  * lists the tasks configurations you need
+--
+
+  * lists the plugins you want to use
+--
+
+* Gradle plugins add **tasks** to gradle
   * Java plugin - apply plugin: "java"
   * Test plugin
   * [default plugins](https://docs.gradle.org/current/userguide/standard_plugins.html)
   * [third party plugins](https://plugins.gradle.org/)
-* Put your source files in the right places
 
 ---
 
 ## How to use Gralde with Intellij
+--
 
 * You can create a project with Gradle ready to use
+--
+
 * Shows gradle tasks in a special window
+--
+
 * Shows dependencies listed in the gradle file
+--
+
 * You can search for and add dependencies via Generate command
+--
+
 * Going forward we will use gradle for our Java projects
 
 ---
 
 ## TDD
+--
 
 * Test Driven Development
-  * Write tests before implementing the story in working code
-* Steps
-  * Write no production code without a failing test.
-  * Watch a new test fail before you try to make it pass.
-  * Write easy code to make new tests pass.
-  * Whenever all the tests pass, improve the design by removing duplication.
+--
+
+* Write tests before implementing the story in working code
+--
 
 ---
 
-## Think About Your Task
+## TDD Steps
+--
 
-You will have to think through your code before spending hours writing it
+* Write no production code without a failing test.
+--
+
+* Watch a new test fail before you try to make it pass.
+--
+
+* Write easy code to make new tests pass.
+--
+
+* Whenever all the tests pass, improve the design by removing duplication.
+--
+
+* 1) Red -> 2) Green -> 3) Refactor -> 4) Tests still pass
+
+---
+
+## Red Green Refactor
+--
+
+* 1) **Red** -> 2) **Green** -> 3) **Refactor** -> 4) Tests still pass
+--
+
+1. Write failing tests (tests are **red**)
+2. Implement code to make tests pass (tests go **green**)
+3. Take more time to make the code better (**refactor** the code)
+4. Tests should still pass
+
+---
+
+## Why the need to refactor?
+--
+
+- You should solve the unit of work with as little and as simple code as possible
+--
+
+- Once that passes, then refactor to make it faster, scalable, reliable, etc
+
+---
+
+## Why all this hassle?
+--
+
+You will have to **think through** your code **before writing** it
+--
+
 * What methods and classes will I need?
+--
+
 * What parameters will be needed for your method(s)
+--
+
 * What will the method(s) return?
+--
+
 * What dependencies will be needed in your class(es)
+--
+
 * Could exceptions be thrown?
+--
+
+* Should exceptions be thrown?
 
 ---
 
 ## Test Lists
+--
+
 * Informal list of use cases and ways that the unit of code could be used
-* The list is not saved
-* The list is a way for you to get the ideas out of your head, so you can focus on once case at a time
+--
+
+* The test list is not saved, it's turned into actual working tests
+--
+
+* The list is a way for you to get the ideas out of your head, so you can focus on one case at a time
 
 ---
 
 ## TDD Benefits
+--
+
 * Clean, clearly defined code due to focus on discrete aspects
+--
+
 * Find design roadblocks earlier
+--
+
 * Already have confidence that your code “works”
+--
+
 * Tests help define what your code is supposed to do
+--
+
 * Some believe if done right you will not need to use a debugger
 
 ---
