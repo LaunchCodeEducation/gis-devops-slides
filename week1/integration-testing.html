@@ -21,8 +21,11 @@
     
     Unit Test
     * Test the smallest unit of code in isolation
+    
+    ---
 
-    TDD & Red, Green, Refactor
+    # TDD & Red, Green, Refactor
+    
     * Write tests first
     * Write minimal code to get test to pass
     * Clean up the code
@@ -31,23 +34,34 @@
     ---
 
     ## Unit Tests Are Not Alone
-    
+    --
+
     Integration Tests
+    --
+
     * Testing the integrated parts of a feature
+    --
+    
     * All the units and layers combined to make a feature
+    --
+    
     * What is being integrated differs for each language, framework, and application purpose
    
     ---
 
     ## Acceptance Tests
-    * You app is ran in enviroment as close as possible to live enviroment (possibly staging)
+    --
+    
+    * Your app is ran in enviroment as close as possible to live enviroment (possibly staging)
+    --
+    
     * App is used as end user will. Inputs are filled in, buttons are clicked
-      * Tools like selenium are configured on what to click and input
+    --
+
+    * Tools like selenium are configured on what to click and input
+    --
+  
     * Expected behavior is verified by inspecting the output of the app
-      * Verify HTML
-      * Inspect JSON
-      * File was created correctly
-      * Anything that the app returns, creates, or displays
     
     ---
     
@@ -58,18 +72,18 @@
       * controllers
       * models
       * views
-      * database connection
       * database queries
 
     ---
 
     ## Spring Integration Tests
-
+    --
+    
     * Offer a way to test all the layers WITHOUT...
-      * booting up your webserver
       * deploying your code
       * opening a browser and manually testing
-
+    --
+    
     * The Spring framework provides many utilities
       * Annotations
       * Classes
