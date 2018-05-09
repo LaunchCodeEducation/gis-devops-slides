@@ -19,12 +19,12 @@ class: center, middle
 ## Introduction
 
 ---
-# ES Use cases
+# Use cases
 
 * Advanced search
   * Full-text search
   * Online stores (e.g. "suggested for you" features)
-  * Distance calculations
+  * Indexing very large data sets
 
 --
 
@@ -32,37 +32,32 @@ class: center, middle
 
 --
 
-* NOT for primary datastore (data loss/corruption)
+* **Not** for primary datastore (data loss/corruption)
 
 ---
 
-# Databases (So Far)
+# Relational Databases
 
-* SQL Relational Database
-
---
-
-* MySQL, PostgreSQL, SQLite
+* Examples: MySQL, PostgreSQL, SQLite
 
 --
 
-* Defined schema
+* Defined schema w/ several tables per database or schema
 
 --
 
-* Allows you to set restrictions, run JOINs, avoid consistency issues
+* Allows you to set restrictions, run `JOIN` queries, avoid consistency issues
 
+--
+
+* Data is "normalized" to reduce redundancy and update issues
 ![table1](images/table1.png)
 
 ---
 
-# Databases… NoSQL
+# Non-Relational (NoSQL) Databases
 
-* Non-Relational Database
-
---
-
-* MongoDB, CouchDB, Redis, Apache Cassandra
+* Examples: MongoDB, CouchDB, Redis, Apache Cassandra
 
 --
 
@@ -72,7 +67,18 @@ class: center, middle
 
 * Fast, can be distributed  
 
+--
+
+* No defined schema 
+
+---
+
+# NoSQL Document
+
+Data is stored as documents, rather than rows in tables
+
 ![snippet](images/snippet.png)
+
 ---
 
 # JSON
@@ -86,16 +92,20 @@ class: center, middle
 	<li>Key:Value pairs make it easy to understand
 
 </div>
+
 <div class = "right-column">
 
 <img style = "transform: scale(2.2)" src = "images/JSONexample.png">
 
 </div>
+
 ---
 
 # Lucene
 
 Elasticsearch is built on Lucene, a search library written in Java.
+
+--
 
 * Stores data in an **index** of documents
   * Each **document** has **fields**
@@ -111,11 +121,319 @@ Elasticsearch is built on Lucene, a search library written in Java.
 
 --
 
-* Boolean queries (and, or, not)
+* Lucene Query Syntax
+
+---
+
+# Talking To Elasticsearch
+
+With Java, we can talk to Elasticsearch via: 
 
 --
 
-* Lucene Query Syntax
+* **Node client** - The node client joins a local cluster as a non data node. In other words, it doesn’t hold any data itself.
+
+--
+
+* **Transport client** - Can be used to send requests to a remote cluster. It doesn’t join the cluster itself, but simply forwards requests to a node in the cluster.
+
+--
+
+> Both of these clients communicate on port 9300
+
+---
+
+# RESTful API
+
+For other scenarios, Elasticsearch provides a RESTful API that communicates using JSON over HTTP
+
+--
+
+- Available on port 9200
+
+--
+
+- We'll use the `curl` command to access the API via the command line
+
+---
+
+# curl Basics
+
+The generic `curl` usages looks like: 
+
+```nohighlight
+$ curl -X<VERB> <OPTIONS> '<URL>' -d '<BODY>'
+```
+
+--
+<br>
+
+The components are: 
+
+- `VERB` - the HTTP verb to use (`GET`, `POST`, etc); default is `GET`
+- `OPTIONS` - `curl` options; the most common for us will be `-H 'Content-type: application/json'` (to set the `Content-type` HTTP header)
+- `URL` - the endpoint to make the request to
+- `BODY` - the request body (ommitted for `GET` requests); this can be split across lines
+
+
+---
+
+# Let's use Elasticsearch!
+
+Install ES via Homebrew using the instructions on the course site.
+
+--
+
+Verify that it's running: 
+
+```
+$ curl 'localhost:9200'
+```
+
+---
+
+# The _cat API
+
+The endpoint `/_cat` provides useful info about the ES instance.
+
+```
+$ curl 'localhost:9200/_cat'
+=^.^=
+/_cat/allocation
+/_cat/shards
+/_cat/shards/{index}
+/_cat/master
+/_cat/nodes
+/_cat/tasks
+/_cat/indices
+/_cat/indices/{index}
+[content ommitted]
+```
+
+--
+
+Add the `v` (for verbose) and `pretty` query parameters to get nicer output 
+
+---
+
+# Indices
+
+* An index is a collection of similar data (books, people)
+
+--
+
+* Each piece of data is a document (like one record in SQL, a specific book)
+
+--
+
+* Each document is made up of fields, sometimes called properties
+
+--
+
+* Each field has a type, just like in SQL
+
+--
+
+* The types interact with searches. For instance, a geo distance query can only be run on a `geo_point` field
+
+---
+
+# ES versus RDBMS
+
+A rough parallel can be drawn:
+
+Relational DB  ⇒ Databases ⇒ Tables ⇒ Rows      ⇒ Columns
+
+Elasticsearch  ⇒ Indices   ⇒ Types  ⇒ Documents ⇒ Fields
+
+---
+
+# Creating Documents
+
+To create a document, `POST` to a URL of the form `/<INDEX>/<TYPE>` with the document as the request body: 
+
+--
+
+```
+$ curl -XPOST 'localhost:9200/library/books' -H 'Content-type: application/json' -d '
+{
+  "title": "Infinite Jest",
+  "author": "David Foster Wallace"
+}'
+```
+
+--
+
+Response: 
+
+```
+{"_index":"library","_type":"books","_id":"kQrERGMB16M7PyHPwaUV","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":1,"_primary_term":1}
+```
+
+---
+
+# Shorthand
+
+Rather than writing out the full `curl` command, we'll use: 
+
+```json
+POST /library/books?pretty
+{
+  "title": "Infinite Jest",
+  "author": "David Foster Wallace"
+}
+```
+
+when we mean: 
+
+```
+$ curl -XPOST 'localhost:9200/library/books?pretty' -H 'Content-type: application/json' -d '
+{
+  "title": "Infinite Jest",
+  "author": "David Foster Wallace"
+}'
+```
+
+---
+
+# Retrieving Documents
+
+To retrieve a single document, we can ask for: 
+
+```
+GET /library/books/?pretty<ID>
+```
+
+Where `<ID>` is the value of the `_id` field of the document (e.g. `kQrERGMB16M7PyHPwaUV` in the previous example)
+
+---
+
+# Searching
+
+Conduct a search via the `_search` endpoint for the index: 
+
+```
+GET /library/_search?pretty
+{
+  "query": { 
+    "match_all": {} 
+  }
+}
+```
+
+---
+
+# Search Results
+
+```
+{
+  "took" : 1,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : 2,
+    "max_score" : 1.0,
+    "hits" : [
+      [results ommitted]
+    ]
+  }
+}
+```
+
+---
+
+# Search Results
+
+The response tells us:
+* `hits` - search results info
+* `hits.hits` - actual array of search results
+
+Note that only 10 results are returned. We can customize the result set using the `from` and `size` parameters.
+
+---
+
+# Searching By Field
+
+```
+GET /library/_search
+{
+    "query" : {
+        "match" : {
+            "author" : "Mark Twain"
+        }
+    }
+}
+```
+
+---
+
+# Aggregations
+
+* Aggregations allow you to group and provide statistics about your data
+
+--
+
+* ES can return hits and aggregated results in _one_ response
+
+--
+
+* Hits and aggregations are listed separately in the response
+
+---
+
+# Aggregations
+
+With results: 
+
+```
+GET /bank/_search?pretty
+{ 
+  "aggs": { 
+    "group_by_state": {
+      "terms": {
+        "field": "state.keyword"
+      }
+    }
+  }
+}
+```
+
+---
+
+# Aggregations
+
+Without results: 
+
+```
+GET /bank/_search?pretty
+{ 
+  "size": 0, 
+  "aggs": { 
+    "group_by_state": {
+      "terms": {
+        "field": "state.keyword"
+      }
+    }
+  }
+}
+```
+
+--
+
+This is similar in SQL: `SELECT state, COUNT(\*) FROM bank GROUP BY state ORDER BY COUNT(\*) DESC`
+
+---
+
+# Aggregations
+
+* An aggregation is like a function that builds a result set over a group of documents
+
+* You can get data like `min`, `max`, `avg`, `sum`, `range` things that are relatively easy to get out of SQL but are tough in a distributed environment
 
 ---
 
@@ -129,7 +447,7 @@ Elasticsearch is built on Lucene, a search library written in Java.
 
 --
 
-* A **shard** is a bucket of data. This allows one index to be split among multiple nodes in one cluster. A node one or more shards.
+* A **shard** is a bucket of data. This allows one index to be split among multiple nodes in one cluster. A node has one or more shards.
 
 --
 
@@ -177,260 +495,6 @@ Elasticsearch clusters are often set up on services such as:
 * Apache Solr (also built on Lucene)
 * Sphinx
 * RavenDB (MS)
-
----
-
-# Let's use Elasticsearch!
-
-The cat API provides access to basic information about an ES instance
-
-To view the commans available:
-
-`$ curl -XGET 'ekyqz8nza5:6gz15xze7h@elasticsearch-traini-2142321757.us-east-1.bonsaisearch.net/_cat'`
-
---
-
-Let's try one:
-
-`$ curl -XGET 'ekyqz8nza5:6gz15xze7h@elasticsearch-traini-2142321757.us-east-1.bonsaisearch.net/_cat/indices?v&pretty'`
-
----
-
-# Elasticsearch, search
-
-Conduct a search via the REST API
-
-`$ curl -XGET 'ekyqz8nza5:6gz15xze7h@elasticsearch-traini-2142321757.us-east-1.bonsaisearch.net/book/_search?pretty' -H 'Content-Type: application/json' -d' { "query": { "match_all": {} } }'`
-
---
-
-The response tells us:
-* `hits` - search results info
-* `hits.hits` - actual array of search results
-
-Note that only 10 results are returned. We can customize the result set using the `from` and `size` parameters.
-
----
-
-# Search Lingo
-
-**Leaf query clauses** are individual conditions that can be joined into compound queries.
-
-Leaf queries:
-* Can be used by themselves
-
---
-
-* Check for a value in a specified field
-
---
-
-* Types: `term`, `range`, `type`, and more
-
----
-
-# Search Lingo
-
-**Compound query clauses** (aka full text queries) operate on the full text of a record.
-
-Compound queries:
-* Wrap leaf queries or other compound queries
-
---
-
-* They can combine results or scores (e.g. dis_max, bool)
-
---
-
-* They can alter the behavior of queries
-
---
-
-* They can switch context
-
----
-
-# Query Context  
-
-The **context** in which a query clause is applied determines how it affects the result set.
-
-A query clause used in **query context** answers the question "How well does this document match this query clause?"
-
-* Includes a `_score` indicating how well the doc matches compared to other docs
-
---
-
-* Can be fine-tuned for desired behavior using `boost`
-
---
-
-* Query context is in effect whenever a query clause is passed to a query parameter, such as the query parameter in the search API
-
----
-
-# Filter Context
-
-A clause in a filter context answers the question "Does this document match this query clause?"
-
-* Simple yes or no
-
---
-
-* No scores
-
---
-
-* Best for structured data like numeric or boolean fields
-
----
-
-## Using Filter and Query Clauses
-
-```nohighlight
-$ curl -XGET 'localhost:9200/_search' -d'
-{
-  "query": { 
-    "bool": { 
-      "must": [
-        { "match": { "title":   "Search"        }}, 
-        { "match": { "content": "Elasticsearch" }}  
-      ],
-      "filter": [ 
-        { "term":  { "status": "published" }}, 
-        { "range": { "publish_date": { "gte": "2015-01-01" }}} 
-      ]
-    }
-  }
-}'
-```
-
----
-
-# Using Filter and Query Clauses
-
-- Query and filter leaf clauses can be combined in one compound query
-  - The "term" and "range" clauses use the filter context
-  - They will remove non-matching results, but will not affect the `_score` for the matching results
-
----
-
-
-# Full Text Queries
-
-**Full text queries** are used to run searches on text fields like: email body, description of item
-
-## Examples
-`match`, `multi_match`, `common_terms`, `query_string`
-
---
-They apply analyzers. (What's an analyzer?!)
-
----
-
-# What's an Analyzer?
-
-An analyzer:
-* Break text content down into word stems (known as tokens or terms)
-  * Those tokens are added to the inverted index
-  * Words like "the" and "and" are skipped
-
---
-
-* Can be customized for each text field in a mapping
-
---
-
-* ES includes an English default
-
----
-
-# Boosts & Highlighting
-
-*  You can **boost** one field over another
-  * For example, you might specify that location matters more than price range, so increase the score on location matches
-
---
-
-* Matching snippets from fields in your search can be "highlighted" in the result set, allowing you to show users where the query matches are.
-
----
-
-# Imprecise Queries
-
-* Include the same data multiple times in different ways, or perform multiple, slightly different queries. This gets real complicated but is a common strategy, especially when you can load the data after the page loads
-
---
-
-* The `more_like_this` query finds documents that are similar to your text or document(s)
-
---
-
-* **Fuzzy Queries** allow you to match misspellings
-  * Closeness to search term is calculated by edit distance. That is, the number of chars that would have to be deleted/added/changed
-
----
-
-# Geo Queries
-
-* There are several ways to calculate physical distance in searches
-
---
-
-* Save latitude and longitude on the object (`geo_point` field)
-  * Calculate precisely based on lat/long of a second point - `geo_distance` query
-  * geo-bounding, faster - divide map into shaped areas (`geo_shape` field) and determine if your object is inside an area - `geo_bounding_box` or `geo_polygon` query
-
----
-
-# Aggregations
-
-* Aggregations allow you to group and provide statistics about your data
-
---
-
-* ES can return hits and aggregated results in _one_ response
-
---
-
-* Hits and aggregations are listed separately in the response:
-
-`$ curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d' { "size": 0, "aggs": { "group_by_state": {"terms": {"field": "state.keyword"}}}}'`
-
---
-
-This is similar in SQL: `SELECT state, COUNT(\*) FROM bank GROUP BY state ORDER BY COUNT(\*) DESC`
-
----
-
-# Aggregations
-
-* An aggregation is like a function that builds a result set over a group of documents
-* You can get data like `min`, `max`, `avg`, `sum`, `range` things that are relatively easy to get out of SQL but are tough in a distributed environment
-
----
-
-# Types of Aggregations
-
-The different aggs can be divided into categories:
-* Bucketing - divides documents into buckets
-* Metric - track and make computations over a dataset
-* Matrix - perform on multiple fields (limited implementation)
-* Pipeline - aggs of other aggs and metrics. "meta-aggs"
-
----
-
-# Geo Aggregations
-
-* `geo_bounds`: computes a bounding box containing all geo points for a field (i.e. give me an area containing all the concert venues in this collection of businesses)
-* `geo_centroid`: calculates the centroid/geometric center of a `geo_polygon`  (i.e. what's the centroid among a collection of restaurants serving ice cream?)
-* `geo_distance`: User defines an origin point and a set of distance ranges, and it will return documents in those buckets of distance ranges. (i.e. what restaurants are within 10 miles of me? 25 miles?)
-
----
-
-# Go Practice!
-
-* In the walkthrough, you will practice making queries against a cluster
-* Then in the studio, you will set up Elasticsearch on your own computer and experiment
 
 
 </textarea>
