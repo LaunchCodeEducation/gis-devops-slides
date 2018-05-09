@@ -324,7 +324,7 @@ $ curl -XPOST 'localhost:9200/library/books?pretty' -H 'Content-type: applicatio
 To retrieve a single document, we can ask for: 
 
 ```
-GET /library/books/?pretty<ID>
+GET /library/books/<ID>?pretty
 ```
 
 Where `<ID>` is the value of the `_id` field of the document (e.g. `kQrERGMB16M7PyHPwaUV` in the previous example)
