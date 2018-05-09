@@ -357,6 +357,35 @@ Note that only 10 results are returned. We can customize the result set using th
 
 ---
 
+# Full-Text Queries
+
+**Full text queries** are used to run searches on text fields like: email body, description of item
+
+## Examples
+`match`, `multi_match`, `common_terms`, `query_string`
+
+--
+They apply analyzers. (What's an analyzer?!)
+
+---
+
+# What's an Analyzer?
+
+An analyzer:
+* Break text content down into word stems (known as tokens or terms)
+  * Those tokens are added to the inverted index
+  * Words like "the" and "and" are skipped
+
+--
+
+* Can be customized for each text field in a mapping
+
+--
+
+* ES includes an English default
+
+---
+
 # Searching By Field
 
 ```
@@ -364,7 +393,7 @@ GET /library/_search
 {
     "query" : {
         "match" : {
-            "author" : "Mark Twain"
+            "title" : "jest"
         }
     }
 }
