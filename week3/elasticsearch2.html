@@ -12,36 +12,13 @@ class: center, middle
 
 # Elasticsearch
 
-## Mappings and Documents
+## Filtering and Advanced Topics
 
 ---
 
-# Elasticsearch Review
+## Queries Review: Simple Matching
 
-* Used for: Searches, Logging, Analytics
-  * full text search, online stores "suggested for you", calculating geospatial data
-* Stores data in JSON format
-* Distributed - allows for lots of data, can search very fast
-  * But write speed is slow compared to SQL
-  * Data integrity is an issue
-  * Do not use as a primary datastore
-* ElasticSearch is a NoSQL datastore
-
----
-
-# NoSQL Data Stores
-
-* NoSQL really means "Not SQL"
-* There are no rows, just documents. (i.e. JSON)
-* There are no tables, just indices of documents.
-* There are no schemas, just whatever attributes are contained in the documents. (i.e. JSON)
-* Each attribute has a type.
-
----
-
-## Queries: Simple Matching
-
-Find anything close.
+Find documents with a given field containing a value.
 
 ```json
 GET _search
@@ -56,37 +33,17 @@ GET _search
 
 ---
 
-## Queries: Filter
-
-Find only fields matching the criteria.
-
-```json
-GET _search
-{
-  "query": {
-    "bool": { 
-      "filter": [
-        {
-				  "range" : {
-            "elevation_ft" : {
-              "gte" : 1100
-            }
-        }}]}}}
-```
-
----
-
-## Queries: Aggregations: 
+## Queries Review: Aggregations
 
 Perform calculations on groups of documents.
 
 ```json
-GET _search
+GET twitter/_search
 {
   "aggs": {
-    "avg_elevation": {
+    "avg_likes": {
       "avg": {
-        "field": "elevation_ft"
+        "field": "likes"
       }
     }
   }
@@ -95,24 +52,15 @@ GET _search
 
 ---
 
-## Queries: Pagination
+## Queries Review: Pagination
 
-`size` limits results returned
-`from` allows easy pagination
+`size` limits results returned, `from` allows easy pagination
 
 ```json
-GET _search
+GET twitter/_search
 {
   "query": {
-    "bool": { 
-      "should": [ 
-        {
-          "match": {
-            "name": "Airport"
-          }
-        }
-      ]
-    }
+    "match_all": {}
   },
   "from": 0,
   "size": 50
@@ -121,36 +69,134 @@ GET _search
 
 ---
 
-# Elasticsearch Index
+# Filtering
 
-* An index is a collection of similar data (books, people)
-* Each piece of data is a document (like one record in SQL, a specific book)
-* Each document is made up of fields, sometimes called properties
-* Each field has a type, just like in SQL
-* The types interact with searches. For instance, a geo distance query can only be run on a `geo_point` field
+We can filter results using a `bool` query, which combines queries and filters
+
+```
+GET twitter/_search
+{
+  "query": {
+    "bool": {
+      "must": {"match": {"name": "smith" }},
+      "filter": {
+        "range": {
+          "likes": {"gte": 4}
+        }
+      }
+    }
+  }
+}
+```
 
 ---
 
-## Document Example
+# Filtering
 
-The following is a document.  All of the airport documents as a group are an index.
+To simply apply a filter, omit the query property from the `bool` object: 
 
-```json
+```
+GET twitter/_search
 {
-  "_index": "airwaze",
-  "_type": "doc",
-  "_id": "CvExRWEBwC2aoUMP7lNh",
-  "_version": 1,
-  "_source": {
-    "name": "Port Moresby Jacksons International Airport",
-    "airport_id": 5,
-    "elevation_ft": 146,
-    "location": {
-      "type": "point",
-      "coordinates": [
-        147.22000122070312,
-        -9.443380355834961
-      ]}}}
+  "query": {
+    "bool": {
+      "filter": {
+        "range": {
+          "likes": {"gte": 4}
+        }
+      }
+    }
+  }
+}
+```
+
+---
+
+# Query Types
+
+- `must` - results are required to satisfy the condition
+
+--
+
+- `must_not` - results may not satisfy the condition
+
+--
+
+- `should` - results that _do_ satisfy the condition are scored higher
+
+---
+
+# Query Types
+
+These may be combined in complex ways: 
+
+```
+GET twitter/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        "match": {"name": "smith"},
+        "match": {"likes": 4}
+      ],
+      "must_not": {
+        "match": {"tweet": "elastic"}
+}}}}}
+```
+
+---
+
+# Filter Types
+
+- `range` - specifies a range of values that a numeric field may have; we can specify `gt`, `gte`, `lt`, `lte`
+- `terms` - specifies an array of values that a text field may have to be included in the result set
+
+```
+GET twitter/_search
+{
+  "query": {
+    "bool": {
+      "filter": {
+        "terms": { "name": ["john", "mary"]}
+      }
+}}}}}
+```
+
+---
+
+# Fuzzy Queries
+
+
+**Fuzzy Queries** allow you to match misspellings
+
+--
+
+```
+GET /twitter/_search
+{
+  "query": {
+    "match": {"tweet": "relational"}
+  }
+}
+```
+
+Returns no results, even though there's a tweet with a mispelling of "relational" ("rational").
+
+---
+
+# Fuzzy Queries
+
+Closeness to search term is calculated by **edit distance**. That is, the number of characters that would have to be deleted, added, changed, or transposed. 80% of human misspellings have an edit distance of only 1! (Default fuzziness is 2.)
+
+```
+GET /twitter/_search
+{
+  "query": {
+    "fuzzy": {
+      "tweet": {
+        "value": "relational",
+        "fuzziness": 3
+}}}}
 ```
 
 ---
@@ -158,9 +204,171 @@ The following is a document.  All of the airport documents as a group are an ind
 # Field Types
 
 * Field datatypes include:
-  * `text`, `keyword`, `date`, `boolean`, `ip`, `double`
-  * object or nested data, which support nesting JSON
-  * specialized types like `geo_point`, `geo_shape`, `completion`
+  * `text`, `keyword`, `date`, `boolean`, `ip`, `long`
+  * Object or nested data, which support nesting JSON
+  * Specialized types like `geo_point` and `geo_shape`
+
+---
+
+# Document Mapping
+
+* A mapping defines how the document and its fields are stored and indexed
+
+--
+
+* You might think of this like a schema in SQL
+
+--
+
+* A field can be indexed multiple times in different ways. For example, a username might be treated as a text field for full-text search but also as a keyword field for sorting and aggregation.
+
+---
+
+# Working With Mappings
+
+To view mappings for an index: 
+
+```
+$ curl 'localhost:9200/twitter/_mapping?pretty'
+```
+
+---
+
+# Creating A Mapping
+
+```
+PUT /twitter
+{
+  "mappings" : {
+    "tweets" : {
+      "properties" : {
+        "date" : {
+          "type" : "date"
+        },
+        "likes" : {
+          "type" : "long"
+        },
+        "location" : {
+          "type" : "geo_point"
+        },
+        [content ommitted]
+```
+
+---
+
+# Mapping Explosions
+
+You can map data dynamically! Hey, we’ve been doing it!
+
+* For dynamic fields, new field names will be auto added. If you don’t send ES data on the fields, it does this.
+
+--
+
+* Some field types won’t be mapped correctly automatically (like geopoints).
+
+--
+
+* This is very powerful but can get out of hand, leading to resource issues, referred to as **mapping explosions**
+
+--
+
+* You can set limits to the number of fields, and how deep it can be nested to prevent such issues
+
+---
+
+# When Data Changes
+
+If you want to add or a change a field in your mapping, you must **reindex**
+
+--
+
+The `_reindex` API allows you to create a new index with a new mapping:
+
+```
+POST _reindex
+{
+  "source": {
+    "index": "book"
+  },
+  "dest": {
+    "index": "book_"
+  }
+}
+```
+
+---
+
+# Reindexing Notes
+
+* `_reindex` doesn’t actually change data in place. **Index mappings are immutable.**
+* It copies data over from an old index into a new one quickly. You still have to set up the new one first.
+
+---
+
+# Geopoints
+
+A field of type `geo_point` can be represented in one of three ways: 
+
+1. A string representation, with `"lat,lon"`.
+1. An object representation with `lat` and `lon` explicitly named.
+1. An array representation with `[lon,lat]`.
+
+_Geopoints are not automatically recognized by dynamic mapping, and must be mapped explicitly_
+
+---
+
+# Geo Queries
+
+* There are several ways to calculate physical distance in searches
+
+--
+
+* Save latitude and longitude on the object (`geo_point` field)
+  * Calculate precisely based on lat/long of a second point - `geo_distance` query
+  * geo-bounding, faster - divide map into shaped areas (`geo_shape` field) and determine if your object is inside an area - `geo_bounding_box` or `geo_polygon` query
+
+---
+
+# Geodistance Example
+
+```
+GET /twitter/_search
+{
+  "query": {
+    "bool": {
+      "filter": {
+        "geo_distance": {
+          "distance": "500km",
+          "location": {
+            "lat":  34.052235,
+            "lon": -118.243683
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+---
+
+# Geo Aggregations
+
+* `geo_bounds`: computes a bounding box containing all geo points for a field (i.e. give me an area containing all the concert venues in this collection of businesses)
+* `geo_centroid`: calculates the centroid/geometric center of a `geo_polygon`  (i.e. what's the centroid among a collection of restaurants serving ice cream?)
+* `geo_distance`: User defines an origin point and a set of distance ranges, and it will return documents in those buckets of distance ranges. (i.e. what restaurants are within 10 miles of me? 25 miles?)
+
+---
+
+# Other Features
+
+*  You can **boost** one field over another
+  * For example, you might specify that location matters more than price range, so increase the score on location matches
+  * The default `boost` value is 1. To prioritize a given field, give it a boost value greater than 1
+
+--
+
+* **Highlighting** can be applied using the `highlight` parameter. This results in a `highlight` field being added to each matching response with the matching text wrapped in `<em>` tags
 
 ---
 
@@ -207,128 +415,15 @@ For Example:
 
 # _id
 
-* Lucene/ES uses a foreign key `_id`, just like many other databases
+* Lucene/ES uses a key `_id`, just like many other databases
 * The contents will be a hash, not sequential numbers
   * This is to avoid collisions: two records accidentally being assigned the same `_id` because two nodes tried to write at the same time
   * Since data is potentially distributed to many servers, managing unique ids is complicated
+* We can assign an ID to an object upon creation, but it's usually best to let ES handle ID assignment
 
 ---
 
-# Document Mapping
 
-* A mapping defines how the document and its fields are stored and indexed
-
---
-
-* You might think of this like a schema in SQL
-
---
-
-* A field can be indexed multiple times in different ways. For example, a username might be treated as a text field for full-text search but also in a keyword field for sorting and aggregation.
-
----
-
-# Mapping Explosions
-
-You can map data dynamically! Hey, we’ve been doing it!
-
-* For dynamic fields, new field names will be auto added. If you don’t send ES data on the fields, it does this.
-  * Some field types won’t be mapped correctly automatically (like geopoints).
-* This is very powerful but can get out of hand, leading to resource issues, referred to as **mapping explosions**
-* You can set limits to the number of fields, and how deep it can be nested to prevent such issues
-
----
-
-# When Data Changes
-
-If you want to add or a change a field in your mapping, you must **reindex**
-
---
-
-The `_reindex` API allows you to create a new index with a new mapping:
-
-```
-POST _reindex
-{
-  "source": {
-    "index": "book"
-  },
-  "dest": {
-    "index": "book_"
-  }
-}
-```
-
----
-
-# Reindexing Notes
-
-* `_reindex` doesn’t actually change data in place. **Index mappings are immutable.**
-* It copies data over from an old index into a new one quickly. You still have to set up the new one first.
-
----
-
-# Kibana
-
-**DevTools for ElasticSearch**
-
-Kibana sits on top of your ElasticSearch
-
-Kibana provides:
-* Fast, convenient way to access the data in your cluster.
-* DevTools to run queries (no more cURL).
-* Visualizations so that you can analyze your data.
-
-_Walkthrough_
-
----
-
-# Elasticsearch.js
-
-* We will be using [Elasticsearch.js in jQuery](https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/about.html) 
-* Allow you to execute ElasticSearch queries directly from the browser.
-
----
-
-# Elasticsearch.js
-
-<div class = "left-column" >
-
-  <ul>
-    <li>Queries in this library are virtually the same syntax as regular Elasticsearch.</li>
-  </ul>
-</div>  
-
-<div class = "right-column" >
-  <img   src = "clientsearch.png">
-</div>
-
----
-
-# Requests in the Browser
-
-* We’re going to use JavaScript to have buttons submit searches on our data using Ajax.
-* We will have to manage CORS in order to do this
-  * In the walkthrough we will show you how to tell your Elasticsearch cluster that your application is allowed to access the data, called “whitelisting.”
-  * By default, web browsers are not allowed to make requests to other servers. This is to prevent data from being pushed and pulled from unauthorized web sites.
-
----
-
-# CORS, What Is It?
-
-* CORS stands for "cross origin resource sharing."
-* This is a W3 spec meant to prevent malicious behavior on websites.
-* CORS allows servers to specify not just who can access its assets, but also how the assets can be accessed.
-* Further reading: https://www.codecademy.com/articles/what-is-cors  
-
----
-
-# More Practice!
-
-* In the walkthrough, you will practice retrieving and creating document mappings.
-* Then in the studio, you will set up Elasticsearch in your Airwaze project using Elasticsearch.js.
-  * We’re going to write a query and handle it client-side using Ajax in jQuery.  
-* ES Official Docs: https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html  
 
 </textarea>
 
