@@ -19,17 +19,16 @@ class: center, middle
 
 ### A Brief History of Amazon Web Services
 
-*AWS was born out of a startup struggling to stay on top of massive demand.*
-
+AWS was born out of a startup struggling to stay on top of massive demand.
 * In the early 2000s, Amazon was building infrastructure and tools to support Amazon.com.
 * In 2006, Amazon brought their tools and infrastructure public with EC2.
 * They were the first company to make a public cloud offering..
-* Currently AWS control 35% of the cloud market.
+* Currently AWS control 35% of the cloud market
 * AWS offers 98 different products 
 
--- 
+--
 
-### [70% of Internet Traffic Goes Through AWS Northern Virginia](http://www.nextgov.com/analytics-data/2016/01/70-percent-global-internet-traffic-goes-through-northern-virginia/124976/)
+[70% of Internet Traffic Goes Through AWS Northern Virginia](http://www.nextgov.com/analytics-data/2016/01/70-percent-global-internet-traffic-goes-through-northern-virginia/124976/)
 ...
 
 ---
@@ -39,8 +38,12 @@ class: center, middle
 **EC2** These are virtualized Linux, Windows, and Mac comupters that you rent from Amazon.
 * Amazon gives you an IP address and SSH access to the computer.
 
+--
+
 **S3**  Cloud storage. Imagine a virtual, cloud file system. 
 * Amazon gives you a access to a RESTful API that is used to store pretty much anything you want.
+
+--
 
 **RDS** Database.  High availability databases in any flavor you like (MySQL, Postgres, Oracle, MariaDB).
 * Amazon gives you either an internally facing or externally facing IP address to connect to.
@@ -94,10 +97,6 @@ Reducing the the points of failure by creating failover back up systems.
 --
 
 * Amazon has 52 Availability Zones across the globe.  Each "AZ" is independently powered and cooled.  Each has their own networking and security. 
-
---
-
-* AWS does most of this behind the scenes!
 
 ---
 
@@ -223,6 +222,8 @@ As the app traffic increases, the load on the server increases.
 
 The increased load has also causes sysytem failures resulting in downtime.
 
+--
+
 ### Solution
 
 Elastic Load Balancers
@@ -236,7 +237,7 @@ Elastic Load Balancers
 
 ## **AWS** by Example
 
-**EC2** Server behind an **ELB** using an **RDS** database withing a **VPC**
+**EC2** Server behind an **ELB** using an **RDS** database within a **VPC**
 
 <img src="images/simple_server_with_elb.png"></img>
 
