@@ -306,10 +306,7 @@ A **Microservice** is an application in the form of an API that does one specifi
 
 --
 
-Netflix and Amazon heavily rely on Microservices.  For example:
-
--- 
-
+Netflix and Amazon heavily rely on Microservices.  For example: 
 * Amazon's "Suggested Products" is a microservice that returns relevant products for a specific user.
 * Amazon's Checkout button is a microservice designed specifically for processing orders.
 * Amazon's "Reviews" section is a microservice that returns reviews for a product.
@@ -401,7 +398,7 @@ In **Cloud Native** applications, one application runs on one machine.  This red
 
 ## 12. Admin Processes
 
-Avoid every having to run a script on a server.
+Avoid ever having to run a script on a server.
 
 --
 
@@ -413,22 +410,15 @@ Avoid every having to run a script on a server.
 
 --
 
-* You may have 20+ servers operating at a time.  How do you ensure that the script runs at the exact same time as the rest of the machines.
+* You may have 20+ servers operating at a time.  How do you ensure that the script runs at the exact same time as the rest of the machines???
 
---
+---
+
+## 12. Admin Processes
 
 Solution:
-
---
-
 * Everytime you need to change a server, throw away the old one and make a new one from scratch.
-
---
-
 * Create RESTful endpoints to run the task.
-
---
-
 For example, if you need to reindex Elasticsearch, create an endpoint `/_cluster/reindex` to that performs the reindex task.
 
 ---
