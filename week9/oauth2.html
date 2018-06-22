@@ -42,7 +42,7 @@ Remember that authentication is about _identity_, authorization is about _permis
 
 ## Review of Key Authentication
 
-In this scheme, each API user must have key (a string of characters) that they submit in the request. 
+In this scheme, each API user must have a key (a string of characters) that they submit in the request. 
 
 --
 
@@ -50,7 +50,7 @@ In this scheme, each API user must have key (a string of characters) that they s
 
 --
 
-- Permissions may be granted on an per-user basis
+- Permissions may be granted on a per-user basis
 
 --
 
@@ -64,17 +64,17 @@ In this scheme, each API user must have key (a string of characters) that they s
 
 --
 
-- There's no mechanism for expiring and renewing keys
+- There's no mechanism for expiring or renewing keys
 
 --
 
-- While key's can provide per-user access to data, it's not reasonable for an API client to obtain keys to access individual user data (e.g. a key to access your Facebook account)
+- While keys can provide per-client access to data, it's not reasonable for an API to provide keys to access data on a per-user basis (e.g. a key to access your Facebook account)
 
 ---
 
 ## OAuth2 to the Rescue
 
-- Provides authentication for users using an external site w/o giving a third party your password
+- Provides authentication for users via an external site/service w/o giving a third party your password
 
 --
 
@@ -92,18 +92,31 @@ In this scheme, each API user must have key (a string of characters) that they s
 
 ## Tokens Good, Passwords Bad
 
-OAuth2 controls access to services by issueing **tokens** which are similar to keys but carry additional power
+OAuth2 controls access to services by issuing **tokens**, which are similar to keys but carry additional power
 
 --
 
 We _could_ just give an application our account credetials, so it could, say log into Facebook for us. This wouldn't be a good idea though.
 
-- Why not use passwords?
-    - Trust: what if the app stores your password or shares with another party?
-    - Using passwords is easier to exploit via phishing
-    - Can't restrict access to data when not using passwords
-    - Access turned off when passwords are changed
-    - A user can't easily revoke access
+--
+
+Why not use passwords?
+
+--
+
+- Trust: what if the app stores your password or shares with another party?
+
+--
+
+- Using passwords is easier to exploit via phishing
+
+--
+
+- Access is turned off when passwords are changed
+
+--
+
+- A user can't easily revoke access w/o changing their password
 
 ---
 
@@ -145,7 +158,7 @@ The provider gives you a **client ID** and a **client secret** that are required
 
 --
 
-**Keep the client ID secret! Duh!**
+**Keep the client secret a secret! Duh!**
 
 ---
 
@@ -166,15 +179,11 @@ We can subdivide these into **confidential** and **public**
 
 --
 
-- Confidential: Server-side web apps. These can keep tokens secret from resource owner
+- Confidential: Server-side web apps. These can keep the client secret and access token from resource owner
 
 --
 
-- Public: Client-side web apps, mobile apps. These can't reliably keep tokens secret
-
---
-
-**Dumb question**: Why would you want to keep the token secret from the user?
+- Public: Client-side web apps, mobile apps. These can't reliably keep the client secret key and access token confidential
 
 ---
 
@@ -182,7 +191,13 @@ We can subdivide these into **confidential** and **public**
 ## Access token (or "Bearer Token")
 
 - Sent by the client to the resource server to access protected resources
+
+--
+
 - May be valid for a short period (implementation specific)
+
+--
+
 - Can be verified by the authorization server or the resource server
 
 ---
@@ -190,10 +205,22 @@ We can subdivide these into **confidential** and **public**
 ## Refresh token
 
 - Valid for a longer period
+
+--
+
 - Used to request a new access or identity token when the current one
 expires
+
+--
+
 - The process is transparent for the resource owner
+
+--
+
 - When a refresh token expires, the client must re-authenticate
+
+--
+
 - Usually involves a database lookup, so authorization can be revoked
 
 
@@ -201,9 +228,10 @@ expires
 
 ## Grant Types
 
-There are 4 types of **grant types** used for issueing tokesn to differnt types of clients
+There are 4 **grant types** used for issueing tokens to differnt types of clients.
 
 --
+
 - Auth Code (Server-side Web Apps)
 
 --
@@ -249,12 +277,25 @@ checked (authorization server, resource owner, client)
 ## Password Flow
 
 Sometime called “native mobile app” or “resource owner password” flow
+
+--
+
 - For cases when the resource owner trusts giving the password to the client (e.g. same company)
-- Usually the resource owner only trusts the Authorization Server login component
-- The client uses the username and password when requesting tokens, but does not store them
-after that
-– Only the access and refresh tokens should be stored by the client
+
+--
+
+- The client uses the username and password when requesting tokens, but does not store them after that
+
+--
+
+- Only the access and refresh tokens should be stored by the client
+
+--
+
 - Uses credentials as authorization- no authorization endpoint is used
+
+--
+
 - Example: PCF CLI
 
 ---
@@ -359,8 +400,6 @@ If not signing requests, remain secure by:
 class: center, middle
 
 # Demo
-
----
 
 </textarea>
 
