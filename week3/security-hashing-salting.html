@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang=en><head><meta http-equiv=Content-Type content="text/html; charset=UTF-8"><meta name=viewport content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
+
+    <!-- #ToDo: Change Title for the presentation -->
+    <title>Security</title>
+    
+    </head>
+    
+    <!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
+    <body onload="var slideshow = remark.create({ratio: '16:9', navigation: {scroll: true, touch: true, click: false}, countIncrementalSlides: false, highlightLanguage: 'bash', highlightStyle: 'tomorrow-night-blue'});">
+    
+    <!-- #ToDo: Write your slides in MarkDown here -->
+<textarea id="source">
+
+class: center, middle
+
+# SECURITY FOCUS
+#### Sensitive Data Exposure
+
+---
+
+## Sensitive Data Exposure
+--
+
+- [#3 on OWASP top 10 for 2017](https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure)
+
+---
+## Encryption vs Hashing
+--
+
+- Encryption 
+  - Is a two way algorithm, uses keys to encrypt and decrypt data
+  - Used for sensitive data that needs to be **readable*8 and stored in your system
+--
+
+- Hashing
+  - Is a one way algorithm, that turns data into an alternative version in order to hide the true value
+  - Used for data(passwords) that will NOT be read in it's original form, but will be stored in your system
+
+---
+
+## Classify the Data
+--
+
+- What is sensitive?
+--
+
+- What needs to be kept long term?
+--
+
+- Don’t store more than you need!
+  - Use the data and get rid of it
+  - It **can't** be hacked if it’s not stored
+---
+
+## Be Strong
+--
+
+- If you have sensitive data, take the time to secure it **properly**
+--
+
+- Act as if your data will be breached
+  - Prepare to make it hard for your data to be used
+--
+
+- Do your research
+  - Use *strong*, *adaptable* **hashing** algorithms
+  - Follow guidelines from security groups like OWASP
+  - Use proper key management for **encrypting**
+---
+
+## Limit Access to the Data
+--
+
+- Limit access to servers to the absolute minimum
+--
+
+- Don't give everyone on the internet a chance to hack your servers
+--
+
+- Keep data servers inside a VPN or VPC
+--
+
+- Lock down the ports
+--
+
+- Don't give every db user access to all tables
+
+
+</textarea>
+
+<script type="text/javascript" src="../js/remark-latest.min.js"></script></body></html>
+    
