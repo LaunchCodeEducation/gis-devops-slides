@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang=en><head><meta http-equiv=Content-Type content="text/html; charset=UTF-8"><meta name=viewport content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
+
+    <!-- #ToDo: Change Title for the presentation -->
+    <title>Security Misconfiguration</title>
+    
+    </head>
+    
+    <!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
+    <body onload="var slideshow = remark.create({ratio: '16:9', navigation: {scroll: true, touch: true, click: false}, countIncrementalSlides: false, highlightLanguage: 'bash', highlightStyle: 'tomorrow-night-blue'});">
+    
+    <!-- #ToDo: Write your slides in MarkDown here -->
+<textarea id="source">
+
+class: center, middle
+
+# SECURITY FOCUS
+## Security Misconfiguration
+
+---
+## Security Misconfiguration
+--
+
+- [A6 OWASP top 10](https://www.owasp.org/index.php/Top_10-2017_A6-Security_Misconfiguration)
+--
+
+- Exploit unpatched flaws or access default settings/accounts
+
+---
+## Specific Example
+--
+
+- File listing is not disabled for a web server
+--
+
+- Attacker finds and downloads the java .class files
+--
+
+- Reviews the code and finds a loophole and exploits it
+
+---
+## Make Sure To...
+--
+
+- Change the default usernames/passwords
+  - routers, web servers, databases
+--
+
+- Change OS settings that leave ports open by default
+--
+
+- Do NOT store usernames/passwords or keys in source control (git)
+--
+
+- Only install software you need on the servers
+  - Some Operating Systems specialize to this: CentOS
+--
+
+- Discreetly catch and log errors without exposing sensitive data
+--
+
+- Don't leave servers open to the internet if they don't need to be
+  - VPN or VPC
+
+---
+## Prevention in your Process
+--
+
+- A **repeatable** hardening process that makes it fast and easy to deploy **properly configured** environments
+--
+
+- **Verify** configuration effectiveness via an **automated process**
+--
+
+- Tools like [OWASP ZAP](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project)
+
+
+
+</textarea>
+
+<script type="text/javascript" src="../js/remark-latest.min.js"></script></body></html>
+    
