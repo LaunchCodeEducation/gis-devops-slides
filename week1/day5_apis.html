@@ -19,34 +19,35 @@ class: center, middle
 
 ## APIs
 
-* How machines talk on the internet.
+* How machines communicate on the internet.
 
 --
 
-* We're going to be looking specifically about how machines talk about geospatial data.
+* We're going to be looking specifically about how machines communicate geospatial data.
 
 ---
 
 ## GeoJSON
 
-* Format standardized in 2007.
+* Data format standardized in 2007.
 * JSON code written to a specific format to comply with the standard.
 --
 
 ```
 { "type": "FeatureCollection",
-"features": [
-  { "type": "Feature",
-    "geometry": {
-      "type": "Point",
-      "coordinates": [102.0, 0.5]
+  "features": [
+    { "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [102.0, 0.5]
+        },
+        "properties": {
+          "name": "St Louis Lambert Int Airport",
+          "abreviation": "STL"
+        }
       },
-      "properties": {
-        "name": "St Louis Lambert Int Airport",
-        "abreviation": "STL"
-      }
-    },
-]}
+  ]
+}
 ```
 
 ---
