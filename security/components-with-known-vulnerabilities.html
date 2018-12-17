@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang=en><head><meta http-equiv=Content-Type content="text/html; charset=UTF-8"><meta name=viewport content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
+
+    <!-- #ToDo: Change Title for the presentation -->
+    <title>Security - Known Vulnerabilities</title>
+    
+    </head>
+    
+    <!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
+    <body onload="var slideshow = remark.create({ratio: '16:9', navigation: {scroll: true, touch: true, click: false}, countIncrementalSlides: false, highlightLanguage: 'bash', highlightStyle: 'tomorrow-night-blue'});">
+    
+    <!-- #ToDo: Write your slides in MarkDown here -->
+<textarea id="source">
+
+class: center, middle
+
+# SECURITY FOCUS
+## Components with Known Vulnerabilities
+
+---
+## Security Misconfiguration
+--
+
+- [A9 on OWASP top 10](https://www.owasp.org/index.php/Top_10-2017_A9-Using_Components_with_Known_Vulnerabilities)
+--
+
+- Dependency heavy development patterns can lead to not understanding which dependencies are used, much less keeping them up to date
+--
+
+- Unverified and out of date dependencies can have known/documented vulnerabilities
+--
+
+- Attackers will takes the easiest path into a system
+--
+
+- You can't get much easier than a known exploit
+
+---
+## What is a Component?
+--
+
+Components = Dependencies
+ - Anything your application needs to run
+--
+
+- Language version
+--
+
+- Operating system
+--
+
+- Web Server / Application Server
+--
+
+- Code Libraries (NPM, Maven, Ruby?, Pip)
+--
+
+- Databases
+--
+
+- Protocols and Procedures (HTTP, weak hash algorithms)
+
+---
+## Prevention
+--
+
+- Subscribe to security bulletins for all your vendors/dependencies
+--
+
+- Have a update plan and schedule
+  - Updating OS and libraries should be part of your process
+--
+
+- Update as safely and as quickly as you can
+  - Make sure new features are configured correctly (OWASP A6)
+--
+
+- Verify you don’t have known vulnerabilities (more on this next)
+
+---
+## Looking for Vulnerabilities
+--
+
+- [Common Vulnerabilties and Exposures (CVE)](https://cve.mitre.org/)
+--
+
+- [National Vulnerability Database (NVD)](https://nvd.nist.gov/)
+--
+
+- [https://www.npmjs.com/advisories](https://www.npmjs.com/advisories)
+--
+
+- [https://rubysec.com/](https://rubysec.com/)
+
+---
+## Scanning Tools
+--
+
+- [OWASP Zap](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project)
+  - Passive and Active scanner
+  - Spider
+  - Brute force tool
+  - Fuzzing tool
+  - Port scanner
+--
+
+- [Retire.js](https://retirejs.github.io/retire.js/)
+  - “What you require you must also retire”
+  - Find js libraries that have known vulnerabilities
+
+---
+## Professional Services
+
+- [Shodan](https://www.shodan.io)
+  - A company that searches/indexes servers on internet
+  - You can pay them to monitor and analyze your systems
+  - For example they have a [list of servers](https://www.shodan.io/report/89bnfUyJ) that are still vulnerable to [Heartbleed](https://en.wikipedia.org/wiki/Heartbleed)
+
+
+</textarea>
+
+<script type="text/javascript" src="../js/remark-latest.min.js"></script></body></html>
+    

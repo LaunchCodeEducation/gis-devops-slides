@@ -175,28 +175,28 @@ The world as a whole has already decided who to trust by default.
 1. For thousands of years, the world has relied on **symmetric** cryptography (a shared secret between two parties). 
 --
 
-2. Now the world uses **assymetric** cryptography (also known as `public-key cryptography`).
+2. Now the world uses **asymmetric** cryptography (also known as `public-key cryptography`).
 --
 
-3. In **assymetric** cryptography, one key is used for encrypting (public key) and another key is used for decrypting (private key). 
+3. In **asymmetric** cryptography, one key is used for encrypting (public key) and another key is used for decrypting (private key). 
 --
 
-4. **assymetric** cryptography is computationally expensive.  Typically, it is only used to establish a **symmetric** key that is shared.
+4. **asymmetric** cryptography is computationally expensive.  Typically, it is only used to establish a **symmetric** key that is shared.
 
 ---
 
 ## How your Browser trusts
 
-1. Your browser downloads the certificate from a website. The certificate is signed with the private key of a trusted certificate authority.
+1. Your browser downloads the certificate from a website. The certificate is signed with the private key of a trusted **certificate authority**.
 --
 
-2. Your browser checks to make sure the signature of the certificate can be decrypted using one of the trusted certficates factory installed on the machine. 
+2. Your browser checks to make sure the signature of the certificate can be decrypted using one of the trusted certficates factory **installed on the machine**. 
 --
 
 3. Your browser verifies that the URL on the certificate matches the URL the browser is visiting.
 --
 
-4. Your browser generates a symmetric key that can be used to encrypt all traffic between the browser and the server.  The symmetric key is encrypted with the public key from the certifcate and sent to the server.
+4. Your browser generates a **symmetric key** that can be used to encrypt all traffic between the browser and the server.  The **symmetric key** is encrypted with the public key from the certifcate and sent to the server.
 
 ---
 
@@ -206,7 +206,7 @@ Certificates can also be used to identify and authorize users.
 
 --
 
-* Every user is granted a certificate signed by a certificate authority created by an organization.
+* Every user is granted a certificate signed by a certificate authority **created by an organization**.
 
 --
 

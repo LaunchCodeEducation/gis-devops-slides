@@ -1,0 +1,141 @@
+<!DOCTYPE html><html lang=en><head><meta http-equiv=Content-Type content="text/html; charset=UTF-8"><meta name=viewport content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
+
+    <!-- #ToDo: Change Title for the presentation -->
+    <title>Security - Sensitive Data Exposure</title>
+    
+    </head>
+    
+    <!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
+    <body onload="var slideshow = remark.create({ratio: '16:9', navigation: {scroll: true, touch: true, click: false}, countIncrementalSlides: false, highlightLanguage: 'bash', highlightStyle: 'tomorrow-night-blue'});">
+    
+    <!-- #ToDo: Write your slides in MarkDown here -->
+<textarea id="source">
+
+class: center, middle
+
+# SECURITY FOCUS
+## Sensitive Data Exposure
+
+---
+
+## Sensitive Data Exposure
+--
+
+- Number 3 on OWASP top 10 for 2017
+- [https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure](https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure)
+--
+
+- Sensitive data is exposed to the public
+--
+
+- Two lines of defense to prevent this
+--
+
+  1. Data has to be accessed by attackers
+  2. Data has to be readable after accessed
+
+---
+## Classify the Data
+--
+
+- What defines sensitive in your organization?
+--
+
+- What data matches that definition? 
+--
+
+- What needs to be kept long term?
+--
+
+- Don’t store more data or for longer time periods than needed
+  - Use the data and get rid of it
+  - It **can't** be leaked if it’s not stored
+
+---
+## Limit Access to the Data
+--
+
+- Limit access to servers to the absolute minimum
+--
+
+- Don't give everyone on the internet a chance to hack your servers
+--
+
+- Keep data servers inside a VPN or VPC
+--
+
+- Lock down the ports
+--
+
+- Don't give every db user access to all tables
+
+
+---
+## Be Strong
+--
+
+- If you have sensitive data, take the time to secure it **properly**
+--
+
+- Act as if your data will be breached
+  - Prepare to make it hard for your data to be used
+--
+
+- Do your research
+  - Use *strong*, *adaptable* **hashing** algorithms
+  - Follow guidelines from security groups like OWASP
+  - Use proper key management for **encrypting**
+
+---
+## Encryption vs Hashing
+--
+
+- Encryption 
+  - Is a two way algorithm, uses keys to encrypt and decrypt data
+  - Used for sensitive data that needs to be securely stored and also **readable**
+--
+
+- Hashing
+  - Is a one way algorithm, that turns data into an alternative version in order to hide the true value
+  - Used for data(passwords) that will NOT be read in it's original form, but will be stored in your system
+
+---
+## Over the Rainbow Table
+--
+
+- Hashing passwords by itself is vulnerable to [Rainbow Table attacks](https://en.wikipedia.org/wiki/Rainbow_table)
+--
+
+  1. Attackers build a table of hashes from common passwords
+  2. Attackers compare leaked password hashes to the Rainbow Table to find matches
+  3. When a match is found they see what the "plain text" version of the match is and login with the password  
+
+---
+## Add Salt Please
+--
+
+- Salting makes Rainbow Tables useless (not all salt processes work exactly like this)
+--
+
+1. A truly andom salt is picked for each password change
+  2. salt is stored in the database in plain text
+  3. hash-algorithm(password + salt) is stored in the database
+  4. The resulting stored hash is now more complicated and each password has a different salt added to it
+  5. You can no longer use one Rainbow Table to compare with all the leaked passwords
+
+---
+## Strong Hashing Algorithms
+--
+
+- Don't write your own hashing code
+- Find a well maintained library that implements a secure hashing algorithm
+- OWASP suggests an adaptive, one way process such as these
+  - Argon2[*7] is the winner of the password hashing competition and should be considered as your first choice for new applications;
+  - PBKDF2 [*4]
+  - scrypt [*5] 
+  - bcrypt
+
+</textarea>
+
+<script type="text/javascript" src="../js/remark-latest.min.js"></script></body></html>
+    

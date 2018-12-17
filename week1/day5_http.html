@@ -29,27 +29,16 @@ class: center, middle
 
 ---
 
-## Imagine you had asked a robot for a webpage in 1997
-
----
-
-## Meet Charlie the Robot
-* Charlie only speaks HTTP
-![Charlie|250x250](charlie-the-robot.jpg)
-
-
----
-
-## A few things to know about Charlie the Robot
+## HTTP Protocol
 --
 
-* Request Response - You request a resource.  It returns the resource.  That's it.
+* Request Response - You request a resource.  Server returns the resource(response).  That's it.
 --
 
 * Structured Requests - Just like mailing a letter, there is specific data that you have to put in specific places.
 --
 
-* Number Codes (status) - The robot does not know any words. It just returns resources and numbers.
+* Number Codes (status) - Each response has a status code that indicates the success or failure of the request.
 
 ---
 
@@ -75,7 +64,7 @@ User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (K
 
 ---
 
-## HTTP Request Redux
+## Request Components
 
 * URL (Uniform Resource Locator) - Resource and the Protocol (where to get it.  how to get it.)
 * HTTP Verb - GET, POST, DELETE, UPDATE, etc.
@@ -143,7 +132,7 @@ Message Body
 
 ---
 
-## HTTP Message Response Redux
+## HTTP Message Response Components
 
 The server sends a response after processing the HTTP Request.
 * Status Code  - Message about how the request was processed.
@@ -154,9 +143,11 @@ The server sends a response after processing the HTTP Request.
 
 ## HTTP Status Codes
 
-***This is how the server talks to you***
+The reponse from the server will contain a status code. This code is helpful when your request failed.
+--
 
-To tell you about the operation, the server communicates in numbers grouped by relevance.
+There a many different codes and they are broken up into a series.
+
 * 1xx - Purely Informational
 * 2xx - Success
 * 3xx - Redirection
@@ -165,7 +156,7 @@ To tell you about the operation, the server communicates in numbers grouped by r
 
 ---
 
-## Essential Status Codes
+## Common Status Codes
 
 * 200 - Successful Request
 * 201 - Resource created
@@ -184,48 +175,59 @@ To tell you about the operation, the server communicates in numbers grouped by r
 
 ---
 
-## JSON
+## JSON Format
+
+* Many message bodies today contain JSON
+* JSON is a text format definition that is based off of JavaScript objects
+* JSON is like CSV, but a more complex format
 --
 
-* json - javascript object notation
---
-
-* arrays and objects(hashes) holding data ... with a few exceptions
---
-
-* keys in a object must be written with double quotes
---
-
-* values can be represented as a string, number, json object, an array, boolean, or null
---
-
-* `json.parse()` is used to convert json into workable javascript objects
---
-
-```
-var json = {"key1": "value1", "key2": ["option1", "option2"]}
-var javascriptmap = json.parse(json);
-console.log(javascriptmap.key2[1]);  // "option2"
-```
+* JSON and JavaSripts objects are not the same thing
+* JSON looks very similair to JavaScript objects, but there are a few differences
 
 ---
 
-## Testing HTTP Services
+## JSON
+* keys must be written with double quotes
+```
+{ 
+     "name": "Bert", 
+     "age" : 6,
+     "foods" : ["hot dogs", "cherrys", "chili", "twizzlers"],
+     "registred" : true
+}
+```
+* possible values = `true / false / null / object / array / string / number`
 
-####cURL
+---
 
-Get Data about Routes
+## JavaScript Object
+* keys do NOT require double quotes
+```
+{ 
+     name: "Bert", 
+     age : 6,
+     foods : ["hot dogs", "cherrys", "chili", "twizzlers"],
+     registred : true
+}
+```
+* possible values = `true / false / null / object / array / string / number / function / undefined`
 
-```curl -X GET http://localhost:8080/routes ```
+---
 
-Get Data about Routes in JSON format
+## JSON Data
+* Data is sent via HTTP between the client(browser) and server
+* Many times that data is in the format of JSON (you can see that in the network tab of your browser)
+--
 
-```curl -X GET --header "Content-Type: application/json" http://localhost:8080/routes ```
+* The JSON data has to be converted to a normal JavaScript object
+* `JSON.parse(jsonString)` is used to convert json into workable JavaScript objects
 
-Post route data in JSON format
-
-```curl -X POST --header "Content-Type: application/json" --data '{"<key>":"<value>">}' http://localhost:8080/routes ```
-
+```
+var jsonString = '{"key1": "value1", "key2": ["option1", "option2"]}';
+var jsObject = json.parse(jsonString);
+console.log(jsObject.key2[1]);  // logs "option2"
+```
 ---
 
 ## POSTMAN

@@ -1,0 +1,169 @@
+<!DOCTYPE html><html lang=en><head><meta http-equiv=Content-Type content="text/html; charset=UTF-8"><meta name=viewport content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
+
+    <!-- #ToDo: Change Title for the presentation -->
+    <title>Security - Injection</title>
+    
+    </head>
+    
+    <!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
+    <body onload="var slideshow = remark.create({ratio: '16:9', navigation: {scroll: true, touch: true, click: false}, countIncrementalSlides: false, highlightLanguage: 'bash', highlightStyle: 'tomorrow-night-blue'});">
+    
+    <!-- #ToDo: Write your slides in MarkDown here -->
+<textarea id="source">
+
+class: center, middle
+
+# SECURITY FOCUS
+## Injection
+
+---
+
+## Injection
+--
+
+- Number 1 on OWASP top 10 for 2017
+- [https://www.owasp.org/index.php/Top_10-2017_A1-Injection](https://www.owasp.org/index.php/Top_10-2017_A1-Injection)
+--
+
+- What is it?
+--
+
+  - When hostile data/code is executed by the interpreter
+
+---
+## Every Feature is a Vulnerability
+--
+
+- Features of applications are leveraged to gain data or control
+--
+
+- An exploit will be attempted for ANYTHING the application/server accepts as an input
+--
+
+  - Input fields
+  - Request parameters
+  - Payloads
+  - Headers
+  - Command Line Arguments
+  - Environment Variables
+
+---
+## Types of Injection
+--
+
+- Different types of user supplied data is NOT validated/filtered
+--
+
+  - SQL
+  - LDAP
+  - XPath
+  - NoSQL
+  - OS commands
+  - XML parsers
+  - SMTP headers
+--
+
+- **legacy systems** and **modern tools** are vulnerable
+
+---
+## Attack Example
+--
+
+Change a query parameter in URL in order to alter the meaning of an SQL query
+--
+
+```
+//normal url
+http://example.com/app/accountView?id=824
+//injection attack
+http://example.com/app/accountView?id=' or '1'='1 
+```
+--
+
+Parameter is used in a query without being validated
+```
+String query = "SELECT * FROM accounts WHERE custID='" + request.getParameter("id") + "'";
+```
+--
+Result of attack is access to **all data** in account table. **THAT'S BAD**
+---
+## How to Prevent
+--
+
+- **Awareness** of what your source code does
+--
+
+- Escape **special characters** to prevent interpreter commands from running
+--
+
+- **Safe list** of inputs that are allowed
+--
+
+- If using SQL add LIMIT to your queries to prevent mass data loss
+--
+
+- Use **least privilege**, which means do NOT make your application db accounts admins
+--
+
+- SAST and DAST tools into the CI/CD pipeline to **identify injection flaws**
+
+
+---
+## DON'T DO THIS
+--
+
+This assumes that `stockCode` was entered by a user and has NOT been filtered or validated
+```
+String hql = "from Stock s where s.stockCode = '" + stockCode + "'";
+List result = session.createQuery(hql).list();
+```
+
+---
+### Prevention with Spring Data / Hibernate
+--
+
+Use **named**  or **positional** parameters, which relies on hibernate to sanitize the values
+--
+
+```
+String hql = "from Stock s where s.stockCode = :stockCode";
+List result = session.createQuery(hql)
+.setParameter("stockCode", "7277")
+.list();
+```
+--
+
+```
+String hql = "from Stock s where s.stockCode = ? and s.stockName = ?";
+List result = session.createQuery(hql)
+.setString(0, "7277")
+.setParameter(1, "DIALOG")
+.list();
+```
+
+---
+## Spring Data JPA Repository
+--
+
+`@Query` annotation uses `ordered` or `named` parameters
+--
+
+```
+public interface UserRepository extends JpaRepository<User, Long> {
+
+  @Query("select u.username from User u where u.category = ?1")
+  List<String> findUsernames(String category);
+
+  //NOTE you generally don't need to use @Query unless you want less data back
+  @Query("select u from User u where u.firstname = :firstname or u.lastname = :lastname")
+  User findByLastnameOrFirstname(@Param("lastname") String lastname,
+                                  @Param("firstname") String firstname);
+}
+```
+
+
+
+</textarea>
+
+<script type="text/javascript" src="../js/remark-latest.min.js"></script></body></html>
+    
