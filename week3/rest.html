@@ -132,9 +132,11 @@ In REST, the URL identifies a resource. In practice, this means that the _path_ 
 
 - `http://launchcode.org/api/users/7` - the user with ID 7
 
--- 
+--
 
 - `http://launchcode.org/api/users` - all users
+
+--
 
 Note the distinction between _individual_ resources and _collections_ of resources in the last two examples. An individual resource will typically have an identifier (numeric or otherwise), while a collection 
 
@@ -253,6 +255,9 @@ In REST URLs, query paramters are used to filter collections
 ### Examples
 
 - `/companies?state=MO` - companies based in MO
+
+--
+
 - `/companies/1234/employees?gender=F` - all female employees at the company with ID 1234
 
 </textarea>
