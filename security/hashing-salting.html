@@ -21,18 +21,20 @@ class: center, middle
 ## Sensitive Data Exposure
 --
 
-- Number 3 on OWASP top 10 for 2017
-- [https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure](https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure)
+- [Number 3 on OWASP top 10](https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure) for 2017
+
 --
 
 - Sensitive data is exposed to the public
 --
 
-- Two lines of defense to prevent this
+- There are two lines of defense to prevent this:
 --
 
-  1. Data has to be accessed by attackers
-  2. Data has to be readable after accessed
+1. Data has to be accessed by attackers
+--
+
+2. Data has to be readable after accessed
 
 ---
 ## Classify the Data
@@ -67,7 +69,7 @@ class: center, middle
 - Lock down the ports
 --
 
-- Don't give every db user access to all tables
+- Don't give every database user access to all tables
 
 
 ---
@@ -96,32 +98,32 @@ class: center, middle
 --
 
 - Hashing
-  - Is a one way algorithm, that turns data into an alternative version in order to hide the true value
-  - Used for data(passwords) that will NOT be read in it's original form, but will be stored in your system
+  - Is a one-way algorithm, that turns data into an alternative version in order to hide the true value
+  - Used for data (passwords) that will NOT be read in it's original form, but will be stored in your system
 
 ---
-## Over the Rainbow Table
+
+## How Hashing Works
+
+Hashing is enabled via a **hash function**. A hash function `h` has these properties:
+
+- Convert strings into a "hash" of characters: `h(s)` might look something like `b8d08e682534b7a847f174e41f584827`
+
 --
 
-- Hashing passwords by itself is vulnerable to [Rainbow Table attacks](https://en.wikipedia.org/wiki/Rainbow_table)
+- Similar strings have very different hashes
+
 --
 
-  1. Attackers build a table of hashes from common passwords
-  2. Attackers compare leaked password hashes to the Rainbow Table to find matches
-  3. When a match is found they see what the "plain text" version of the match is and login with the password  
+- If `str1` and `str2` are different, then it is _very, very rare_ for `h(str1) == h(str2)` (if this does happen, we say a "collision" has occured)
 
----
-## Add Salt Please
 --
 
-- Salting makes Rainbow Tables useless (not all salt processes work exactly like this)
+- It is not feasible to "undo" `h` (i.e. we can't find a function `g` so that `g(h(str)) == str` always)
+
 --
 
-1. A truly andom salt is picked for each password change
-  2. salt is stored in the database in plain text
-  3. hash-algorithm(password + salt) is stored in the database
-  4. The resulting stored hash is now more complicated and each password has a different salt added to it
-  5. You can no longer use one Rainbow Table to compare with all the leaked passwords
+- `h` is fast
 
 ---
 ## Strong Hashing Algorithms
@@ -134,6 +136,44 @@ class: center, middle
   - PBKDF2 [*4]
   - scrypt [*5] 
   - bcrypt
+
+---
+
+## Over the Rainbow Table
+
+--
+
+Hashing passwords by itself is vulnerable to [Rainbow Table attacks](https://en.wikipedia.org/wiki/Rainbow_table)
+--
+
+1. Attackers build a table of hashes from common passwords
+--
+
+2. Attackers compare leaked password hashes to the Rainbow Table to find matches
+--
+
+3. When a match is found they see what the "plain text" version of the match is and login with the password  
+
+---
+## Add Salt Please
+--
+
+Salting makes Rainbow Tables useless (not all salt processes work exactly like this)
+--
+
+1. A truly andom salt is picked for each password change
+  2. The salt is stored in the database in plain text
+  3. `h(password + salt)` is stored in the database
+  4. The resulting stored hash is now more complicated and each password has a different salt added to it
+  5. You can no longer use one Rainbow Table to compare with all the leaked passwords
+
+---
+
+## Final Note on Salts 
+
+Some hashing algorithms (such as Bcrypt) have salting built in to them, so a programmer does not need to manually generate and keep track of salts. 
+
+In such cases, the salt will be part of the generated hash string, and does not need to be separately stored in the database. 
 
 </textarea>
 
