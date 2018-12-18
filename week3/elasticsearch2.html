@@ -118,7 +118,7 @@ GET twitter/_search
 
 --
 
-- `must_not` - results may not satisfy the condition
+- `must_not` - results do not satisfy the condition
 
 --
 
@@ -186,7 +186,7 @@ Returns no results, even though there's a tweet with a mispelling of "relational
 
 # Fuzzy Queries
 
-Closeness to search term is calculated by **edit distance**. That is, the number of characters that would have to be deleted, added, changed, or transposed. 80% of human misspellings have an edit distance of only 1! (Default fuzziness is 2.)
+Closeness to search term is calculated by **edit distance**. That is, the number of characters that would have to be deleted, added, changed, or transposed. 80% of human misspellings have an edit distance of only 1!
 
 ```
 GET /twitter/_search
@@ -198,6 +198,12 @@ GET /twitter/_search
         "fuzziness": 3
 }}}}
 ```
+
+---
+
+# Fuzzy Queries
+
+By default, the fuzziness for a query is `AUTO`, which generates a fuzziness value based on the length of the term (longer terms allow for more fuzziness). 
 
 ---
 
@@ -216,7 +222,7 @@ GET /twitter/_search
 
 --
 
-* You might think of this like a schema in SQL
+* You can think of this like a schema in SQL
 
 --
 

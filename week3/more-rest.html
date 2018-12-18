@@ -67,9 +67,15 @@ Remember that authentication is about _identity_, authorization is about _permis
 
 ## Basic Authentication
 
-One way to enable authentication is to turn on "basic auth" on the server. This forces clients to include an `Authorization` header with a proper username/password. 
+"Basic auth" can be enabled by the web server. 
 
 ![Basic Auth Flow](images/basic-auth.png)
+
+---
+
+## Basic Authentication
+
+This forces clients to include an `Authorization` header with a proper username/password.
 
 --
 
@@ -79,11 +85,13 @@ The header value has the form `Basic [Base64 encoding of username:password]`. If
 
 ## The Problem With Basic Auth
 
-Basic auth is a dumb/naive scheme. It is unable to distinguish between different users, and different types of requests. If a correct username/password pair is given, the request will _always_ be allowed.
+Basic auth is a dumb/naive scheme. 
+
+It is unable to distinguish between different users, and different types of requests. If a correct username/password pair is given, the request will _always_ be allowed.
 
 --
 
-Thus, there is no way to enable authorization. In other words, there is no way to allow different users to have different permissions.
+Thus, there is no way to enable **authorization**. In other words, there is no way to allow different users to have different permissions.
 
 ---
 
@@ -115,7 +123,7 @@ Via the "OAuth flow", a key/token is issued dynamically by the API when a user g
 
 --
 
-Examples of OAuth abound (cf. "Log in with Facebook" etc). We won't discuss it in detail, but you should read the article linked in the References section for this class.
+Examples of OAuth abound (cf. "Log in with Facebook" etc). We will learn about OAuth in detail toward the end of the class, but you should see the References section for this class for an intro article.
 
 ---
 
@@ -182,7 +190,11 @@ _Developed by Leonard Richardson and [written about](https://martinfowler.com/ar
 
 The **REST Maturity Model** consists of 4 progressive levels that may be used to determine how "RESTful" an API is
 
-![REST Maturity](images/rest-maturity.png)
+--
+
+[View the REST Maturity Model diagram](https://martinfowler.com/articles/images/richardsonMaturityModel/overview.png)
+
+[A good outline of the REST Maturity Model](http://restcookbook.com/Miscellaneous/richardsonmaturitymodel/)
 
 ---
 
