@@ -17,8 +17,9 @@
 
 class: center, middle
 
-# Day 2
-### Swagger
+# Swagger
+
+## Documenting REST APIs
 
 ---
 
@@ -41,13 +42,13 @@ class: center, middle
 
 # Swagger
 
-* API documentation tool used extensively by the NGA.
+* API documentation tool used extensively by the NGA
 --
 
-* Designed to assist in creating OpenAPI compliant REST services.
+* Designed to assist in creating OpenAPI compliant REST services
 --
 
-* Config files can be written YAML or JSON.
+* Config files can be written in YAML or JSON
 --
 
 * <a href="http://petstore.swagger.io/#/" target="_blank">Example</a>
@@ -61,54 +62,61 @@ class: center, middle
   * In 2015, the standard specification was donated to the OpenAPI Initiative.
 --
 
-* Swagger now represents an open source toolset around building APIs.
+* Swagger now represents an open source toolset around building APIs
 --
 
-* The OpenAPI Specification defines a universal format used to describe APIs. 
+* The OpenAPI Specification defines a universal format used to describe APIs
 --
 
-  * Note: OpenAPI Initiative released OpenAPI Specification 3.0 in 2017.  
+  * Note: OpenAPI Initiative released OpenAPI Specification 3.0 in 2017  
 ---
 
 ## Using Swagger
 
-Swagger is a tool set for generating API documentation.
+Swagger is a toolset for generating APIs and documentation.
 --
 
 
 Use Cases:
 --
 
-  * Documentation tool (SwaggerUI):  easily describing the API.
+  * Documentation tool (SwaggerUI):  easily describing the API
 --
 
-  * Self Documenting (Springfox): write the documentation based on annotations within the code.
+  * Self Documenting (Springfox): write the documentation based on annotations within the code
 --
 
-  * Code Generation (Swagger Codegen): you write the description and it generates the code.
+  * Code Generation (Swagger Codegen): you write the description and it generates the code
+
 --
 
-* ### Our Focus: Swagger as a documentation tool.
+**Our Focus**: Swagger as a documentation tool (manual and self-documenting)
 
 ---
 
 ## How it Works
 
-* Define a YAML or JSON file.
+* Create a YAML or JSON file
 --
 
-* In the file, define all paths for the API
+* In the file, define all paths / endpoints for the API
 --
 
 * In the file, define all responses for each endpoint
 --
 
-* Swagger uses Javascript to parse the YAML config file and display HTML.
+* Swagger uses JavaScript to parse the config file and display HTML
 
 ---
 
 ## YAML
-* (Very similar to JSON, but is less verbose)
+
+YAML = "Yet Another Markup Language"
+
+YAML is very similar to JSON, but is less verbose
+
+--
+
 * Here is a list
 
 ```
@@ -117,6 +125,7 @@ fruits:
 - Oranges
 - Grapes
 ```
+--
 
 * Here is a dictionary (key-value pair)
 
