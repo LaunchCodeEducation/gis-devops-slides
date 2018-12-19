@@ -23,52 +23,45 @@ class: center, middle
 
 ---
 
-## Review
+# API Documentation
 
-* Humans communicate with humans via HTML.
+The REST guidelines allow for quick understanding of an API, but we still need some basic info about endpoints, resources, etc. In other words, we need API documentation.
+
 --
 
-* Machines communicate with machines via APIs.
---
+Fortunately, the common aspects of REST APIs make this a relatively easy task.
 
-* REST standardizes APIs so that machines can communicate *without humans*.
---
-
-* ...
---
-
-* How do humans communicate with the machines?
 ---
 
-# Swagger
+## OpenAPI Specification
 
+- A specification for a file format that can define a REST of API
+--
+
+- Began development in 2010 as part of the Swagger project, which also included tools for documentation and generating APIs
+--
+
+- Became an independent project (OpenAPI initiative) in 2015, housed under the Linux Foundation
+--
+
+- Documented at [https://swagger.io/specification/](https://swagger.io/specification/)
+
+---
+
+## Swagger 
+
+--
 * API documentation tool used extensively by the NGA
 --
 
-* Designed to assist in creating OpenAPI compliant REST services
+* Designed to assist in creating OpenAPI-compliant REST services
 --
 
-* Config files can be written in YAML or JSON
+* Config files are OpenAPI definition files, and can be written in YAML or JSON
 --
 
-* <a href="http://petstore.swagger.io/#/" target="_blank">Example</a>
----
+* [Example](http://petstore.swagger.io/#/) of a Swagger-generated API documentation site
 
-## What's the difference between Swagger and OpenAPI?
-
-* Swagger was originally a tool and a standard specification for defining RESTful interfaces.
---
-
-  * In 2015, the standard specification was donated to the OpenAPI Initiative.
---
-
-* Swagger now represents an open source toolset around building APIs
---
-
-* The OpenAPI Specification defines a universal format used to describe APIs
---
-
-  * Note: OpenAPI Initiative released OpenAPI Specification 3.0 in 2017  
 ---
 
 ## Using Swagger
@@ -76,17 +69,16 @@ class: center, middle
 Swagger is a toolset for generating APIs and documentation.
 --
 
-
 Use Cases:
 --
 
-  * Documentation tool (SwaggerUI):  easily describing the API
+  * **Documentation Tool** (SwaggerUI): easily describing the API by creating OpenAPI definition files
 --
 
-  * Self Documenting (Springfox): write the documentation based on annotations within the code
+  * **Self-Documenting** (Springfox): creates the documentation based on annotations within the code
 --
 
-  * Code Generation (Swagger Codegen): you write the description and it generates the code
+  * **Code Generation** (Swagger Codegen): you write the description and it generates the code
 
 --
 
@@ -96,7 +88,7 @@ Use Cases:
 
 ## How it Works
 
-* Create a YAML or JSON file
+* Create a YAML or JSON file 
 --
 
 * In the file, define all paths / endpoints for the API
@@ -109,15 +101,13 @@ Use Cases:
 
 ---
 
-## YAML
-
-YAML = "Yet Another Markup Language"
+## YAML = "Yet Another Markup Language"
 
 YAML is very similar to JSON, but is less verbose
 
 --
 
-* Here is a list
+Here is a list: 
 
 ```
 fruits:
@@ -127,7 +117,7 @@ fruits:
 ```
 --
 
-* Here is a dictionary (key-value pair)
+Here is a dictionary (key-value pair)
 
 ```
 - martin
@@ -139,7 +129,7 @@ fruits:
 
 ## YAML Swagger Config
 
-* 4 important sections to a Swagger config
+There are 5 important sections to a Swagger config
  
 --
 
@@ -157,9 +147,7 @@ definitions:
 
 ---
 
-## YAML Swagger Config
-
-* API Information Section
+## YAML Config - API Info
 
 ```
 info:
@@ -176,39 +164,33 @@ info:
 
 ---
 
-## YAML Swagger Config
-
-* API Information Section
+## YAML Config - API Info
 
 <img src="images/swagger-yaml-info-section.png"/>
 
 ---
 
-## YAML Swagger Config
-
-* Tags Section
+## YAML Config - Tags
 
 ```
 tags: # tags provide a summary about endpoints
-- name: admins 
-  description: Secured Admin-only calls
+  - name: admins 
+    description: Secured Admin-only calls
   - name: developers
     description: Operations available to regular developers
 ```
 
 ---
 
-## YAML Swagger Config
+## YAML Config - Tags
 
-* Tags group your endpoints and provide extra details.
+Tags group your endpoints and provide extra details.
 
 <img src="images/swagger-yaml-tags-section.png"/>
 
 ---
 
-## YAML Swagger Config
-
-* Paths Section
+## YAML Config - Paths
 
 ```
 paths:
@@ -228,17 +210,15 @@ paths:
 
 ---
 
-## YAML Swagger Config
+## YAML Config - Paths
 
-* Note: since the path is tagged developers it is under the developers heading
+Note: An operation is listed under each tag it is assigned (operations may have multiple tags)
 
 <img src="images/swagger-yaml-path-section.png"/>
 
 ---
 
-## YAML Swagger Config
-
-* Paths Section (continued)
+## YAML Config - Paths
 
 ```
 paths:
@@ -262,17 +242,15 @@ paths:
 
 ---
 
-## YAML Swagger Config
+## YAML Config
 
-* Tags group your endpoints and provide extra details.
+Tags group your endpoints and provide extra details.
 
 <img src="images/swagger-yaml-path-cont-section.png"/>
 
 ---
 
-## YAML Swagger Config
-
-* Definitions allow you create reusable chunks of YAML
+## YAML Config - Definitions
 
 ```
 definitions:
@@ -290,21 +268,39 @@ definitions:
         type: string
         example: Widget Adapter
 ```
+
 ---
 
-## YAML Swagger Config
-
-* Definitions are listed at the bottom of SwaggerUI
+## YAML Config - Definitions
 
 <img src="images/swagger-yaml-definitions-section.png"/>
 
 ---
 
-## YAML Swagger Config
+## YAML Config - Referencing Definitions
 
-* Using `$ref` allows you to reuse pieces of YAML from definitions
+Using `$ref` allows you to reuse pieces of YAML from definitions. This verbose spec of the schema of a response...
  
 ```
+  schema:
+    type: array
+		items: 
+			type: object
+			required: 
+				-id
+				-name
+        ...
+```
+
+---
+
+## YAML Config - Referencing Definitions
+
+...*is the same as* this one that references a definition.
+
+```
+  schema:
+    type: array
 		items: 
 			$ref: '#/definitions/InventoryItem'
 		...
@@ -312,23 +308,8 @@ definitions:
 			InventoryItem:
 				type: object
 				required: 
+        ...
 ```
-*is the same as*
-```
-		items: 
-			type: object
-			required: 
-				-id
-				-name
-```
-
-
-
----
-
-##Walkthrough
----
-
 
 </textarea>
 
