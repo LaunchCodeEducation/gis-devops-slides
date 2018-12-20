@@ -21,11 +21,11 @@ class: center, middle
 Find documents with a given field containing a value.
 
 ```json
-GET _search
+GET /library/_search
 {
   "query": {
     "match": {
-      "name": "TEXT"
+      "title": "overstory"
     }
   }
 }
@@ -69,7 +69,7 @@ GET twitter/_search
 
 ---
 
-# Filtering
+## Filtering
 
 We can filter results using a `bool` query, which combines queries and filters
 
@@ -91,7 +91,7 @@ GET twitter/_search
 
 ---
 
-# Filtering
+## Filtering
 
 To simply apply a filter, omit the query property from the `bool` object: 
 
@@ -112,7 +112,7 @@ GET twitter/_search
 
 ---
 
-# Query Types
+## Query Types
 
 - `must` - results are required to satisfy the condition
 
@@ -126,7 +126,7 @@ GET twitter/_search
 
 ---
 
-# Query Types
+## Query Types
 
 These may be combined in complex ways: 
 
@@ -146,7 +146,7 @@ GET twitter/_search
 
 ---
 
-# Filter Types
+## Filter Types
 
 - `range` - specifies a range of values that a numeric field may have; we can specify `gt`, `gte`, `lt`, `lte`
 - `terms` - specifies an array of values that a text field may have to be included in the result set
@@ -164,7 +164,7 @@ GET twitter/_search
 
 ---
 
-# Fuzzy Queries
+## Fuzzy Queries
 
 
 **Fuzzy Queries** allow you to match misspellings
@@ -184,7 +184,7 @@ Returns no results, even though there's a tweet with a mispelling of "relational
 
 ---
 
-# Fuzzy Queries
+## Fuzzy Queries
 
 Closeness to search term is calculated by **edit distance**. That is, the number of characters that would have to be deleted, added, changed, or transposed. 80% of human misspellings have an edit distance of only 1!
 
@@ -201,7 +201,7 @@ GET /twitter/_search
 
 ---
 
-# Fuzzy Queries
+## Fuzzy Queries
 
 By default, the fuzziness for a query is `AUTO`, which generates a fuzziness value based on the length of the term (longer terms allow for more fuzziness). 
 
@@ -216,7 +216,7 @@ By default, the fuzziness for a query is `AUTO`, which generates a fuzziness val
 
 ---
 
-# Document Mapping
+## Document Mapping
 
 * A mapping defines how the document and its fields are stored and indexed
 
@@ -230,7 +230,7 @@ By default, the fuzziness for a query is `AUTO`, which generates a fuzziness val
 
 ---
 
-# Working With Mappings
+## Working With Mappings
 
 To view mappings for an index: 
 
@@ -240,7 +240,7 @@ $ curl 'localhost:9200/twitter/_mapping?pretty'
 
 ---
 
-# Creating A Mapping
+## Creating A Mapping
 
 ```
 PUT /twitter
@@ -262,7 +262,7 @@ PUT /twitter
 
 ---
 
-# Mapping Explosions
+## Mapping Explosions
 
 You can map data dynamically! Hey, we’ve been doing it!
 
@@ -282,7 +282,7 @@ You can map data dynamically! Hey, we’ve been doing it!
 
 ---
 
-# When Data Changes
+## When Data Changes
 
 If you want to add or a change a field in your mapping, you must **reindex**
 
@@ -304,14 +304,14 @@ POST _reindex
 
 ---
 
-# Reindexing Notes
+## Reindexing Notes
 
 * `_reindex` doesn’t actually change data in place. **Index mappings are immutable.**
 * It copies data over from an old index into a new one quickly. You still have to set up the new one first.
 
 ---
 
-# Geopoints
+## Geopoints
 
 A field of type `geo_point` can be represented in one of three ways: 
 
@@ -323,7 +323,7 @@ _Geopoints are not automatically recognized by dynamic mapping, and must be mapp
 
 ---
 
-# Geo Queries
+## Geo Queries
 
 * There are several ways to calculate physical distance in searches
 
@@ -335,7 +335,7 @@ _Geopoints are not automatically recognized by dynamic mapping, and must be mapp
 
 ---
 
-# Geodistance Example
+## Geodistance Example
 
 ```
 GET /twitter/_search
@@ -358,7 +358,7 @@ GET /twitter/_search
 
 ---
 
-# Geo Aggregations
+## Geo Aggregations
 
 * `geo_bounds`: computes a bounding box containing all geo points for a field (i.e. give me an area containing all the concert venues in this collection of businesses)
 * `geo_centroid`: calculates the centroid/geometric center of a `geo_polygon`  (i.e. what's the centroid among a collection of restaurants serving ice cream?)
@@ -366,7 +366,7 @@ GET /twitter/_search
 
 ---
 
-# Other Features
+## Other Features
 
 *  You can **boost** one field over another
   * For example, you might specify that location matters more than price range, so increase the score on location matches
@@ -378,7 +378,7 @@ GET /twitter/_search
 
 ---
 
-# Parent Child Relationships
+## Parent/Child Relationships
 
 * Documents that are related should be stored in a parent child relationship.
 * There will be one document, that has nested JSON inside of it.
@@ -390,7 +390,7 @@ For Example:
 
 ---
 
-# Parent Child Example
+## Parent/Child Example
 
 ```json
 {
@@ -412,14 +412,14 @@ For Example:
 
 ---
 
-# What about Joins?
+## What about Joins?
 
 * ElasticSearch is composed of only documents, no tables.
 * Joining with other documents is technically possible, but not recommended.
 
 ---
 
-# _id
+## _id
 
 * Lucene/ES uses a key `_id`, just like many other databases
 * The contents will be a hash, not sequential numbers
@@ -429,7 +429,11 @@ For Example:
 
 ---
 
+## Further Into ES
 
+We've only presented the most commonly-used features of ES. 
+
+There is much more that we haven't covered, but with an understanding of these core features you can work with ES effectively while adding to your knowledge.
 
 </textarea>
 

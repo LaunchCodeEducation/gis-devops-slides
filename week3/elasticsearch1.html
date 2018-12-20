@@ -42,7 +42,7 @@ class: center, middle
 
 ---
 
-# Use cases
+## Use cases
 
 * Advanced search
   * Full-text search
@@ -59,7 +59,7 @@ class: center, middle
 
 ---
 
-# Relational Databases
+## Relational Databases
 
 * Examples: MySQL, PostgreSQL, SQLite
 
@@ -78,7 +78,7 @@ class: center, middle
 
 ---
 
-# Non-Relational (NoSQL) Databases
+## Non-Relational (NoSQL) Databases
 
 * Examples: MongoDB, CouchDB, Redis, Apache Cassandra
 
@@ -96,7 +96,7 @@ class: center, middle
 
 ---
 
-# NoSQL Document
+## NoSQL Document
 
 Data is stored as documents, rather than rows in tables
 
@@ -104,7 +104,7 @@ Data is stored as documents, rather than rows in tables
 
 ---
 
-# JSON
+## JSON
 
 <div class = "left-column" >
 
@@ -118,13 +118,13 @@ Data is stored as documents, rather than rows in tables
 
 <div class = "right-column">
 
-<img style = "transform: scale(2.2)" src = "images/JSONexample.png">
+<img src = "images/JSONexample.png">
 
 </div>
 
 ---
 
-# Lucene
+## Lucene
 
 Elasticsearch is built on Lucene, a search library written in Java.
 
@@ -132,7 +132,7 @@ Elasticsearch is built on Lucene, a search library written in Java.
 
 * Stores data in an **index** of documents
   * Each **document** has **fields**
-  * For now, think of an index as the analog of a database in a RDBMS
+  * For now, think of an index as the analog of a database in a relational database 
 
 --
 
@@ -148,13 +148,13 @@ Elasticsearch is built on Lucene, a search library written in Java.
 
 ---
 
-# Talking To Elasticsearch
+## Talking To Elasticsearch
 
 With Java, we can talk to Elasticsearch via: 
 
 --
 
-* **Node client** - The node client joins a local cluster as a non data node. In other words, it doesn’t hold any data itself.
+* **Node client** - The node client joins a local cluster as a non-data node. In other words, it doesn’t hold any data itself.
 
 --
 
@@ -166,9 +166,11 @@ With Java, we can talk to Elasticsearch via:
 
 ---
 
-# RESTful API
+## REST API
 
-For other scenarios, Elasticsearch provides a RESTful API that communicates using JSON over HTTP
+For other scenarios, Elasticsearch provides a REST API that communicates using JSON over HTTP.
+
+We will predominantly use this API to talk to ES. 
 
 --
 
@@ -180,7 +182,7 @@ For other scenarios, Elasticsearch provides a RESTful API that communicates usin
 
 ---
 
-# curl Basics
+## curl Basics
 
 The generic `curl` usages looks like: 
 
@@ -201,26 +203,60 @@ The components are:
 
 ---
 
-# Let's use Elasticsearch!
-
-Install ES via Homebrew using the instructions on the course site.
+## Let's use Elasticsearch!
 
 --
 
-Verify that it's running: 
+Install ES and it's partner, Kibana, via Homebrew:
+
+--
 
 ```
-$ curl 'localhost:9200'
+$ brew install elasticsearch 
+$ brew install kibana 
+```
+
+--
+
+Start both of the apps as services:
+
+``` 
+$ brew services start elasticsearch 
+$ brew services start kibana 
 ```
 
 ---
 
-# The _cat API
-
-The endpoint `/_cat` provides useful info about the ES instance.
+## Verify that it's running
 
 ```
-$ curl 'localhost:9200/_cat'
+$ curl localhost:9200
+```
+
+You should receive a response containing info about the ES instance.
+
+```
+{
+  "name" : "nPGurEK",
+  "cluster_name" : "elasticsearch_chris",
+  "cluster_uuid" : "08zrCrAiQwOEHAnByAIyLw",
+  "version" : {
+    "number" : "6.5.2",
+    "build_flavor" : "default",
+    ... 
+  },
+  "tagline" : "You Know, for Search"
+}
+```
+
+---
+
+## The _cat API
+
+The endpoint `/_cat` provides a list of metadata endpoints that we can access.
+
+```
+$ curl localhost:9200/_cat
 =^.^=
 /_cat/allocation
 /_cat/shards
@@ -233,19 +269,25 @@ $ curl 'localhost:9200/_cat'
 [content ommitted]
 ```
 
---
+---
 
-Add the `v` (for verbose) and `pretty` query parameters to get nicer output 
+## The _cat API
+
+What does this return? 
+
+```
+$ curl localhost:9200/_cat/indices
+```
 
 ---
 
-# Indices
+## Indices
 
-* An index is a collection of similar data (books, people)
+* An index is a collection of similar documents (books, people)
 
 --
 
-* Each piece of data is a document (like one record in SQL, a specific book)
+* Each piece of data is a document (like one record in SQL, e.g. a specific book)
 
 --
 
@@ -253,7 +295,7 @@ Add the `v` (for verbose) and `pretty` query parameters to get nicer output
 
 --
 
-* Each field has a type, just like in SQL
+* Each field has a type, just like in SQL (integer, string, etc)
 
 --
 
@@ -261,7 +303,7 @@ Add the `v` (for verbose) and `pretty` query parameters to get nicer output
 
 ---
 
-# ES versus RDBMS
+## ES versus Relational Databases 
 
 A rough parallel can be drawn:
 
@@ -271,7 +313,7 @@ Elasticsearch  ⇒ Indices   ⇒ Types  ⇒ Documents ⇒ Fields
 
 ---
 
-# Creating Documents
+## Creating Documents
 
 To create a document, `POST` to a URL of the form `/<INDEX>/<TYPE>` with the document as the request body: 
 
@@ -285,19 +327,43 @@ $ curl -XPOST 'localhost:9200/library/books' -H 'Content-type: application/json'
 }'
 ```
 
---
+---
 
-Response: 
+## The Response
+
 
 ```
-{"_index":"library","_type":"books","_id":"kQrERGMB16M7PyHPwaUV","_version":1,"result":"created","_shards":{"total":2,"successful":1,"failed":0},"_seq_no":1,"_primary_term":1}
+{
+  "_index": "library",
+  "_type": "books",
+  "_id": "h9FPyGcBWCX-HNnRrdF4",
+  "_version": 1,
+  "result": "created",
+  "_shards": {
+    "total": 2,
+    "successful": 1,
+    "failed": 0
+  },
+  "_seq_no": 0,
+  "_primary_term": 1
+}
+```
+
+---
+
+## A New Index
+
+Again, try:
+
+```
+$ curl localhost:9200/_cat/indices
 ```
 
 ---
 
 # Shorthand
 
-Rather than writing out the full `curl` command, we'll use: 
+Rather than writing out the full `curl` command, we'll often use: 
 
 ```json
 POST /library/books?pretty
@@ -312,37 +378,40 @@ when we mean:
 ```
 $ curl -XPOST 'localhost:9200/library/books?pretty' -H 'Content-type: application/json' -d '
 {
-  "title": "Infinite Jest",
-  "author": "David Foster Wallace"
+  "title": "The Overstory",
+  "author": "Richard Powers"
 }'
 ```
 
 ---
 
-# Retrieving Documents
+# Other Index Endpoints 
 
-To retrieve a single document, we can ask for: 
+With your knowledge of REST, see if you can figure out how to **retrieve** and **delete** a document.
+
+**Tip**: Use the `?pretty` param to get nicely formatted output
+
+--
 
 ```
-GET /library/books/<ID>?pretty
+GET /library/books/<ID>?pretty 
 ```
 
-Where `<ID>` is the value of the `_id` field of the document (e.g. `kQrERGMB16M7PyHPwaUV` in the previous example)
+```
+DELETE /library/books/<ID>?pretty 
+```
 
 ---
 
-# Searching
+# Basic Searching
 
 Conduct a search via the `_search` endpoint for the index: 
 
 ```
-GET /library/_search?pretty
-{
-  "query": { 
-    "match_all": {} 
-  }
-}
+GET /library/_search?q=title:overstory
 ```
+
+**Note**: The `pretty` parameter doesn't play nicely with this endpoint. 
 
 ---
 
@@ -359,7 +428,7 @@ GET /library/_search?pretty
     "failed" : 0
   },
   "hits" : {
-    "total" : 2,
+    "total" : 1,
     "max_score" : 1.0,
     "hits" : [
       [results ommitted]
@@ -376,28 +445,60 @@ The response tells us:
 * `hits` - search results info
 * `hits.hits` - actual array of search results
 
-Note that only 10 results are returned. We can customize the result set using the `from` and `size` parameters.
+Note that only 10 results are returned by default. We can customize the result set using the `from` and `size` parameters.
 
 ---
 
-# Full-Text Queries
+## Better Search
+
+Before we explore some better search methods, let's start using Kibana to query Elasticsearch.
+
+--
+
+In your browser, go to [http://localhost:5601](http://localhost:5601)
+
+One you are there, select the **Dev Tools** view from the left-hand menu
+
+---
+
+## Better Search
+
+We can use the body of a `GET` request to submit more sophisticated search criteria.
+
+For example:
+
+```
+GET /library/_search
+{
+  "query": { 
+    "match_all": {} 
+  }
+}
+```
+
+---
+
+## Full-Text Queries
 
 **Full text queries** are used to run searches on text fields like: email body, description of item
 
-## Examples
-`match`, `multi_match`, `common_terms`, `query_string`
+### Examples
+
+`match`, `multi_match`, `match_phrase`
 
 --
+
 They apply analyzers. (What's an analyzer?!)
 
 ---
 
-# What's an Analyzer?
+## What's an Analyzer?
 
 An analyzer:
+
 * Break text content down into word stems (known as tokens or terms)
-  * Those tokens are added to the inverted index
-  * Words like "the" and "and" are skipped
+* Those tokens are added to the inverted index
+* Words like "the" and "and" are skipped
 
 --
 
@@ -405,18 +506,18 @@ An analyzer:
 
 --
 
-* ES includes an English default
+* ES includes an English default analyzer
 
 ---
 
-# Searching By Field
+## Searching By Field
 
 ```
 GET /library/_search
 {
     "query" : {
         "match" : {
-            "title" : "jest"
+            "title" : "overstory"
         }
     }
 }
@@ -424,7 +525,7 @@ GET /library/_search
 
 ---
 
-# Aggregations
+## Aggregations
 
 * Aggregations allow you to group and provide statistics about your data
 
@@ -438,17 +539,17 @@ GET /library/_search
 
 ---
 
-# Aggregations
+## Aggregations
 
 With results: 
 
 ```
-GET /bank/_search?pretty
+GET /library/_search
 { 
   "aggs": { 
-    "group_by_state": {
+    "group_by_author": {
       "terms": {
-        "field": "state.keyword"
+        "field": "author.keyword"
       }
     }
   }
@@ -457,18 +558,18 @@ GET /bank/_search?pretty
 
 ---
 
-# Aggregations
+## Aggregations
 
 Without results: 
 
 ```
-GET /bank/_search?pretty
+GET /library/_search
 { 
   "size": 0, 
   "aggs": { 
-    "group_by_state": {
+    "group_by_author": {
       "terms": {
-        "field": "state.keyword"
+        "field": "author.keyword"
       }
     }
   }
@@ -477,29 +578,30 @@ GET /bank/_search?pretty
 
 --
 
-This is similar in SQL: `SELECT state, COUNT(\*) FROM bank GROUP BY state ORDER BY COUNT(\*) DESC`
+This is similar in SQL: `SELECT author, COUNT(\*) FROM library GROUP BY author ORDER BY COUNT(\*) DESC`
 
 ---
 
-# Aggregations
+## Aggregations
 
 * An aggregation is like a function that builds a result set over a group of documents
 
-* You can get data like `min`, `max`, `avg`, `sum`, `range` things that are relatively easy to get out of SQL but are tough in a distributed environment
+* You can get numeric aggregations like `min`, `max`, `avg`, `sum`, `range` that are relatively easy to get out of SQL but are tough in a distributed environment
 
 ---
 
-# Nodes, Clusters & Shards, Oh My!
+## Nodes, Clusters & Shards, Oh My!
 
-* A **node** is a single server, participating in the ES cluster.
+
+* A **cluster** is a group of 1+ servers, who index/search together. 
+
+-- 
+
+* A **node** is a single server, participating in the ES cluster. 
 
 --
 
-* A **cluster** is a group of 1+ servers, who index/search together.
-
---
-
-* A **shard** is a bucket of data. This allows one index to be split among multiple nodes in one cluster. A node has one or more shards.
+* A **shard** is a bucket of data within a node. This allows one index to be split among multiple nodes in one cluster. A node has one or more shards. 
 
 --
 
@@ -513,7 +615,7 @@ This is similar in SQL: `SELECT state, COUNT(\*) FROM bank GROUP BY state ORDER 
 
 ---
 
-# Fault Tolerance
+## Fault Tolerance
 
 * "health" and failure tolerance
 
@@ -531,6 +633,22 @@ This is similar in SQL: `SELECT state, COUNT(\*) FROM bank GROUP BY state ORDER 
 
 ---
 
+## How Healty Is Our Cluster?
+
+```
+GET localhost:9200/_cat/health?v
+```
+--
+
+
+**Green** - everything is good (cluster is fully functional)
+
+**Yellow** - all data is available but some replicas are not yet allocated (cluster is fully functional, but more vulnerable to data loss/corruption)
+
+**Red** - some data is not available for whatever reason (cluster is partially functional)
+
+---
+
 # Let Someone Else Manage It
 
 Elasticsearch clusters are often set up on services such as:
@@ -543,7 +661,7 @@ Elasticsearch clusters are often set up on services such as:
 
 # ES Alternatives
 
-* **Stretch PostgreSQL before you reach for ES**
+* **Stretch PostgreSQL or PostGIS before you reach for ES**
 * Apache Solr (also built on Lucene)
 * Sphinx
 * RavenDB (MS)
