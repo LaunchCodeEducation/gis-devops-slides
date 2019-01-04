@@ -161,7 +161,7 @@ Hashing passwords by itself is vulnerable to [Rainbow Table attacks](https://en.
 Salting makes Rainbow Tables useless (not all salt processes work exactly like this)
 --
 
-1. A truly andom salt is picked for each password change
+1. A truly random salt is picked for each password change
   2. The salt is stored in the database in plain text
   3. `h(password + salt)` is stored in the database
   4. The resulting stored hash is now more complicated and each password has a different salt added to it
