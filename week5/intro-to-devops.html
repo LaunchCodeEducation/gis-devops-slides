@@ -114,8 +114,7 @@ You will be learning how to manage your app's pipeline.
 1. Basic Ops - How to deploy an app on a remote server and troubleshoot issues.
 2. Ops in a Cloud Environment - How to deploy apps that are secure and scale in the cloud.
 3. Best Practices of Cloud Ops - How to make your deployed app as simple and reliable as possible.
-4. Build Systems - How to build your project. 
-5. Continuous Integration / Continuous Deployment - Building the deployment pipeline for your app.
+4. Build Systems - You will learn more about Gradle and how it builds your project. 
 
 ---
 
@@ -429,6 +428,7 @@ $ journalctl -b -u nginx.service  # all logs from nginx boot
 *Remember, your app needs to run as its own user for security reasons*.
 
 1. Create a user and set the password
+
 ```
 $ sudo useradd app_user
 $ sudo passwd some_solid_password
@@ -445,24 +445,29 @@ $ sudo chmod 500 your-app.jar
 
 ## **systemd** Configuration
 
-Then start it up and see it run:
+Then start it up and see it run. Well you won't be able to see it run, because it will be running in the background.
 
 ```
 $ sudo service your-app start
 
 ```
 
+To see if it worked you will have to look at the logs via 
+
+```
+jounalctl -f -u your-app
+```
 ---
 
 ## **Not** Working with Daemon Processes
 
-If you want a daemon process to go away:
+If need to stop a daemon process that you already started:
 
-(1) Find the process that you want to go away.
+1. Find the process that you want to go away.
 ```
 $ ps aux | grep name_of_process_to_go_away
 ```
-(2) Get the PID of the process.
+2. Get the PID of the process.
 ```
 $ ps -o pid,ppid,tty,uid,args 
   PID  PPID TTY        UID ARGS
@@ -474,7 +479,7 @@ $ ps -o pid,ppid,tty,uid,args
 ## **Not** Working with Daemon Processes
 
 
-(3) Send the signal to spin down.
+(3) Send the signal to stop it.
 ```
 $ kill -9 8119 
 ```
