@@ -13,7 +13,7 @@
 class: center, middle
 
 # Day 4
-### Postgres and Migrations
+### Postgres
 
 ---
 
@@ -92,41 +92,6 @@ class: center, middle
 ## Postgresql Walkthrough
 
 * [https://education.launchcode.org/gis-devops/walkthroughs/#Install](https://education.launchcode.org/gis-devops/walkthroughs/#Install)
-
----
-
-## Database Migrations
-
-* When you do the below... as part of a build/deployment
---
-
-  * create a database
-  * alter table(s), column(s), constraint(s)
-  * insert data
-  * translate data
-
-* The database changes have to be rolled out with the new code files changes
---
-
-* The code won't work without an updated data source
---
-
-* Like deployments, migrations are named/numbered
-
----
-
-## Flyway for Migrations
-
-* A Java library that makes database migrations easier
-* You make migration sql files that create/alter the database as needed
-* You execute the migrations using Flyway gradle tasks
-* Flyway keeps track of the migrations applied in a special migrations table in your database
-
----
-
-## Flyway Walkthrough
-
-* [https://education.launchcode.org/gis-devops/walkthroughs/#Setup](https://education.launchcode.org/gis-devops/walkthroughs/#Setup)
 
 
 </textarea><script type="text/javascript" src="../js/remark-latest.min.js"></script></body></html>

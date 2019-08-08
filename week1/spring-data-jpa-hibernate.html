@@ -1,107 +1,127 @@
 <!DOCTYPE html><html lang=en><head><meta http-equiv=Content-Type content="text/html; charset=UTF-8"><meta name=viewport content="width=device-width,initial-scale=1"><link rel="stylesheet" href="../css/slidestyles.css" type="text/css" media="screen" charset="utf-8">
 
-    <title>Day 4, JPA, Hibernate</title>
-    
-    </head>
-    
-    <!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
-    <body onload="var slideshow = remark.create({ratio: '16:9', navigation: {scroll: true, touch: true, click: false}, countIncrementalSlides: false, highlightLanguage: 'bash', highlightStyle: 'tomorrow-night-blue'});">
-    
-    <!-- #ToDo: Write your slides in MarkDown here -->
-    <textarea id="source">
-    
-    class: center, middle
-    
-    # Day 4
-    ### JPA, Hibernate, Spring Data
-    
-    ---
-    
-    ## Object Relational Mapper (ORM)
-    --
-    
-    - Map a POJO to a relational database table
-    --
+<title>Day 4, JPA, Hibernate</title>
 
-    - Create and populate a POJO -> save it to the db
-    --
-    
-    - Run query using ORM -> executes SQL -> turns results into a POJO and returns it
-    --
-    
-    - NOTE: there are other mapping tools that don't rely on using a Relation Database
-    - A better name may be Object Data-Store Mapper (ODM) 
-    
-    ---
-    
-    ## JPA
-    --
-    
-    - The Java Persistence API provides a POJO persistence model for object-relational mapping
-    --
-    
-    - Does NOT contain implementaions, only the interfaces for persisting POJO's
-    --
-    
-    --
-    - Interfaces defined in `javax.persistence` package
-    --
-    
-    - First released in 2006
-    --
-    
-    - Implementations of JPA: Hibernate, EclipseLink, DataNucleus...
-    
-    ---
+</head>
 
-    ## Hibernate
-    --
-    
-    - Is an implementation of JPA (Also known as a JPA provider)
-    --
-    
-    - Hibernate existed before JPA and was a major influence on the JPA standard
-    --
-    
-    - Hibernate is the default JPA implementation used by Spring Boot
-    --
-    
-    - When you include `org.springframework.boot:spring-boot-starter-data-jpa` in your `build.gradle`
-      - Gradle downloads `org.hiberante` packages because they are listed as a dependency to spring-data-jpa
-    
-    ---
-    
-    ## Spring Data
-    --
-    
-    - Umbrella project which contains many subprojects that are specific to a given database/data-store
-    --
-    
-    - Can be used with relational and non-relational databases (NoSQL), map-reduce frameworks, and cloud-based data services
-    --
-    
-    ---
-    
-    ## Spring Data JPA
-    --
+<!-- #ToDo: Change 16:9 to 4:3 or vice versa, according to the current projector / screen -->
+<body onload="var slideshow = remark.create({ratio: '16:9', navigation: {scroll: true, touch: true, click: false}, countIncrementalSlides: false, highlightLanguage: 'bash', highlightStyle: 'tomorrow-night-blue'});">
 
-    - Subproject of Spring Data
-    --
+<!-- #ToDo: Write your slides in MarkDown here -->
+<textarea id="source">
 
-    - Makes it easy to implement JPA based repositories (JPA = ORM = Relational Database)
-    --
+class: center, middle
 
-    - Defined in package `org.springframework.data.jpa`
-    --
+# Day 4
+### JPA, Hibernate, Spring Data
 
-    - Provides things like: `org.springframework.data.jpa.repository.JpaRepository` which provides a load of persistence magic
+---
 
-    ---
+## Object Relational Mapper (ORM)
+--
 
-    ## Spring Data & Hiberate Walkthrough
-    * Let's find out how the magic works
-    * [Spring Data, JPA, Hibernate Walkthrough](https://education.launchcode.org/gis-devops/walkthroughs/spring-data-jpa-hibernate/#Setup)
+- Map a POJO to a relational database table
+--
+
+- Create and populate a POJO -> save it to the db
+--
+
+- Run query using ORM -> executes SQL -> turns results into a POJO and returns it
+--
+
+- NOTE: there are other mapping tools that don't rely on using a relational database
+- A better name may be Object Data-Store Mapper (ODM) 
+
+---
+
+## JPA
+--
+
+- The Java Persistence API provides a POJO persistence model for object-relational mapping
+--
+
+- Does NOT contain implementations, only the interfaces for persisting POJOs
+--
+
+--
+- Interfaces defined in `javax.persistence` package
+--
+
+- First released in 2006
+--
+
+- Implementations of JPA: Hibernate, EclipseLink, DataNucleus...
+
+---
+
+## Hibernate
+--
+
+- Is an implementation of JPA (Also known as a JPA provider)
+--
+
+- Hibernate existed before JPA and was a major influence on the JPA standard
+--
+
+- Hibernate is the default JPA implementation used by Spring Boot
+--
+
+- When you include `org.springframework.boot:spring-boot-starter-data-jpa` in your `build.gradle`
+    - Gradle downloads `org.hibernate` packages because they are listed as a dependency to spring-data-jpa
+
+---
+
+## Spring Data
+--
+
+- Umbrella project which contains many subprojects that are specific to a given database/data-store
+--
+
+- Can be used with relational and non-relational databases (NoSQL), map-reduce frameworks, and cloud-based data services
+--
+
+---
+
+## Spring Data JPA
+--
+
+- Subproject of Spring Data
+--
+
+- Makes it easy to implement JPA-based repositories (JPA = ORM = Relational Database)
+--
+
+- Defined in package `org.springframework.data.jpa`
+--
+
+- Provides things like: `org.springframework.data.jpa.repository.JpaRepository` which provides a load of persistence magic
+
+---
+
+## Database Migrations
+
+* When you do the below... as part of a build/deployment
+--
+
+  * create a database
+  * alter table(s), column(s), constraint(s)
+  * insert data
+  * translate data
+
+* The database changes have to be rolled out with the new code files changes
+--
+
+* The code won't work without an updated data source
+--
+
+* Spring will carry out (most) migrations for you as long as `application.properties` has `spring.jpa.hibernate.ddl-auto=update`
+
+---
+
+## Spring Data & Hibernate Walkthrough
+
+* Let's find out how the magic works
+* [Spring Data, JPA, Hibernate Walkthrough](https://education.launchcode.org/gis-devops/walkthroughs/spring-data-jpa-hibernate/#Setup)
 
 
-    </textarea><script type="text/javascript" src="../js/remark-latest.min.js"></script></body></html>
-    
+</textarea><script type="text/javascript" src="../js/remark-latest.min.js"></script></body></html>
